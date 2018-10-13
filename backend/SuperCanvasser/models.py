@@ -1,5 +1,4 @@
 from django.db import models
-from multiselectfield import MultiSelectField
 
 ROLE_CHOICES = [(0, 'Admin'), (1, 'Manager'), (2, 'Canvasser')]
 STATE_CHOICES = []
@@ -31,9 +30,9 @@ class Campaign(models.Model):
     average = models.FloatField(verbose_name='Average')
     sd = models.FloatField(verbose_name='Standard deviation')
 
-    manager = models.ForeignKey(to='User', to_field='nid', on_delete=models.SET_DEFAULT, default=None, verbose_name='Manager')
+    manager = models.ForeignKey(to='User', to_field='nid', on_delete=models.SET_DEFAULT, default=None, verbose_name='Manager', related_name='Manager')
     questionnaire = models.OneToOneField(to='Questionnaire', to_field='nid', on_delete=models.PROTECT, verbose_name='Questionnaire')
-    canvassers = models.ManyToManyField(to='User', verbose_name='Canvassers')
+    canvassers = models.ManyToManyField(to='User', verbose_name='Canvassers', related_name='Canvassers')
     locations = models.ManyToManyField(to='Location', verbose_name='Locations')
     dates = models.ManyToManyField(to='CampaignDate', verbose_name='Dates')
 

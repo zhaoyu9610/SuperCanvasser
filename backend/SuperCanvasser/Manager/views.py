@@ -8,23 +8,19 @@ handler = controller.ManagerHandler()
 
 @csrf_exempt
 def campaigns(request):
-    data = json.dumps({'status': 'ok',
-                       'method': request.method,
-                       'url': request.build_absolute_uri()})
-    return HttpResponse(data, content_type='application/json')
+    return handler.campaigns(request)
 
 
 @csrf_exempt
-def campaign_edit(request):
-    data = json.dumps({'status': 'ok',
-                       'method': request.method,
-                       'url': request.build_absolute_uri()})
-    return HttpResponse(data, content_type='application/json')
+def campaign_edit(request, id):
+    return handler.campaign_edit(request, id)
 
 
 @csrf_exempt
 def campaign_create(request):
-    data = json.dumps({'status': 'ok',
-                       'method': request.method,
-                       'url': request.build_absolute_uri()})
-    return HttpResponse(data, content_type='application/json')
+    return handler.campaign_create(request)
+
+
+@csrf_exempt
+def canvasser_availabilities(request):
+    return handler.availabilities(request)

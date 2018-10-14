@@ -28,3 +28,8 @@ def logout(request):
 @csrf_exempt
 def signup(request):
     return handler.signup(request)
+
+
+@csrf_exempt
+def canvassers(request):
+    return handler.canvassers(request)

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from . import controller
 
-handler = controller.ApplicationHandler()
+handler = controller.ManagerHandler()
 
 
 @csrf_exempt

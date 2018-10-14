@@ -3,23 +3,17 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from . import controller
 
-handler = controller.ApplicationHandler()
+handler = controller.AdministratorHandler()
 
 
 @csrf_exempt
 def users(request):
-    data = json.dumps({'status': 'ok',
-                       'method': request.method,
-                       'url': request.build_absolute_uri()})
-    return HttpResponse(data, content_type='application/json')
+    return handler.users(request)
 
 
 @csrf_exempt
-def user_edit(request):
-    data = json.dumps({'status': 'ok',
-                       'method': request.method,
-                       'url': request.build_absolute_uri()})
-    return HttpResponse(data, content_type='application/json')
+def user_edit(request, uid):
+    return handler.user_edit(request, uid)
 
 
 @csrf_exempt

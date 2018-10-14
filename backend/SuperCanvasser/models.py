@@ -71,3 +71,8 @@ class Location(models.Model):
     state = models.IntegerField(choices=STATE_CHOICES, verbose_name='State')
     zipcode = models.CharField(max_length=10, verbose_name='Zip code')
 
+
+class Parameter(models.Model):
+    uid = models.AutoField(primary_key=True)
+    value = models.FloatField(verbose_name='value')
+    name = models.CharField(max_length=50, verbose_name='name', unique=True)

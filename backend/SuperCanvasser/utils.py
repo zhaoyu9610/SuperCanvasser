@@ -4,16 +4,21 @@ from . import models
 
 
 def generate_error(request, error):
-    return HttpResponse(json.dumps({'status': 'error',
-                                    'error': error,
-                                    'method': request.method,
-                                    'url': request.build_absolute_uri()}), content_type='application/json')
+    result = {'status': 'error',
+              'error': error,
+              'method': request.method,
+              'url': request.build_absolute_uri()}
+    if request.method is 'POST':
+        result['body'] = json.loads(request.body)
+    return HttpResponse(json.dumps(result), content_type='application/json')
 
 
 def generate_response(request, dict):
     dict['status'] = 'ok'
     dict['method'] = request.method
     dict['url'] = request.build_absolute_uri()
+    if request.method == 'POST':
+        dict['body'] = json.loads(request.body)
     return HttpResponse(json.dumps(dict), content_type='application/json')
 
 
@@ -30,5 +35,3 @@ def check_manager(uid):
 def check_canvasser(uid):
     user = models.User.objects.get(uid=uid)
     return user.canvasser
-
-

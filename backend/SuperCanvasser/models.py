@@ -4,6 +4,11 @@ ROLE_CHOICES = [(0, 'Admin'), (1, 'Manager'), (2, 'Canvasser')]
 STATE_CHOICES = []
 
 
+class CampaignDate(models.Model):
+    uid = models.AutoField(primary_key=True)
+    date = models.DateField(blank=True, verbose_name="Date", unique=True)
+
+
 class User(models.Model):
     uid = models.AutoField(primary_key=True)
     email = models.CharField(max_length=50, verbose_name="Email address", unique=True)
@@ -35,11 +40,6 @@ class Campaign(models.Model):
     canvassers = models.ManyToManyField(to='User', verbose_name='Canvassers', related_name='Canvassers')
     locations = models.ManyToManyField(to='Location', verbose_name='Locations')
     dates = models.ManyToManyField(to='CampaignDate', verbose_name='Dates')
-
-
-class CampaignDate(models.Model):
-    uid = models.AutoField(primary_key=True)
-    date = models.DateField(blank=True, verbose_name="Date", unique=True)
 
 
 class Assignment(models.Model):

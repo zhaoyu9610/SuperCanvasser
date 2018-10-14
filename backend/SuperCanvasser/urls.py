@@ -21,7 +21,6 @@ urlpatterns = [
     url(r'^login$', views.login, name='Log in'),
     url(r'^logout$', views.logout, name='Log out'),
     url(r'^signup$', views.signup, name='Sign up'),
-    url(r'^canvassers$', views.canvassers, name='List of canvassers'),
     url(r'^manager/', include(('SuperCanvasser.Manager.urls', 'Manager'), namespace='Manager')),
     url(r'^canvasser/', include(('SuperCanvasser.Canvasser.urls', 'Canvasser'), namespace='Canvasser')),
     url(r'^administrator/', include(('SuperCanvasser.Administrator.urls', 'Administrator'), namespace='Administrator')),

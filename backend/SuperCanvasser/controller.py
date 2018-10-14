@@ -37,17 +37,3 @@ class ApplicationHandler:
             return utils.generate_error(request, 'Email already used')
         return utils.generate_response(request, {})
 
-    def canvassers(self, request):
-        if 'cookie' in request.COOKIES:
-            uid = request.COOKIES['cookie']
-            if utils.check_admin(uid) or utils.check_manager(uid):
-                result = []
-                users = models.User.objects.filter(canvasser=True).all()
-                for user in users:
-                    result.append({'uid': user.uid,
-                                   'email': user.email})
-                utils.generate_response(request, {'users': result})
-            else:
-                return utils.generate_error(request, 'Not admin or manager to view canvasser list')
-        else:
-            return utils.generate_error(request, 'Not logged in')

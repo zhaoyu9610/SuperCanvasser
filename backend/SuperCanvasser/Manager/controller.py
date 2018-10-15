@@ -41,12 +41,12 @@ class ManagerHandler:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
-            if utils.check_admin(uid):
+            if utils.check_manager(uid):
                 campaign_dict['manager_id'] = uid
                 models.Campaign.objects.create(**campaign_dict)
                 return utils.generate_response(request, {})
             else:
-                return utils.generate_error(request, 'Not canvasser')
+                return utils.generate_error(request, 'Not manager')
         else:
             return utils.generate_error(request, 'Not logged in')
 

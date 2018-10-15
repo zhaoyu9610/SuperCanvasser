@@ -31,7 +31,11 @@ class Availability(models.Model):
     assignment = models.OneToOneField(to='Assignment', to_field='id', on_delete=models.SET_DEFAULT, default=None, null=True)
 
     def dict(self):
-        return {'id': self.id, 'date': self.date.dict(), 'assignment': self.assignment.dict()}
+        if self.assignment:
+            assignment = self.assignment.dict()
+        else:
+            assignment = {}
+        return {'id': self.id, 'date': self.date.dict(), 'assignment': assignment}
 
 
 class Location(models.Model):

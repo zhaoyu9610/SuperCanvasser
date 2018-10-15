@@ -6,14 +6,14 @@ class ManagerHandler:
     def campaigns(self, request):
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
-            if utils.check_admin(uid):
+            if utils.check_manager(uid):
                 result = []
                 campaigns = models.Campaign.objects.filter(manager_id=uid).all()
                 for campaign in campaigns:
                     result.append(campaign.dict())
                 return utils.generate_response(request, {'campaigns': result})
             else:
-                return utils.generate_error(request, 'Not canvasser')
+                return utils.generate_error(request, 'Not manager')
         else:
             return utils.generate_error(request, 'Not logged in')
 
@@ -25,11 +25,11 @@ class ManagerHandler:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
-            if utils.check_admin(uid):
+            if utils.check_manager(uid):
                 models.Campaign.objects.filter(id=id, manager_id=uid).update(**campaign_dict)
                 return utils.generate_response(request, {})
             else:
-                return utils.generate_error(request, 'Not canvasser')
+                return utils.generate_error(request, 'Not manager')
         else:
             return utils.generate_error(request, 'Not logged in')
 
@@ -53,7 +53,7 @@ class ManagerHandler:
     def availabilities(self, request):
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
-            if utils.check_admin(uid):
+            if utils.check_manager(uid):
                 result = []
                 for user in models.User.objects.filter(canvasser=True).all():
                     dates = []
@@ -63,6 +63,6 @@ class ManagerHandler:
                     result.append({'uid': user.dict(), 'availability': dates})
                 return utils.generate_response(request, {'availabilities': result})
             else:
-                return utils.generate_error(request, 'Not canvasser')
+                return utils.generate_error(request, 'Not manager')
         else:
             return utils.generate_error(request, 'Not logged in')

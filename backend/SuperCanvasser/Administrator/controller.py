@@ -25,7 +25,6 @@ class AdministratorHandler:
                 parameters = models.Parameter.objects.all()
                 for parameter in parameters:
                     result.append(parameter.dict())
-                print(result)
                 return utils.generate_response(request, {'parameters': result})
             else:
                 return utils.generate_error(request, 'Not admin')

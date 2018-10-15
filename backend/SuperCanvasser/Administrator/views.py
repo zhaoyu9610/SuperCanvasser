@@ -12,8 +12,8 @@ def users(request):
 
 
 @csrf_exempt
-def user_edit(request, uid):
-    return handler.user_edit(request, uid)
+def user_edit(request, id=1):
+    return handler.user_edit(request, id)
 
 
 @csrf_exempt

@@ -12,7 +12,7 @@ def campaigns(request):
 
 
 @csrf_exempt
-def campaign_edit(request, id):
+def campaign_edit(request, id=1):
     return handler.campaign_edit(request, id)
 
 

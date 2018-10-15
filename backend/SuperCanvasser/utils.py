@@ -23,15 +23,15 @@ def generate_response(request, dict):
 
 
 def check_admin(uid):
-    user = models.User.objects.get(uid=uid)
+    user = models.User.objects.get(id=uid)
     return user.admin
 
 
 def check_manager(uid):
-    user = models.User.objects.get(uid=uid)
+    user = models.User.objects.get(id=uid)
     return user.manager
 
 
 def check_canvasser(uid):
-    user = models.User.objects.get(uid=uid)
+    user = models.User.objects.get(id=uid)
     return user.canvasser

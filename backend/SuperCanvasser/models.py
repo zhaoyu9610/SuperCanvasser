@@ -19,7 +19,8 @@ class User(models.Model):
     canvasser = models.BooleanField(verbose_name='canvasser', default=False)
 
     def dict(self):
-        return {'id': self.id, 'email': self.email, 'password': self.password, 'admin': self.admin, 'canvasser': self.canvasser}
+        return {'id': self.id, 'email': self.email, 'password': self.password, 'admin': self.admin,
+                'canvasser': self.canvasser, 'manager': self.manager}
 
 
 class Availability(models.Model):

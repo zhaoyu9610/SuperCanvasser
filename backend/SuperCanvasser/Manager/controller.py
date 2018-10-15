@@ -8,9 +8,9 @@ class ManagerHandler:
             uid = request.COOKIES['cookie']
             if utils.check_admin(uid):
                 result = []
-                campaigns = models.Campaign.objects.all()
+                campaigns = models.Campaign.objects.filter(manager_id=uid).all()
                 for campaign in campaigns:
-                    result.append(campaign.__dict__)
+                    result.append(campaign.dict())
                 utils.generate_response(request, {'campaigns': result})
             else:
                 return utils.generate_error(request, 'Not canvasser')
@@ -26,7 +26,7 @@ class ManagerHandler:
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_admin(uid):
-                models.Campaign.objects.filter(uid=id).update(**campaign_dict)
+                models.Campaign.objects.filter(id=id, manager_id=uid).update(**campaign_dict)
                 utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not canvasser')
@@ -42,6 +42,7 @@ class ManagerHandler:
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_admin(uid):
+                campaign_dict['manager_id'] = uid
                 models.Campaign.objects.create(**campaign_dict)
                 utils.generate_response(request, {})
             else:
@@ -56,9 +57,10 @@ class ManagerHandler:
                 result = []
                 for user in models.User.objects.filter(canvasser=True).all():
                     dates = []
-                    for campaign_date in models.Availability.objects.filter(canvasser=user).all():
-                        dates.append(campaign_date.date)
-                    result.append({'uid': user.uid, 'email': user.email, 'availability': dates})
+                    for ava in models.Availability.objects.filter(canvasser=user).all():
+                        if ava.assignment is None:
+                            dates.append(ava.dict())
+                    result.append({'uid': user.dict(), 'availability': dates})
                 utils.generate_response(request, {'availabilities': result})
             else:
                 return utils.generate_error(request, 'Not canvasser')

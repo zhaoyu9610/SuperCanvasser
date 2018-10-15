@@ -14,7 +14,7 @@ class ApplicationHandler:
         user_model = models.User.objects.filter(email__exact=email, password__exact=password)
         if user_model.count() == 1:
             user = user_model.get()
-            token = str(user.uid)
+            token = str(user.id)
             roles = [user.canvasser, user.manager, user.admin]
             response = utils.generate_response(request, {'role': roles})
             response.set_cookie('cookie', token)

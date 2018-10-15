@@ -1,20 +1,21 @@
 import os
 import django
-from SuperCanvasser import models
-import json
-from datetime import date, datetime
+from datetime import date
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ASBTBackendProject.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 
 django.setup()
+
+from SuperCanvasser import models
 
 # create all the date in 2018 month 10, 11, 12
 for month in [10, 11, 12]:
     for day in range(31):
-        date = date(year=2018, month=month, day=day+1)
-        models.CampaignDate.objects.update_or_create(date=date)
-
-models.CampaignDate.objects.filter(date=date(year=2018, month=11, day=31)).delete()
+        try:
+            dt = date(year=2018, month=month, day=day+1)
+            models.CampaignDate.objects.update_or_create(date=dt)
+        except ValueError as e:
+            pass
 
 # create three user with three single role
 admin, _ = models.User.objects.update_or_create(
@@ -26,7 +27,7 @@ admin, _ = models.User.objects.update_or_create(
 )
 manager, _ = models.User.objects.update_or_create(
     email='manager@manager.com',
-    password='',
+    password='manager',
     admin=False,
     manager=True,
     canvasser=False,
@@ -41,6 +42,21 @@ canvasser, _ = models.User.objects.update_or_create(
 
 # add some random availabilities for canvasser
 for uid in [1, 3, 5, 7, 10, 13, 15, 17, 20]:
-    models.Availability.objects.update_or_create(date_uid=uid, canvasser=canvasser)
+    models.Availability.objects.update_or_create(date_id=uid, canvasser=canvasser)
 
 
+for street, city, state in [('5 Saywood Lane', 'Stony Brook', 'NY'),
+                            ('Avalon Pines Drive', 'Coram', 'NY'),
+                            ('5 Seabrook Court', 'Stony Brook', 'NY'),
+                            ('398 Pond Path', 'Setauket-East Seauket', 'NY'),
+                            ('1417 Stony Brook Road', 'Stony Brook', 'NY')]:
+    models.Location.objects.update_or_create(street=street, city=city, state=state, zipcode='')
+
+campaign, _ = models.Campaign.objects.update_or_create(manager=manager)
+campaign.locations.add(1, 2, 4)
+campaign.canvassers.add(canvasser)
+campaign.dates.add(5, 6, 7, 8)
+
+
+models.Parameter.objects.update_or_create(name='hours', value=8)
+models.Parameter.objects.update_or_create(name='speed', value=60)

@@ -10,29 +10,8 @@ class AdministratorHandler:
                 result = []
                 users = models.User.objects.all()
                 for user in users:
-                    result.append({'uid': user.uid,
-                                   'email': user.email,
-                                   'isCanvasser': user.canvasser,
-                                   'isManager': user.manager,
-                                   'isAdmin': user.admin})
+                    result.append(user.dict())
                 utils.generate_response(request, {'users': result})
-            else:
-                return utils.generate_error(request, 'Not admin')
-        else:
-            return utils.generate_error(request, 'Not logged in')
-
-
-    def user_edit(self, request, id):
-        try:
-            body = json.loads(request.body)
-            user_dict = body['user']
-        except Exception as e:
-            return utils.generate_error(request, 'Parameter error')
-        if 'cookie' in request.COOKIES:
-            uid = request.COOKIES['cookie']
-            if utils.check_admin(uid):
-                models.User.objects.filter(uid=id).update(**user_dict)
-                utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not admin')
         else:
@@ -45,9 +24,24 @@ class AdministratorHandler:
                 result = []
                 parameters = models.Parameter.objects.all()
                 for parameter in parameters:
-                    result.append({'name': parameter.name,
-                                   'value': parameter.value})
+                    result.append(parameter.dict())
                 utils.generate_response(request, {'parameters': result})
+            else:
+                return utils.generate_error(request, 'Not admin')
+        else:
+            return utils.generate_error(request, 'Not logged in')
+
+    def user_edit(self, request, id):
+        try:
+            body = json.loads(request.body)
+            user_dict = body['user']
+        except Exception as e:
+            return utils.generate_error(request, 'Parameter error')
+        if 'cookie' in request.COOKIES:
+            uid = request.COOKIES['cookie']
+            if utils.check_admin(uid):
+                models.User.objects.filter(id=id).update(**user_dict)
+                utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not admin')
         else:

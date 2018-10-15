@@ -18,15 +18,9 @@ def user_edit(request, id=1):
 
 @csrf_exempt
 def parameters(request):
-    data = json.dumps({'status': 'ok',
-                       'method': request.method,
-                       'url': request.build_absolute_uri()})
-    return HttpResponse(data, content_type='application/json')
+    return handler.parameters(request)
 
 
 @csrf_exempt
 def parameter_update(request):
-    data = json.dumps({'status': 'ok',
-                       'method': request.method,
-                       'url': request.build_absolute_uri()})
-    return HttpResponse(data, content_type='application/json')
+    return handler.parameter_update(request)

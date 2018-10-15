@@ -17,7 +17,7 @@ class CanvasserHandler:
                 for year, month, day in dates:
                     campaign_date = {'date': models.CampaignDate.objects.filter(date=date(year, month, day)).get(), 'canvasser_id': uid}
                     models.Availability.objects.create(**campaign_date)
-                utils.generate_response(request, {})
+                return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not canvasser')
         else:
@@ -30,7 +30,7 @@ class CanvasserHandler:
                 dates = []
                 for ava in models.Availability.objects.filter(canvasser_id=uid).all():
                     dates.append(ava.dict())
-                utils.generate_response(request, {'availability': dates})
+                return utils.generate_response(request, {'availability': dates})
             else:
                 return utils.generate_error(request, 'Not canvasser')
         else:

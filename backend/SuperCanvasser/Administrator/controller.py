@@ -11,7 +11,7 @@ class AdministratorHandler:
                 users = models.User.objects.all()
                 for user in users:
                     result.append(user.dict())
-                utils.generate_response(request, {'users': result})
+                return utils.generate_response(request, {'users': result})
             else:
                 return utils.generate_error(request, 'Not admin')
         else:
@@ -25,7 +25,7 @@ class AdministratorHandler:
                 parameters = models.Parameter.objects.all()
                 for parameter in parameters:
                     result.append(parameter.dict())
-                utils.generate_response(request, {'parameters': result})
+                return utils.generate_response(request, {'parameters': result})
             else:
                 return utils.generate_error(request, 'Not admin')
         else:
@@ -41,7 +41,7 @@ class AdministratorHandler:
             uid = request.COOKIES['cookie']
             if utils.check_admin(uid):
                 models.User.objects.filter(id=id).update(**user_dict)
-                utils.generate_response(request, {})
+                return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not admin')
         else:
@@ -58,7 +58,7 @@ class AdministratorHandler:
             if utils.check_admin(uid):
                 for parameter in parameters:
                     models.Parameter.objects.filter(name=parameter['name']).update(**parameter)
-                utils.generate_response(request, {})
+                return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not admin')
         else:

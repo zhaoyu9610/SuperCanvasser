@@ -11,7 +11,7 @@ class ManagerHandler:
                 campaigns = models.Campaign.objects.filter(manager_id=uid).all()
                 for campaign in campaigns:
                     result.append(campaign.dict())
-                utils.generate_response(request, {'campaigns': result})
+                return utils.generate_response(request, {'campaigns': result})
             else:
                 return utils.generate_error(request, 'Not canvasser')
         else:
@@ -27,7 +27,7 @@ class ManagerHandler:
             uid = request.COOKIES['cookie']
             if utils.check_admin(uid):
                 models.Campaign.objects.filter(id=id, manager_id=uid).update(**campaign_dict)
-                utils.generate_response(request, {})
+                return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not canvasser')
         else:
@@ -44,7 +44,7 @@ class ManagerHandler:
             if utils.check_admin(uid):
                 campaign_dict['manager_id'] = uid
                 models.Campaign.objects.create(**campaign_dict)
-                utils.generate_response(request, {})
+                return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not canvasser')
         else:
@@ -61,7 +61,7 @@ class ManagerHandler:
                         if ava.assignment is None:
                             dates.append(ava.dict())
                     result.append({'uid': user.dict(), 'availability': dates})
-                utils.generate_response(request, {'availabilities': result})
+                return utils.generate_response(request, {'availabilities': result})
             else:
                 return utils.generate_error(request, 'Not canvasser')
         else:

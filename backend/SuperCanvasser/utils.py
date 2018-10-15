@@ -1,6 +1,9 @@
 import json
 from django.http import HttpResponse
 from . import models
+import logging
+
+logger = logging.getLogger('django')
 
 
 def generate_error(request, error):
@@ -10,7 +13,9 @@ def generate_error(request, error):
               'url': request.build_absolute_uri()}
     if request.method is 'POST':
         result['body'] = json.loads(request.body)
-    return HttpResponse(json.dumps(result), content_type='application/json')
+    result = json.dumps(result)
+    logger.debug(result)
+    return HttpResponse(result, content_type='application/json')
 
 
 def generate_response(request, dict):
@@ -19,7 +24,9 @@ def generate_response(request, dict):
     dict['url'] = request.build_absolute_uri()
     if request.method == 'POST':
         dict['body'] = json.loads(request.body)
-    return HttpResponse(json.dumps(dict), content_type='application/json')
+    result = json.dumps(dict)
+    logger.debug(result)
+    return HttpResponse(result, content_type='application/json')
 
 
 def check_admin(uid):

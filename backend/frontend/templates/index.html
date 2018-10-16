@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="email" title="Email"><br>
+<input id="password" title="Password"><br>
+<button id="login">login</button><br>
+<button id="logout">logout</button><br>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#login").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/api/login",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({"email": $("#email").val(), "password":  $("#password").val()}),
+                success: function (result) {
+                    alert(JSON.stringify(result))
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#logout").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/logout",
+                success: function (result) {
+                    alert(JSON.stringify(result))
+                }
+            });
+        });
+    });
+</script>
+
+</html>

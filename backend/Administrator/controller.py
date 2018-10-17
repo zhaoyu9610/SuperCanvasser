@@ -1,4 +1,4 @@
-from SuperCanvasser import utils, models
+from backend import utils, models
 import json
 
 

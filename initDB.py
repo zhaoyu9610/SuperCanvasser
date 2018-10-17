@@ -2,11 +2,11 @@ import os
 import django
 from datetime import date
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SuperCanvasser.settings")
 
 django.setup()
 
-from SuperCanvasser import models
+from backend import models
 
 # create all the date in 2018 month 10, 11, 12
 for month in [10, 11, 12]:

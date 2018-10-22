@@ -24,7 +24,20 @@
                 dataType: "json",
                 data: JSON.stringify({"email": $("#inputUser").val(), "password": $("#inputPassword").val()}),
                 success: function (result) {
-                    alert(result);
+                    alert(JSON.stringify(result));
+                    if (result.role[1] == true && result.role[0] == true){
+                        data = JSON.stringify(result);
+                        window.location.href="/manager";
+                    }
+                    else if(result.role[1] == true && result.role[0] == false){
+                        window.location.href = "/manager";
+                    }
+                    else if(result.role[0] == true && result.role[1] == false){
+                        window.location.href ="/canvasser";
+                    }
+                    else if(result.role[2] == true){
+                        window.location.href = "/admin"
+                    }
                 }
             });
         });
@@ -38,7 +51,7 @@
       <div class ="jumbotron">
 
 
-    <form class="form-signin">
+    <form class="form-signin" onsubmit="return false">
       <h1>Super Canvasser</h1>
 
       <label for="inputUser" class="sr-only">Username</label>
@@ -51,7 +64,7 @@
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <button class="btn btn-block btn-dark btn-outline-primary" id="submit">Sign in</button>
+      <button id="submit" class="btn btn-block btn-dark btn-outline-primary">Sign in</button>
       <br>
     </form>
 
@@ -59,7 +72,7 @@
 
     <!--
       ================================================== -->
-      
+
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>

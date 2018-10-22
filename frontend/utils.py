@@ -2,7 +2,7 @@ from backend import models
 
 
 def getRoles(uid):
-        user = models.User.objects.filter(id=uid)
+        user = models.User.objects.filter(id=uid).get()
         return [user.admin, user.manager, user.canvasser]
 
 

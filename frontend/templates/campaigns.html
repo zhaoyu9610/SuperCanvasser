@@ -37,7 +37,13 @@
          }
     });
 
+    $(document).ready(function() {
+        $("#createCamp").click(function () {
+            window.location.href="/campaigns/create";
+        });
+    });
     </script>
+
 
 </head>
 
@@ -73,6 +79,17 @@
 </div>
 
 <div class="jumbotron">
+    <br><br>
+    <div class="container-flex">
+        <div class="row">
+            <div class="col-2 float-left">
+                <p>example text</p>
+            </div>
+            <div id = "space" class="col-2 float-right">
+                <button id="createCamp" class="btn btn-block btn-dark btn-secondary">Create Campaign</button>
+            </div>
+        </div>
+    </div>
     <br><br><br>
     <table class="table table-hover">
         <thead class="thead-dark">

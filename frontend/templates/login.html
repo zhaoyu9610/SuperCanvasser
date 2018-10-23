@@ -24,13 +24,12 @@
                 dataType: "json",
                 data: JSON.stringify({"email": $("#inputUser").val(), "password": $("#inputPassword").val()}),
                 success: function (result) {
-                    alert(JSON.stringify(result));
+
                     if (result.role[1] == true && result.role[0] == true){
-                        data = JSON.stringify(result);
-                        window.location.href="/manager";
+                        window.location.href="/campaigns";
                     }
                     else if(result.role[1] == true && result.role[0] == false){
-                        window.location.href = "/manager";
+                        window.location.href = "/campaigns";
                     }
                     else if(result.role[0] == true && result.role[1] == false){
                         window.location.href ="/canvasser";

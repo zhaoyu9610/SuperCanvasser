@@ -36,8 +36,14 @@
     });
 
     $(document).ready(function(){
+        $("ul").on("click", "button", function(e) {
+            e.preventDefault();
+            $(this).parent().remove();
+     });
+    });
+    $(document).ready(function(){
         $("#addTalk").click(function () {
-            $("#talkPoints").append("<li class='list-group-item'>"+$("#insertTalk").val()+"</li>");
+            $("#talkPoints").append('<div class = "container">'+"<li class='list-group-item'>"+$("#insertTalk").val() +'<button type="button" class="btn btn-outline-secondary float-right">     X</button>'+"</li>" + '</div>');
             })
     });
 

@@ -38,6 +38,10 @@ def get_assignments(uid, cid):
     return result
 
 
+def get_result(uid, cid):
+    pass
+
+
 def get_assignment(uid, cid, aid):
     assignment = models.Assignment.objects.filter(id=cid, campaign_id=cid).get()
     return assignment.dict()

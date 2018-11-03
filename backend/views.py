@@ -29,3 +29,8 @@ def logout(request):
 def signup(request):
     return handler.signup(request)
 
+
+def update_account(request):
+    return handler.update_account(request)
+
+

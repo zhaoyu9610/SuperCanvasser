@@ -20,7 +20,7 @@ def account(request):
 
 
 def signup(request):
-    pass
+    return render(request, 'signup.html', {})
 
 
 def campaigns(request):
@@ -77,6 +77,18 @@ def campaign_assignments(request, cid):
         roles = utils.get_roles(uid)
         if roles[1]:
             data = {'role': roles, 'assignments': utils.get_assignments(uid, cid)}
+            return render(request, 'assignments.html', data)
+        return render(request, 'error.html', utils.generate_error_data(request, ''))
+    else:
+        return redirect('login')
+
+
+def campaign_result(request, cid):
+    if 'cookie' in request.COOKIES:
+        uid = request.COOKIES['cookie']
+        roles = utils.get_roles(uid)
+        if roles[1]:
+            data = {'role': roles, 'result': utils.get_result(uid, cid)}
             return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:

@@ -34,6 +34,19 @@
             $("#showCanvasser").hide();
          }
     });
+
+    $(document).ready(function(){
+        $("#addTalk").click(function () {
+            $("#talkPoints").append("<li class='list-group-item'>"+$("#insertTalk").val()+"</li>");
+            })
+    });
+
+    $(document).ready(function(){
+        $("#addQuestion").click(function () {
+            $("#questions").append($("<li>").text($("#insertQ").val()));
+            })
+    });
+
     $(document).ready(function () {
         $("#logout").click(function () {
             $.ajax({
@@ -72,6 +85,8 @@
             });
         });
     });
+
+
 
 
     </script>
@@ -189,17 +204,33 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="talking">Add Talking Point</span>
                             </div>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="insertTalk">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="addTalk">Add</button>
+                            </div>
+
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <h5><label for="talkPoints">Talking Points:</label></h5>
+                        <ul class="list-group list-group-flush" id="talkPoints">
+                        </ul>
+                    </div>
                     <div class="form-group row">
                         <div class="input-group col-7">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="questions">Add Question</span>
+                                <span class="input-group-text" id="questionsLabel">Add Question</span>
                             </div>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="insertQ">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="addQuestion">Add</button>
+                            </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <h5><label for="questions">Questionnaire:</label></h5>
+                        <ul class="list-group list-group-flush" id="questions">
+                        </ul>
                     </div>
 
                     <div>

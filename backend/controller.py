@@ -37,3 +37,16 @@ class ApplicationHandler:
             return utils.generate_error(request, 'Email already used')
         return utils.generate_response(request, {})
 
+    def update_account(self, request):
+        try:
+            body = json.loads(request.body)
+            user_dict = body['user']
+            user_dict.pop('id', None)
+        except Exception as e:
+            return utils.generate_error(request, 'Parameter error')
+        if 'cookie' in request.COOKIES:
+            uid = request.COOKIES['cookie']
+            models.User.objects.filter(id=id).update(**user_dict)
+            return utils.generate_response(request, {})
+        else:
+            return utils.generate_error(request, 'Not logged in')

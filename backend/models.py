@@ -58,6 +58,7 @@ class Campaign(models.Model):
     average = models.FloatField(verbose_name='Average', default=None, null=True)
     sd = models.FloatField(verbose_name='Standard deviation', default=None, null=True)
     questions = models.TextField(verbose_name='questions')
+    duration = models.FloatField(verbose_name='duration', default=0.5)
 
     manager = models.ForeignKey(to='User', to_field='id', on_delete=models.SET_DEFAULT, default=None, verbose_name='Manager', related_name='Manager')
     canvassers = models.ManyToManyField(to='User', verbose_name='Canvassers', related_name='Canvassers')
@@ -73,7 +74,7 @@ class Campaign(models.Model):
             questions = json.loads(self.questions)
         else:
             questions = ''
-        return {'id': self.id, 'talking_points': talking_points, 'start': self.start, 'finish': self.finish, 'median': self.median,
+        return {'id': self.id, 'talking_points': talking_points, 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
                 'average': self.average, 'sd': self.sd, 'questions': questions, 'manager': self.manager.dict(), 'canvasers': [a.dict() for a in self.canvassers.all()],
                 'locations': [a.dict() for a in self.locations.all()], 'dates': [a.dict() for a in self.dates.all()]}
 

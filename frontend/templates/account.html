@@ -39,10 +39,10 @@
         $("#submit").click(function () {
             $.ajax({
                 type: "POST",
-                url: "/api/update",
+                url: "/api/update_account",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"email": $("#inputUser").val(), "password": $("#inputPassword").val()}),
+                data: JSON.stringify({"email": $("#changeUser").val(), "password": $("#changePassword").val()}),
                 success: function (result) {
                     alert(result);
 

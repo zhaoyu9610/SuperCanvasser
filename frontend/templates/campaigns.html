@@ -36,10 +36,28 @@
             $("#showCanvasser").hide();
          }
     });
+    var campaignsArr = new Array();
+    $( document ).ready(function() {
+        alert({campaigns});
+
+
+    });
 
     $(document).ready(function() {
         $("#createCamp").click(function () {
             window.location.href="/campaigns/create";
+        });
+    });
+
+    $(document).ready(function () {
+        $("#logout").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/logout",
+                success: function (result) {
+                    alert(JSON.stringify(result))
+                }
+            });
         });
     });
     </script>
@@ -55,7 +73,7 @@
         <div class="container">
             <div class="navbar-header">
 
-                <div class="collapse navbar-collapse" id="menu">
+                <div class="collapse navbar-collapse" id="leftSide">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item" id="showManager"><a class="nav-link" href="/manager">Manager</a></li>
                         <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/canvasser">Canvasser</a></li>
@@ -67,11 +85,11 @@
                 </button>
             </div>
 
-            <div class="collapse navbar-collapse" id="menu">
+            <div class="collapse navbar-collapse" id="rightSide">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Sign out</a></li>
+                    <li id = "logout" class="nav-item"><a class="nav-link" href="">Sign out</a></li>
                 </ul>
             </div>
         </div>
@@ -94,10 +112,10 @@
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
-            <th scope="col-xs-5">Campaign Name</th>
-            <th scope="col-xs-1">#Canvassers</th>
-            <th scope="col-xs-1">#Assignments</th>
-            <th scope="col-xs-1">#Locations</th>
+            <th scope="col">Campaign Name</th>
+            <th scope="col">#Canvassers</th>
+            <th scope="col">#Assignments</th>
+            <th scope="col">#Locations</th>
         </tr>
         </thead>
         <tbody>

@@ -24,7 +24,9 @@
                 dataType: "json",
                 data: JSON.stringify({"email": $("#inputUser").val(), "password": $("#inputPassword").val()}),
                 success: function (result) {
-
+                    if(result.status == "error"){
+                        $('#errUser').text('Invalid Username/Password. Please try again.');
+                    }
                     if (result.role[1] == true && result.role[0] == true){
                         window.location.href="/campaigns";
                     }
@@ -58,6 +60,9 @@
       <br>
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="Password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <br>
+        <p id = "errUser"></p>
+
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Remember me

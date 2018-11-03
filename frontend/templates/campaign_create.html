@@ -13,8 +13,68 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <script>
+    var roles = new Array();
+    $( document ).ready(function() {
+        {% for val in role %}
+            roles.push({{val|yesno:"true,false"}});
+        {% endfor %}
+         if(roles[0] == true && roles[1] == true){
+            $("#showManager").show();
+            $("#showCanvasser").show();
+         }
+         else if(roles[0] == true && roles[1] == false){
+            $("#showManager").hide();
+            $("#showCanvasser").show();
+         }
+         else if(roles[0] == false && roles[1] == true){
+            $("#showManager").show();
+            $("#showCanvasser").hide();
+         }
+    });
+    $(document).ready(function () {
+        $("#logout").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/logout",
+                success: function (result) {
+                    alert(JSON.stringify(result))
+                }
+            });
+        });
+    });
+
+    $( document ).ready(function() {
+        $(function() {
+            $('input[id="date"]').daterangepicker({
+                opens: 'left'
+            }, function(start, end, label) {
+                $("#startD").val(start.format('MM/DD/YYYY'));
+                $("#endD").val(end.format('MM/DD/YYYY'));
+            });
+        });
+     });
+
+    $(document).ready(function () {
+        $("#submitCamp").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/manager/campaigns/create",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({"campaign_name": $("#camName").val(), "start": $("#startD").val(), "end":$("#endD").val(),
+                "visit":$("#visitDur").val(), "canvassers":[], "managers":[],"talking_points":$("#talking_points"), "questionnaire":$}),
+                success: function (result) {
+
+                }
+            });
+        });
+    });
 
 
+    </script>
 
 </head>
 
@@ -28,7 +88,7 @@
 
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" id="showManager"><a class="nav-link" href="/manager">Manager</a></li>
+                        <li class="nav-item" id="showManager"><a class="nav-link" href="/campaigns">Manager</a></li>
                         <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/canvasser">Canvasser</a></li>
                     </ul>
                 </div>
@@ -59,28 +119,44 @@
                 <br>
                 <form>
                     <div class="form-group row">
-                        <div class="input-group col-7">
+                        <div class="input-group col-8">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="CamName">Campaign Name</span>
+                                <span class="input-group-text" id="camName">Campaign Name</span>
                             </div>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <br>
                     <div class="form-group row">
-                        <div class="input-group col-4">
+                        <div class="input-group col-5">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="CamCalendar"><i class="fa fa-calendar"></i></span>
+                                <span class="input-group-text" id="camCalendar"><i class="fa fa-calendar"></i></span>
                             </div>
                             <input type="text" id="date" class="form-control">
                         </div>
                         <div class="input-group col-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="CamDuration">Visit Duration</span>
+                                <span class="input-group-text" id="camDuration">Visit Duration</span>
                             </div>
-                            <input type="text" id="duration" class="form-control">
+                            <input type="text" id="visitDuration" class="form-control">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="input-group col-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="startDate">From</span>
+                            </div>
+                            <input type="text" id="startD" class="form-control">
+                        </div>
+                        <div class="input-group col-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="endDate">To</span>
+                            </div>
+                            <input type="text" id="endD" class="form-control">
+                        </div>
+
+                    </div>
+                    <br>
                     <div class="form-group row">
                         <div class="input-group col-4">
                             <div class="input-group-prepend">
@@ -106,14 +182,29 @@
                         </div>
                     </div>
 
-                    <br><br>
-                    <div class="form-group">
-                        <label for="talkingPoints"><h5>Campaign Talking Points</h5></label>
-                        <textarea class="form-control" id="talkingPoints" rows="5"></textarea>
+                    <br>
+
+                    <div class="form-group row">
+                        <div class="input-group col-7">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="talking">Add Talking Point</span>
+                            </div>
+                            <input type="text" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="talkingPoints"><h5>Campaign Questionnaire</h5></label>
-                        <textarea class="form-control" id="questionnaire" rows="5"></textarea>
+
+                    <div class="form-group row">
+                        <div class="input-group col-7">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="questions">Add Question</span>
+                            </div>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-block btn-dark btn-outline-primary" id="submitCamp">Create Campaign
+                        </button>
                     </div>
 
 

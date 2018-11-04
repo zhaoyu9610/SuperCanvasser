@@ -53,6 +53,7 @@ class Location(models.Model):
 
 class Campaign(models.Model):
     id = models.AutoField(primary_key=True)
+    name = models.CharField(verbose_name='Campaign name', max_length=100, default='Campaign Name')
     talking_points = models.TextField(verbose_name='Talking points', default='[]')
     start = models.BooleanField(verbose_name='Start', default=False)
     finish = models.BooleanField(verbose_name='Finish', default=False)

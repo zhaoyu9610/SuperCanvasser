@@ -79,7 +79,7 @@ class Campaign(models.Model):
         talking_points = json.loads(self.talking_points)
         questions = json.loads(self.questions)
         return {'id': self.id, 'name': self.name, 'talking_points': talking_points, 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
-                'average': self.average, 'sd': self.sd, 'questions': questions, 'manager': [a.dict for a in self.manager], 'canvasers': [a.dict() for a in self.canvassers.all()],
+                'average': self.average, 'sd': self.sd, 'questions': questions, 'manager': [a.dict() for a in self.managers.all()], 'canvasers': [a.dict() for a in self.canvassers.all()],
                 'locations': [a.dict() for a in self.locations.all()], 'start_date':  [self.start_date.year, self.start_date.month, self.start_date.day],
                 'end_date': [self.end_date.year, self.end_date.month, self.end_date.day]}
 

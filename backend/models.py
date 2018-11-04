@@ -77,7 +77,7 @@ class Campaign(models.Model):
             questions = json.loads(self.questions)
         else:
             questions = ''
-        return {'id': self.id, 'talking_points': talking_points, 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
+        return {'id': self.id, 'name': self.name, 'talking_points': talking_points, 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
                 'average': self.average, 'sd': self.sd, 'questions': questions, 'manager': self.manager.dict(), 'canvasers': [a.dict() for a in self.canvassers.all()],
                 'locations': [a.dict() for a in self.locations.all()], 'dates': [a.dict() for a in self.dates.all()]}
 

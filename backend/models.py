@@ -1,5 +1,6 @@
 from django.db import models
 import json
+import datetime
 
 
 class CampaignDate(models.Model):
@@ -13,6 +14,9 @@ class CampaignDate(models.Model):
 class User(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=50, verbose_name="Email address", unique=True)
+    phone = models.CharField(max_length=10, verbose_name='Phone number', default='0000000000')
+    gender = models.BooleanField(default=True, verbose_name='gender')
+    address = models.TextField(default='', verbose_name='address')
     password = models.CharField(max_length=32, verbose_name="Password")
     admin = models.BooleanField(verbose_name='Administrator', default=False)
     manager = models.BooleanField(verbose_name='Manager', default=False)
@@ -20,10 +24,12 @@ class User(models.Model):
 
     def dict(self):
         return {'id': self.id, 'email': self.email, 'password': self.password, 'admin': self.admin,
-                'canvasser': self.canvasser, 'manager': self.manager}
+                'canvasser': self.canvasser, 'manager': self.manager, 'phone': self.phone, 'gender': self.gender,
+                'address': self.address}
 
 
-class Availability(models.Model):
+class Availability(models
+                   .Model):
     id = models.AutoField(primary_key=True)
 
     date = models.ForeignKey(to='CampaignDate', to_field='id', on_delete=models.PROTECT)
@@ -62,24 +68,20 @@ class Campaign(models.Model):
     sd = models.FloatField(verbose_name='Standard deviation', default=None, null=True)
     questions = models.TextField(verbose_name='questions', default='[]')
     duration = models.FloatField(verbose_name='duration', default=0.5)
+    start_date = models.DateField(verbose_name='start date', default=datetime.date.today)
+    end_date = models.DateField(verbose_name='end date', default=datetime.datetime(2018, 12, 31))
 
-    manager = models.ForeignKey(to='User', to_field='id', on_delete=models.SET_DEFAULT, default=None, verbose_name='Manager', related_name='Manager')
+    managers = models.ManyToManyField(to='User', verbose_name='Managers', related_name='Managers')
     canvassers = models.ManyToManyField(to='User', verbose_name='Canvassers', related_name='Canvassers')
     locations = models.ManyToManyField(to='Location', verbose_name='Locations')
-    dates = models.ManyToManyField(to='CampaignDate', verbose_name='Dates')
 
     def dict(self):
-        if self.talking_points is not '':
-            talking_points = json.loads(self.talking_points)
-        else:
-            talking_points = ''
-        if self.questions is not '':
-            questions = json.loads(self.questions)
-        else:
-            questions = ''
+        talking_points = json.loads(self.talking_points)
+        questions = json.loads(self.questions)
         return {'id': self.id, 'name': self.name, 'talking_points': talking_points, 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
-                'average': self.average, 'sd': self.sd, 'questions': questions, 'manager': self.manager.dict(), 'canvasers': [a.dict() for a in self.canvassers.all()],
-                'locations': [a.dict() for a in self.locations.all()], 'dates': [a.dict() for a in self.dates.all()]}
+                'average': self.average, 'sd': self.sd, 'questions': questions, 'manager': [a.dict for a in self.manager], 'canvasers': [a.dict() for a in self.canvassers.all()],
+                'locations': [a.dict() for a in self.locations.all()], 'start_date':  [self.start_date.year, self.start_date.month, self.start_date.day],
+                'end_date': [self.end_date.year, self.end_date.month, self.end_date.day]}
 
 
 class Parameter(models.Model):
@@ -109,7 +111,7 @@ class Result(models.Model):
     id = models.AutoField(primary_key=True)
     number_of_people = models.IntegerField(verbose_name='The number of people spoke to', default=0)
     rating = models.IntegerField(verbose_name='rating', default=0)
-    answers = models.TextField(verbose_name='answers', default='{}')
+    answers = models.TextField(verbose_name='answers', default='[]')
     notes = models.TextField(verbose_name='brief note', default='')
 
     assignment = models.ForeignKey(to='Assignment', to_field='id', on_delete=models.SET_DEFAULT, default=None, verbose_name='Assignment')
@@ -118,17 +120,3 @@ class Result(models.Model):
     def dict(self):
         return {'id': self.id, 'assignment': self.assignment.dict(), 'location': self.location.dict(), 'answers': json.loads(self.answers),
                 'rating': self.rating, 'number_of_people': self.number_of_people, 'notes': self.notes}
-
-
-class Answer(models.Model):
-    id = models.AutoField(primary_key=True)
-    answers = models.TextField(verbose_name='answers')
-
-    def dict(self):
-        if self.answers is not '':
-            answers = json.loads(self.answers)
-        else:
-            answers = ''
-        return {'id': self.id, 'answers': answers}
-
-

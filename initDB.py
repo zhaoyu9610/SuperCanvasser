@@ -52,7 +52,8 @@ for street, city, state in [('5 Saywood Lane', 'Stony Brook', 'NY'),
                             ('1417 Stony Brook Road', 'Stony Brook', 'NY')]:
     models.Location.objects.update_or_create(street=street, city=city, state=state, zipcode='')
 
-campaign, _ = models.Campaign.objects.update_or_create(manager=manager)
+campaign, _ = models.Campaign.objects.update_or_create()
+campaign.managers.add(manager)
 campaign.locations.add(1, 2, 3)
 campaign.canvassers.add(canvasser)
 campaign.dates.add(5, 6, 7, 8)

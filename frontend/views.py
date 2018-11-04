@@ -52,7 +52,7 @@ def campaign_create(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles}
+            data = {'role': roles, 'canvassers': json.dumps(utils.get_canvassers()), 'managers': json.dumps(utils.get_managers())}
             return render(request, 'campaign_create.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -64,7 +64,7 @@ def campaign_edit(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'campaign': json.dumps(utils.get_campaign(uid, cid))}
+            data = {'role': roles, 'campaign': json.dumps(utils.get_campaign(uid, cid)), 'canvassers': json.dumps(utils.get_canvassers()), 'managers': json.dumps(utils.get_managers())}
             return render(request, 'campaign_edit.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:

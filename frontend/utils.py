@@ -62,3 +62,18 @@ def get_settings():
         result.append(parameter.dict())
     return result
 
+
+def get_canvassers():
+    result = []
+    canvassers = models.User.objects.filter(canvasser=True).all()
+    for canvasser in canvassers:
+        result.append(canvasser.dict())
+    return result
+
+
+def get_managers():
+    result = []
+    managers = models.User.objects.filter(manager=True).all()
+    for manager in managers:
+        result.append(manager.dict())
+    return result

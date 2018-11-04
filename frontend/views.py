@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from . import utils
-
+import json
 
 def login(request):
     data = {}
@@ -28,7 +28,7 @@ def campaigns(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'campaigns': utils.get_campaigns(uid)}
+            data = {'role': roles, 'campaigns': json.dump(utils.get_campaigns(uid))}
             return render(request, 'campaigns.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:

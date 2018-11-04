@@ -17,6 +17,8 @@
 
     <script>
     var roles = new Array();
+    var talkingPoints = new Array();
+    var questions = new Array();
     $( document ).ready(function() {
         {% for val in role %}
             roles.push({{val|yesno:"true,false"}});

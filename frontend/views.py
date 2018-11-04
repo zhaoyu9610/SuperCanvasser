@@ -40,7 +40,7 @@ def campaign(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'campaign': utils.get_campaign(uid, cid)}
+            data = {'role': roles, 'campaign': json.dumps(utils.get_campaign(uid, cid))}
             return render(request, 'campaign.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -64,7 +64,7 @@ def campaign_edit(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'campaign': utils.get_campaign(uid, cid)}
+            data = {'role': roles, 'campaign': json.dumps(utils.get_campaign(uid, cid))}
             return render(request, 'campaign_edit.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -76,7 +76,7 @@ def campaign_assignments(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'assignments': utils.get_assignments(uid, cid)}
+            data = {'role': roles, 'assignments': json.dumps(utils.get_assignments(uid, cid))}
             return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -88,7 +88,7 @@ def campaign_result(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'result': utils.get_result(uid, cid)}
+            data = {'role': roles, 'result': json.dumps(utils.get_result(uid, cid))}
             return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -100,7 +100,7 @@ def campaign_assignment(request, cid, aid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'assignment': utils.get_assignment(uid, cid, aid)}
+            data = {'role': roles, 'assignment': json.dumps(utils.get_assignment(uid, cid, aid))}
             return render(request, 'assignment.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -152,7 +152,7 @@ def admin(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[0]:
-            data = {'role': roles, 'users': utils.get_users(), 'settings': utils.get_settings()}
+            data = {'role': roles, 'users': json.dumps(utils.get_users()), 'settings': json.dumps(utils.get_settings())}
             return render(request, 'admin.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:

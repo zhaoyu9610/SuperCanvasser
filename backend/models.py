@@ -44,20 +44,22 @@ class Location(models.Model):
     city = models.CharField(max_length=50, verbose_name='City')
     state = models.CharField(max_length=2, verbose_name='State')
     zipcode = models.CharField(max_length=10, verbose_name='Zip code')
+    lon = models.FloatField(verbose_name='longitude', default=None)
+    lat = models.FloatField(verbose_name='latitude', default=None)
 
     def dict(self):
-        return {'id': self.id, 'street': self.street, 'city': self.city, 'zipcode': self.zipcode}
+        return {'id': self.id, 'street': self.street, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat}
 
 
 class Campaign(models.Model):
     id = models.AutoField(primary_key=True)
-    talking_points = models.TextField(verbose_name='Talking points', default='')
+    talking_points = models.TextField(verbose_name='Talking points', default='[]')
     start = models.BooleanField(verbose_name='Start', default=False)
     finish = models.BooleanField(verbose_name='Finish', default=False)
     median = models.FloatField(verbose_name='Median', default=None, null=True)
     average = models.FloatField(verbose_name='Average', default=None, null=True)
     sd = models.FloatField(verbose_name='Standard deviation', default=None, null=True)
-    questions = models.TextField(verbose_name='questions')
+    questions = models.TextField(verbose_name='questions', default='[]')
     duration = models.FloatField(verbose_name='duration', default=0.5)
 
     manager = models.ForeignKey(to='User', to_field='id', on_delete=models.SET_DEFAULT, default=None, verbose_name='Manager', related_name='Manager')
@@ -104,12 +106,17 @@ class Assignment(models.Model):
 
 class Result(models.Model):
     id = models.AutoField(primary_key=True)
+    number_of_people = models.IntegerField(verbose_name='The number of people spoke to', default=0)
+    rating = models.IntegerField(verbose_name='rating', default=0)
+    answers = models.TextField(verbose_name='answers', default='{}')
+    notes = models.TextField(verbose_name='brief note', default='')
 
     assignment = models.ForeignKey(to='Assignment', to_field='id', on_delete=models.SET_DEFAULT, default=None, verbose_name='Assignment')
     location = models.ForeignKey(to='Location', to_field='id', verbose_name='Location', on_delete=models.SET_DEFAULT, default=None)
 
     def dict(self):
-        return {'id': self.id, 'assignment': self.assignment.dict(), 'location': self.location.dict()}
+        return {'id': self.id, 'assignment': self.assignment.dict(), 'location': self.location.dict(), 'answers': json.loads(self.answers),
+                'rating': self.rating, 'number_of_people': self.number_of_people, 'notes': self.notes}
 
 
 class Answer(models.Model):

@@ -56,7 +56,6 @@ campaign, _ = models.Campaign.objects.update_or_create()
 campaign.managers.add(manager)
 campaign.locations.add(1, 2, 3)
 campaign.canvassers.add(canvasser)
-campaign.dates.add(5, 6, 7, 8)
 
 
 models.Parameter.objects.update_or_create(name='hours', value=8)

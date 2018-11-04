@@ -50,8 +50,8 @@ class Location(models.Model):
     city = models.CharField(max_length=50, verbose_name='City')
     state = models.CharField(max_length=2, verbose_name='State')
     zipcode = models.CharField(max_length=10, verbose_name='Zip code')
-    lon = models.FloatField(verbose_name='longitude', default=None)
-    lat = models.FloatField(verbose_name='latitude', default=None)
+    lon = models.FloatField(verbose_name='longitude', default=None, null=True)
+    lat = models.FloatField(verbose_name='latitude', default=None, null=True)
 
     def dict(self):
         return {'id': self.id, 'street': self.street, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat}

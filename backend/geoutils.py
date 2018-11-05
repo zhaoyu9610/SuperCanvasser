@@ -2,35 +2,53 @@ from geopy.geocoders import Nominatim
 from . import models
 import random
 import numpy as np
+import pandas as pd
 
 geolocator = Nominatim(user_agent="SuperCanvasser404")
 
 
 def generate_log_lat(locations):
     for location in locations:
-        address = location.street + location.city + location.state + location.zipcode
+        address = location['street'] +' '+ location['city'] +' '+ location['state'] +' '+ location['zipcode']
         geolocation = geolocator.geocode(address)
-        location.longitude = geolocation.longitude
-        location.langtitude = geolocation.latitude
+        location['longitude'] = geolocation.longitude
+        location['latitude'] = geolocation.latitude
 
-'''
-start picking, add locaiton until exceed maximum
-repeat
-'''
-def generate_assignment(locations, max_hour, average_speed, duration, canvassers, dates):
+
+def date_format(date):
+    a = str(date[0]) + str(date[1]) + str(date[2])
+    return pd.to_datetime(a, format='%Y%m%d', errors='ignore')
+
+
+def generate_assignment(campaign_id, locations, max_hour, average_speed, duration, canvassers, start_date, end_date):
+    generate_log_lat(locations)
     assignment_list = []
     secure_random = random.SystemRandom()
-    while not locations:
+    start_date_new = date_format(start_date)
+    end_date_new = date_format(end_date)
+    dates = pd.date_range(start=start_date_new, end=end_date_new).tolist()
+    print(len(locations))
+    while locations:
         start_location = secure_random.choice(locations)
         total_time = duration
         current_assignment = []
-        while( total_time < max_hour ):
-            next_location, distance = select_next_location(locations, start_location)
+        current_location = start_location
+
+        next_location, distance = select_next_location(locations, current_location)
+        total_time = total_time + distance / average_speed + duration
+        current_assignment.append(next_location)
+        locations.remove(next_location)
+
+        while total_time < max_hour:
+            next_location, distance = select_next_location(locations, current_location)
             total_time = total_time + distance / average_speed + duration
             current_assignment.append(next_location)
+            print(len(current_assignment))
             locations.remove(next_location)
-        assignment_list.append(create_assignment(current_assignment))
+            print(len(locations))
+        assignment_list.append(create_assignment(current_assignment, duration, campaign_id,))
     assign_to_canvasser(assignment_list, canvassers, dates)
+
 
 def assign_to_canvasser(assignment_list, canvassers, dates):
     for assignment in assignment_list:
@@ -47,8 +65,9 @@ def find_earliest(canvassers, dates):
             return date.canvasser
 
 
-def create_assignment(current_assignment):
-    assignment, _ = models.Assignment.objects.update_or_create(duration= id, campaign_id = id, canvasser_id= id)
+def create_assignment(current_assignment, duration, campaign_id):
+    print(len(current_assignment))
+    assignment, _ = models.Assignment.objects.update_or_create(duration= duration, campaign_id = campaign_id)
 
     location_id = []
     for location in current_assignment:
@@ -60,20 +79,23 @@ def create_assignment(current_assignment):
 def select_next_location(locations, start_location):
     distance_list = []
     for location in locations:
+        print(location)
         distance_list.append(calculate_distance(start_location, location))
+        print(len(distance_list))
     index = find_minimum(distance_list)
-    return [locations.pop[index], distance_list.pop[index]]
+    print(index)
+    return [locations[index], distance_list[index]]
 
 def calculate_distance(start_location, location):
     inter_location = find_inter_location(start_location,location)
-    return calculate_distance_helper(start_location, inter_location) + calculate_distance_helper(inter_location, location)
+    return calculate_distance_helper(start_location, inter_location) + calculate_distance_helper(location, inter_location)
 
 def find_inter_location(start_location, location):
-    return geolocator.reverse(str(start_location.longitude) + "," +str(location.latitude))
+    return geolocator.reverse(str(start_location['longitude']) + "," +str(location['latitude']))
 
 def calculate_distance_helper(start_location, location):
-    long1 = np.radians(start_location.longitude)
-    lati1 = np.radians(start_location.latitude)
+    long1 = np.radians(start_location['longitude'])
+    lati1 = np.radians(start_location['latitude'])
     long2 = np.radians(location.longitude)
     lati2 = np.radians(location.latitude)
     dlon = long2 - long1

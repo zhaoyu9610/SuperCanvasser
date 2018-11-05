@@ -25,7 +25,7 @@ SECRET_KEY = '_^=vbz^s+5o!o$i0uf$d@12r8um=jo0*75o$b++d0gn)x-=n7z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['104.196.143.177', '127.0.0.1']
+ALLOWED_HOSTS = ['www.supercanvasser.ml', '104.196.143.177', '127.0.0.1']
 
 
 # Application definition

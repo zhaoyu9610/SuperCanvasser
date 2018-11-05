@@ -2,9 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin</title>
+	<link type="text/css" rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+<div id="main">
+	<div id="middle">
+		<div id="center-column">
+			<div class="top-bar">
+				<a href="#" class="button">ADD NEW </a>
+				<h1>Admin</h1>
+				<div class="breadcrumbs"><a href="#">Homepage</a></div>
+			</div><br />
+		  <div class="select-bar">
+		    <label>
+		    <input type="text" name="textfield" />
+		    </label>
+		    <label>
+			<input type="submit" name="Submit" value="Search" />
+			</label>
+		  </div>
+			<div class="table">
+				<img src="img/bg-th-left.gif" width="8" height="7" alt="" class="left" />
+				<img src="img/bg-th-right.gif" width="7" height="7" alt="" class="right" />
+				<table class="listing" cellpadding="0" cellspacing="0">
+					<tr>
+						<th class="first" width="177">User</th>
+						<th>User Name</th>
+						<th>Email</th>
+						<th>Password</th>
+						<th>Manager</th>
+						<th>Canvasser</th>
+						<th>Admin</th>
+                        <th class="last">Delete</th>
+					</tr>
+
+					<tr>
+						<td class="first style1"> user1 </td>
+
+					</tr>
+				</table>
+				<div class="select">
+					<strong>Page: </strong>
+					<select>
+						<option>1</option>
+                        <option>2</option>
+					</select>
+			  </div>
+			</div>
+		  <div class="table">
+				<img src="img/bg-th-left.gif" width="8" height="7" alt="" class="left" />
+				<img src="img/bg-th-right.gif" width="7" height="7" alt="" class="right" />
+				<table class="listing form" cellpadding="0" cellspacing="0">
+					<tr>
+						<th class="full" colspan="2">Global Parameter</th>
+					</tr>
+					<tr>
+						<td class="first" width="172"><strong>Average Travel Speed</strong></td>
+						<td class="last"><input type="text" class="text" /></td>
+					</tr>
+					<tr class="bg">
+						<td class="first"><strong>Daily Work Hour</strong></td>
+						<td class="last"><input type="text" class="text" /></td>
+					</tr>
+				</table>
+	        <p>&nbsp;</p>
+		  </div>
+		</div>
+	</div>
+	<div id="footer"></div>
+</div>
 
 </body>
 </html>

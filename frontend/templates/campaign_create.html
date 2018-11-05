@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="">
 
-    <title>Super Canvasser Landing Page</title>
+    <title>Super Canvasser Create Campaign</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -45,12 +45,14 @@
     });
     $(document).ready(function(){
         $("#addTalk").click(function () {
-            $("#talkPoints").append('<div class = "container">'+"<li class='list-group-item'>"+$("#insertTalk").val() +'<button type="button" class="btn btn-outline-secondary float-right">     X</button>'+"</li>" + '</div>');
+            talkingPoints.push($("#insertTalk").val());
+            $("#talkPoints").append('<div class = "container">'+"<li class='list-group-item'>"+$("#insertTalk").val() +'<button type="button" class="btn btn-outline-secondary float-right">X</button>'+"</li>" + '</div>');
             })
     });
 
     $(document).ready(function(){
         $("#addQuestion").click(function () {
+            questions.push($("#insertQ").val());
             $("#questions").append($("<li>").text($("#insertQ").val()));
             })
     });
@@ -66,14 +68,23 @@
             });
         });
     });
-
+    var startDate = new Array();
+    var endDate = new Array();
     $( document ).ready(function() {
         $(function() {
+            startDate = [];
+            endDate = [];
             $('input[id="date"]').daterangepicker({
                 opens: 'left'
             }, function(start, end, label) {
                 $("#startD").val(start.format('MM/DD/YYYY'));
+                startDate.push(start.format('YYYY'));
+                startDate.push(start.format('MM'));
+                startDate.push(start.format('DD'));
                 $("#endD").val(end.format('MM/DD/YYYY'));
+                endDate.push(start.format('YYYY'));
+                endDate.push(start.format('MM'));
+                endDate.push(start.format('DD'));
             });
         });
      });
@@ -85,9 +96,10 @@
                 url: "/api/manager/campaigns/create",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"campaign_name": $("#camName").val(), "start": $("#startD").val(), "end":$("#endD").val(),
-                "visit":$("#visitDur").val(), "canvassers":[], "managers":[],"talking_points":$("#talking_points"), "questionnaire":$}),
+                data: JSON.stringify({"name": $("#camName").val(), "talking_points":talkingPoints, "end_date":$("#endD").val(), "start_date": $("#startD").val(),
+                "visit":$("#visitDur").val(), "canvassers":[], "managers":[], "locations":[], "questionnaire":questions}),
                 success: function (result) {
+                    alert(JSON.stringify(result));
 
                 }
             });
@@ -136,11 +148,13 @@
 
     <div class="container">
         <h2>Create Campaign</h2>
+        <p id= "data"></p>
         <hr/>
+        {{roles}}
         <div class="row">
             <div class="col">
                 <br>
-                <form>
+                <form id = "creatingCamp">
                     <div class="form-group row">
                         <div class="input-group col-8">
                             <div class="input-group-prepend">
@@ -242,8 +256,7 @@
                     </div>
 
                     <div>
-                        <button class="btn btn-block btn-dark btn-outline-primary" id="submitCamp">Create Campaign
-                        </button>
+                        <button  id="submitCamp" class="btn btn-block btn-dark btn-outline-primary" type="button">Create Campaign</button>
                     </div>
 
 

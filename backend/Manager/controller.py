@@ -1,5 +1,6 @@
 from backend import utils, models
 import json
+import datetime
 
 
 class ManagerHandler:
@@ -8,7 +9,7 @@ class ManagerHandler:
             uid = request.COOKIES['cookie']
             if utils.check_manager(uid):
                 result = []
-                campaigns = models.Campaign.objects.filter(manager_id=uid).all()
+                campaigns = models.Campaign.objects.filter(managers__id=uid).all()
                 for campaign in campaigns:
                     result.append(campaign.dict())
                 return utils.generate_response(request, {'campaigns': result})
@@ -26,7 +27,19 @@ class ManagerHandler:
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_manager(uid):
-                models.Campaign.objects.filter(id=id, manager_id=uid).update(**campaign_dict)
+                if 'end_date' in campaign_dict:
+                    d = campaign_dict['end_date']
+                    campaign_dict['end_date'] = datetime.date(d[0], d[1], d[2])
+                if 'start_date' in campaign_dict:
+                    d = campaign_dict['start_date']
+                    campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                models.Campaign.objects.filter(id=id, managers__id=uid).update(**campaign_dict)
+                if 'managers' in campaign_dict:
+                    models.Campaign.objects.filter(id=id, managers__id=uid).managers.set(campaign_dict['managers'])
+                if 'canvassers' in campaign_dict:
+                    models.Campaign.objects.filter(id=id, managers__id=uid).canvassers.set(campaign_dict['canvassers'])
+                if 'locations' in campaign_dict:
+                    models.Campaign.objects.filter(id=id, managers__id=uid).locations.set(campaign_dict['locations'])
                 return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not manager')
@@ -42,8 +55,20 @@ class ManagerHandler:
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_manager(uid):
-                campaign_dict['manager_id'] = uid
-                models.Campaign.objects.create(**campaign_dict)
+                if 'end_date' in campaign_dict:
+                    d = campaign_dict['end_date']
+                    campaign_dict['end_date'] = datetime.date(d[0], d[1], d[2])
+                if 'start_date' in campaign_dict:
+                    d = campaign_dict['start_date']
+                    campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                campaign_dict['managers'] = [uid]
+                campaign, _ = models.Campaign.objects.update_or_create(**campaign_dict)
+                if 'managers' in campaign_dict:
+                    campaign.managers.set(campaign_dict['managers'])
+                if 'canvassers' in campaign_dict:
+                    campaign.canvassers.set(campaign_dict['canvassers'])
+                if 'locations' in campaign_dict:
+                    campaign.locations.set(campaign_dict['locations'])
                 return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not manager')

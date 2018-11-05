@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="">
 
-    <title>Super Canvasser Landing Page</title>
+    <title>Super Canvasser Edit Campaign</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -13,9 +13,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-<script>
+    <script>
     var roles = new Array();
+    var talkingPoints = new Array();
+    var questions = new Array();
     $( document ).ready(function() {
         {% for val in role %}
             roles.push({{val|yesno:"true,false"}});
@@ -34,11 +37,79 @@
          }
     });
 
-    $( document ).ready(function() {
-        $('input[id="date"]').daterangepicker();
+    $(document).ready(function(){
+        $("ul").on("click", "button", function(e) {
+            e.preventDefault();
+            $(this).parent().remove();
+     });
+    });
+    $(document).ready(function(){
+        $("#addTalk").click(function () {
+            talkingPoints.push($("#insertTalk").val());
+            $("#talkPoints").append('<div class = "container">'+"<li class='list-group-item'>"+$("#insertTalk").val() +'<button type="button" class="btn btn-outline-secondary float-right">X</button>'+"</li>" + '</div>');
+            })
     });
 
-</script>
+    $(document).ready(function(){
+        $("#addQuestion").click(function () {
+            questions.push($("#insertQ").val());
+            $("#questions").append($("<li>").text($("#insertQ").val()));
+            })
+    });
+
+    $(document).ready(function () {
+        $("#logout").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/logout",
+                success: function (result) {
+                    alert(JSON.stringify(result))
+                }
+            });
+        });
+    });
+    var startDate = new Array();
+    var endDate = new Array();
+    $( document ).ready(function() {
+        $(function() {
+            startDate = [];
+            endDate = [];
+            $('input[id="date"]').daterangepicker({
+                opens: 'left'
+            }, function(start, end, label) {
+                $("#startD").val(start.format('MM/DD/YYYY'));
+                startDate.push(start.format('YYYY'));
+                startDate.push(start.format('MM'));
+                startDate.push(start.format('DD'));
+                $("#endD").val(end.format('MM/DD/YYYY'));
+                endDate.push(start.format('YYYY'));
+                endDate.push(start.format('MM'));
+                endDate.push(start.format('DD'));
+            });
+        });
+     });
+
+    $(document).ready(function () {
+        $("#submitCamp").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/manager/campaigns/create",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({"name": $("#camName").val(), "talking_points":talkingPoints, "end_date":$("#endD").val(), "start_date": $("#startD").val(),
+                "visit":$("#visitDur").val(), "canvassers":[], "managers":[], "locations":[], "questionnaire":questions}),
+                success: function (result) {
+                    alert(result.name);
+
+                }
+            });
+        });
+    });
+
+
+
+
+    </script>
 
 </head>
 
@@ -52,7 +123,7 @@
 
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" id="showManager"><a class="nav-link" href="/manager">Manager</a></li>
+                        <li class="nav-item" id="showManager"><a class="nav-link" href="/campaigns">Manager</a></li>
                         <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/canvasser">Canvasser</a></li>
                     </ul>
                 </div>
@@ -77,34 +148,52 @@
 
     <div class="container">
         <h2>Create Campaign</h2>
+        <p id= "data"></p>
         <hr/>
+        {{roles}}
         <div class="row">
             <div class="col">
                 <br>
-                <form>
+                <form id = "creatingCamp">
                     <div class="form-group row">
-                        <div class="input-group col-7">
+                        <div class="input-group col-8">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="CamName">Campaign Name</span>
+                                <span class="input-group-text" id="camName">Campaign Name</span>
                             </div>
                             <input type="text" class="form-control">
                         </div>
                     </div>
                     <br>
                     <div class="form-group row">
-                        <div class="input-group col-4">
+                        <div class="input-group col-5">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="CamCalendar"><i class="fa fa-calendar"></i></span>
+                                <span class="input-group-text" id="camCalendar"><i class="fa fa-calendar"></i></span>
                             </div>
                             <input type="text" id="date" class="form-control">
                         </div>
                         <div class="input-group col-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="CamDuration">Visit Duration</span>
+                                <span class="input-group-text" id="camDuration">Visit Duration</span>
                             </div>
-                            <input type="text" id="duration" class="form-control">
+                            <input type="text" id="visitDuration" class="form-control">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="input-group col-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="startDate">From</span>
+                            </div>
+                            <input type="text" id="startD" class="form-control">
+                        </div>
+                        <div class="input-group col-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="endDate">To</span>
+                            </div>
+                            <input type="text" id="endD" class="form-control">
+                        </div>
+
+                    </div>
+                    <br>
                     <div class="form-group row">
                         <div class="input-group col-4">
                             <div class="input-group-prepend">
@@ -130,14 +219,44 @@
                         </div>
                     </div>
 
-                    <br><br>
-                    <div class="form-group">
-                        <label for="talkingPoints"><h5>Campaign Talking Points</h5></label>
-                        <textarea class="form-control" id="talkingPoints" rows="5"></textarea>
+                    <br>
+
+                    <div class="form-group row">
+                        <div class="input-group col-7">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="talking">Add Talking Point</span>
+                            </div>
+                            <input type="text" class="form-control" id="insertTalk">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="addTalk">Add</button>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="talkingPoints"><h5>Campaign Questionnaire</h5></label>
-                        <textarea class="form-control" id="questionnaire" rows="5"></textarea>
+                        <h5><label for="talkPoints">Talking Points:</label></h5>
+                        <ul class="list-group list-group-flush" id="talkPoints">
+                        </ul>
+                    </div>
+                    <div class="form-group row">
+                        <div class="input-group col-7">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="questionsLabel">Add Question</span>
+                            </div>
+                            <input type="text" class="form-control" id="insertQ">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="addQuestion">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h5><label for="questions">Questionnaire:</label></h5>
+                        <ul class="list-group list-group-flush" id="questions">
+                        </ul>
+                    </div>
+
+                    <div>
+                        <button  id="editCamp" class="btn btn-block btn-dark btn-outline-primary" type="button">Edit Campaign</button>
                     </div>
 
 

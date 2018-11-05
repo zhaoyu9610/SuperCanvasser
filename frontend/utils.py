@@ -19,14 +19,14 @@ def get_availability(uid):
 
 def get_campaigns(uid):
     result = []
-    campaigns = models.Campaign.objects.filter(manager_id=uid).all()
+    campaigns = models.Campaign.objects.filter(managers__id=uid).all()
     for campaign in campaigns:
         result.append(campaign.dict())
     return result
 
 
 def get_campaign(uid, cid):
-    campaign = models.Campaign.objects.filter(id=cid, manager_id=uid).get()
+    campaign = models.Campaign.objects.filter(id=cid, managers__id=uid).get()
     return campaign.dict()
 
 
@@ -62,3 +62,18 @@ def get_settings():
         result.append(parameter.dict())
     return result
 
+
+def get_canvassers():
+    result = []
+    canvassers = models.User.objects.filter(canvasser=True).all()
+    for canvasser in canvassers:
+        result.append(canvasser.dict())
+    return result
+
+
+def get_managers():
+    result = []
+    managers = models.User.objects.filter(manager=True).all()
+    for manager in managers:
+        result.append(manager.dict())
+    return result

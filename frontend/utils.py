@@ -81,3 +81,9 @@ def get_managers():
 
 def get_user(uid):
     return models.User.objects.filter(id=uid).get().dict()
+
+
+def get_geo(locations):
+    result = []
+    for location in locations:
+        result.append([location['latitude'], location['longitude']])

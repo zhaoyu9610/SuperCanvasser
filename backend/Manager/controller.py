@@ -74,7 +74,7 @@ class ManagerHandler:
                 managers = campaign_dict.pop('managers', [])
                 canvassers = campaign_dict.pop('canvassers', [])
                 campaign = models.Campaign.objects.create(**campaign_dict)
-                managers.apped(uid)
+                managers.append(uid)
                 campaign.managers.set(managers)
                 campaign.canvassers.set(canvassers)
                 location_id = []
@@ -82,6 +82,7 @@ class ManagerHandler:
                     loc = models.Location.objects.create(**l)
                     location_id.append(loc.id)
                 campaign.locations.set(location_id)
+                return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not manager')
         else:

@@ -1,6 +1,7 @@
 from django.db import models
 import json
 import datetime
+from . import geoutils
 
 
 class CampaignDate(models.Model):
@@ -9,6 +10,9 @@ class CampaignDate(models.Model):
 
     def dict(self):
         return {'id': self.id, 'date': [self.date.year, self.date.month, self.date.day]}
+
+    def __str__(self):
+        return self.date.__str__()
 
 
 class User(models.Model):
@@ -29,6 +33,9 @@ class User(models.Model):
                 'canvasser': self.canvasser, 'manager': self.manager, 'phone': self.phone, 'gender': self.gender,
                 'address': self.address}
 
+    def __str__(self):
+        return self.email
+
 
 class Availability(models
                    .Model):
@@ -45,6 +52,9 @@ class Availability(models
             assignment = {}
         return {'id': self.id, 'date': self.date.dict(), 'assignment': assignment}
 
+    def __str__(self):
+        return self.canvasser.__str__() + " " + self.date.__str__()
+
 
 class Location(models.Model):
     id = models.AutoField(primary_key=True)
@@ -56,7 +66,13 @@ class Location(models.Model):
     lat = models.FloatField(verbose_name='latitude', default=None, null=True)
 
     def dict(self):
+        if not self.lon or not self.lat:
+            self.lon, self.lat = geoutils.generate_log_lat({'id': self.id, 'street': self.street, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode,})
+            self.save()
         return {'id': self.id, 'street': self.street, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat}
+
+    def __str__(self):
+        return self.street + " " + self.state
 
 
 class Campaign(models.Model):
@@ -85,6 +101,9 @@ class Campaign(models.Model):
                 'locations': [a.dict() for a in self.locations.all()], 'start_date':  [self.start_date.year, self.start_date.month, self.start_date.day],
                 'end_date': [self.end_date.year, self.end_date.month, self.end_date.day]}
 
+    def __str__(self):
+        return str(self.id) + ' ' + self.name
+
 
 class Parameter(models.Model):
     id = models.AutoField(primary_key=True)
@@ -93,6 +112,9 @@ class Parameter(models.Model):
 
     def dict(self):
         return {'id': self.id, 'value': self.value, 'name': self.name}
+
+    def __str__(self):
+        return self.name + ': ' + str(self.value)
 
 
 class Assignment(models.Model):
@@ -108,6 +130,9 @@ class Assignment(models.Model):
         return {'id': self.id, 'duration': self.duration, 'campaign': self.campaign.dict(), 'canvassers': self.canvasser.dict(),
                 'date': self.date.dict(), 'locations': [a.dict() for a in self.locations.all()]}
 
+    def __str__(self):
+        return self.campaign.__str__() + ' ' + str(self.id)
+
 
 class Result(models.Model):
     id = models.AutoField(primary_key=True)
@@ -122,3 +147,6 @@ class Result(models.Model):
     def dict(self):
         return {'id': self.id, 'assignment': self.assignment.dict(), 'location': self.location.dict(), 'answers': json.loads(self.answers),
                 'rating': self.rating, 'number_of_people': self.number_of_people, 'notes': self.notes}
+
+    def __str__(self):
+        return self.assignment.__str__() + ' result'

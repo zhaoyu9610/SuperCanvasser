@@ -12,7 +12,10 @@ def account(request):
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
-        data = {'role': roles}
+        data = {
+            'role': roles,
+            'user': utils.get_user(uid)
+        }
         if roles[1]:
             data['availability'] = utils.get_availability(uid)
         return render(request, 'account.html', data)
@@ -45,10 +48,11 @@ def campaign(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
+            campaign = utils.get_campaign(uid, cid)
             data = {
                 'role': roles,
-                'campaign': json.dumps(utils.get_campaign(uid, cid)),
-                'geo': []
+                'campaign': json.dumps(campaign),
+                'geo': utils.get_geo(campaign['locations'])
             }
             return render(request, 'campaign.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
@@ -124,10 +128,11 @@ def campaign_assignment(request, cid, aid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
+            assignment = utils.get_assignment(uid, cid, aid)
             data = {
                 'role': roles,
-                'assignment': json.dumps(utils.get_assignment(uid, cid, aid)),
-                'geo':[]
+                'assignment': json.dumps(assignment),
+                'geo': utils.get_geo(assignment['locations'])
             }
             return render(request, 'assignment.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))

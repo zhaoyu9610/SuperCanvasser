@@ -7,12 +7,10 @@ import pandas as pd
 geolocator = Nominatim(user_agent="SuperCanvasser404")
 
 
-def generate_log_lat(locations):
-    for location in locations:
-        address = location['street'] +' '+ location['city'] +' '+ location['state'] +' '+ location['zipcode']
-        geolocation = geolocator.geocode(address)
-        location['longitude'] = geolocation.longitude
-        location['latitude'] = geolocation.latitude
+def generate_log_lat(location):
+    address = location['street'] +' '+ location['city'] +' '+ location['state'] +' '+ location['zipcode']
+    geolocation = geolocator.geocode(address)
+    return geolocation.longitude, geolocation.latitude
 
 
 def date_format(date):
@@ -21,7 +19,6 @@ def date_format(date):
 
 
 def generate_assignment(campaign_id, locations, max_hour, average_speed, duration, canvassers, start_date, end_date):
-    generate_log_lat(locations)
     assignment_list = []
     secure_random = random.SystemRandom()
     start_date_new = date_format(start_date)
@@ -46,7 +43,7 @@ def generate_assignment(campaign_id, locations, max_hour, average_speed, duratio
             print(len(current_assignment))
             locations.remove(next_location)
             print(len(locations))
-        assignment_list.append(create_assignment(current_assignment, duration, campaign_id,))
+        assignment_list.append(current_assignment)
     assign_to_canvasser(assignment_list, canvassers, dates)
 
 
@@ -54,6 +51,7 @@ def assign_to_canvasser(assignment_list, canvassers, dates):
     for assignment in assignment_list:
         canvasser, date = find_earliest(canvassers, dates)
         assignment.update(canvasser=canvasser, date=date)
+
 
 def find_earliest(canvassers, dates):
     canvasser_id_list = []
@@ -65,15 +63,13 @@ def find_earliest(canvassers, dates):
             return date.canvasser, date.date.date
 
 
-def create_assignment(current_assignment, duration, campaign_id):
-    print(len(current_assignment))
-    assignment, _ = models.Assignment.objects.update_or_create(duration= duration, campaign_id = campaign_id)
-
-    location_id = []
-    for location in current_assignment:
-        location_id.append(location.id)
-
-    assignment.locations.add(location_id)
+# def create_assignment(current_assignment, duration, campaign_id):
+#     print(len(current_assignment))
+#     assignment, _ = models.Assignment.objects.create(duration=duration, campaign_id=campaign_id)
+#     location_id = []
+#     for location in current_assignment:
+#         location_id.append(location.id)
+#     assignment.locations.add(location_id)
 
 
 def select_next_location(locations, start_location):

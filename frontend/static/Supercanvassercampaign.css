@@ -1,0 +1,49 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  align-items: center;
+  padding-bottom: 40px;
+  background-color: #000000;
+  background-repeat: repeat;
+  background-image: url("campaignback.jpeg");
+  background-position: center;
+  background-size: cover;
+}
+
+h1 {
+  color: white;
+  padding-bottom:20px;
+  padding-top: 20px;
+  font-style: italic;
+  text-align:center;
+}
+
+ul {
+
+    max-width: 460px;
+
+
+}
+hr{
+    background-color: #212121;
+
+}
+label {
+    color: #212121;
+}
+.currentCampaign{
+    color:#212121;
+}
+
+.jumbotron{
+  box-shadow: 0px 0px 10px #888888;
+  width: 100%;
+  max-width: 1200px;
+  padding: 15px;
+  margin: auto;
+  background: rgba(255,255,255, 0.5)!important;
+
+}

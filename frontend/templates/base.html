@@ -6,6 +6,18 @@
     <title>{{ tittle }}</title>
 </head>
 <body>
+    {% if role.0 %}
+        <a href="/admin">Admin</a>
+    {% endif %}
+    {% if role.1 %}
+        <a href="/campaigns">Campaigns</a>
+    {% endif %}
+    {% if role.2 %}
+        <a href="/assignments">Assignments</a>
+    {% endif %}
+    <a href="/account">Account</a>
+    <a href="/api/logout">Log out</a>
+
     {% block content %}
     {% endblock %}
 </body>

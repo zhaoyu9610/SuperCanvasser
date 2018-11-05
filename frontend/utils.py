@@ -77,3 +77,7 @@ def get_managers():
     for manager in managers:
         result.append(manager.dict())
     return result
+
+
+def get_user(uid):
+    return models.User.objects.filter(id=uid).get().dict()

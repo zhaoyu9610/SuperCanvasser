@@ -18,6 +18,8 @@ class User(models.Model):
     gender = models.BooleanField(default=True, verbose_name='gender')
     address = models.TextField(default='', verbose_name='address')
     password = models.CharField(max_length=32, verbose_name="Password")
+    # first_name = models.CharField(max_length=50, verbose_name='first name', default='first name')
+    # last_name = models.CharField(max_length=50, verbose_name='last name', default='last name')
     admin = models.BooleanField(verbose_name='Administrator', default=False)
     manager = models.BooleanField(verbose_name='Manager', default=False)
     canvasser = models.BooleanField(verbose_name='canvasser', default=False)
@@ -54,7 +56,7 @@ class Location(models.Model):
     lat = models.FloatField(verbose_name='latitude', default=None, null=True)
 
     def dict(self):
-        return {'id': self.id, 'street': self.street, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat}
+        return {'id': self.id, 'street': self.street, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat}
 
 
 class Campaign(models.Model):

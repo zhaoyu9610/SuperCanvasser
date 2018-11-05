@@ -46,7 +46,7 @@
                 type: "GET",
                 url: "/api/logout",
                 success: function (result) {
-                    alert(JSON.stringify(result))
+                    window.location.href ="/";
                 }
             });
         });
@@ -164,7 +164,7 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a class="nav-link" href="/campaigns">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
-                        <li class="nav-item"><a id="logout" class="nav-link" href="/">Sign out</a></li>
+                        <li class="nav-item"><a id="logout" class="nav-link" href="">Sign out</a></li>
                     </ul>
                 </div>
             </div>

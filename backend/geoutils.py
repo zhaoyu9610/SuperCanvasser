@@ -52,8 +52,8 @@ def generate_assignment(campaign_id, locations, max_hour, average_speed, duratio
 
 def assign_to_canvasser(assignment_list, canvassers, dates):
     for assignment in assignment_list:
-        canvasser = find_earliest(canvassers, dates)
-        assignment.update(canvasser=canvasser)
+        canvasser, date = find_earliest(canvassers, dates)
+        assignment.update(canvasser=canvasser, date=date)
 
 def find_earliest(canvassers, dates):
     canvasser_id_list = []
@@ -62,7 +62,7 @@ def find_earliest(canvassers, dates):
     available_canvassers = models.Availability.objects.filter(canvasser_id__in=canvasser_id_list).order_by('date')
     for date in available_canvassers:
         if(date.date.date in dates):
-            return date.canvasser
+            return date.canvasser, date.date.date
 
 
 def create_assignment(current_assignment, duration, campaign_id):

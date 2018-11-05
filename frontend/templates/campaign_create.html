@@ -53,6 +53,12 @@
     });
 
     $(document).ready(function(){
+        $("#addLocation").click(function () {
+            $("#listLocations").append('<div class = "container">'+'<li class ="list_item">'+$("#street").val()+ " "+$("#city").val() + " "+$("#state").val() +" "+$("#zip").val()  +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+            })
+    });
+
+    $(document).ready(function(){
         $("#addQuestion").click(function () {
             questions.push($("#insertQ").val());
             $("#questions").append('<div class = "container">'+'<li class = "list_item">'+$("#insertTalk").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
@@ -109,25 +115,26 @@
 
 
 
-    <!--$(document).ready(function () {-->
-        <!--$("#submitCamp").click(function () {-->
-            <!--var duration = $("#visitDuration".val());-->
-            <!--var durationF = parseFloat(duration);-->
-            <!--$.ajax({-->
-                <!--type: "POST",-->
-                <!--url: "/api/manager/campaigns/create",-->
-                <!--contentType: "application/json",-->
-                <!--dataType: "json",-->
-                <!--data: JSON.stringify({"campaign": {"id":"","name": $("#camName").val(), "talking_points":"talkingPoints", "start":"false", "finish": "false",-->
-                 <!--"median":"", "duration":"durationF", "average":"", "sd":"", "questions":questions, "managers":"[]", "canvassers":"[]",-->
-                  <!--"locations":"[]", "start_date": "startDate", "end_date":"endDate"}}),-->
-                <!--success: function (result) {-->
-                   <!--alert(JSON.stringify(result))-->
+    $(document).ready(function () {
+        $("#submitCamp").click(function () {
 
-                <!--}-->
-            <!--});-->
-        <!--});-->
-    <!--});-->
+            $.ajax({
+                type: "POST",
+                url: "/api/manager/campaigns/create",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({"campaign": {}}),
+                success: function (result) {
+                   alert(JSON.stringify(result))
+
+                }
+            });
+        });
+    });
+
+
+
+
 
 
 
@@ -161,7 +168,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="/campaigns">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
-                    <li class="nav-item"><a id = "logout" class="nav-link" href="/">Sign out</a></li>
+                    <li id="logout" class="nav-item"><a class="nav-link" href="#">Sign out</a></li>
                 </ul>
             </div>
         </div>
@@ -238,11 +245,40 @@
                     <div class="form-group row">
                         <div class="input-group col-7">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="locations">Add Locations</span>
+                                <span class="input-group-text" id="streetLabel">Street</span>
                             </div>
-                            <input type="text" class="form-control">
+                            <input id = "street" type="text" class="form-control">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="input-group col-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">City</span>
+                            </div>
+                            <input id="city" type="text" class="form-control">
+                        </div>
+                        <div class="input-group col-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="stateLabel">State</span>
+                            </div>
+                            <input id="state" type="text" class="form-control" maxlength="3" placeholder="NY">
+                        </div>
+                        <div class="input-group col-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="zipLabel">Zip</span>
+                            </div>
+                            <input id="zip" type="text" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" id="addLocation">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h5><label for="questions">Locations:</label></h5>
+                        <ul class="list-group" id="listLocations">
+                        </ul>
+                    </div>
+
 
                     <br>
 
@@ -253,17 +289,17 @@
                             </div>
                             <input type="text" class="form-control" id="insertTalk">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="addTalk">Add</button>
+                                <button class="btn btn-secondary" type="button" id="addTalk">Add</button>
                             </div>
 
                         </div>
                     </div>
-                    <div class ="text_limit">
-                    <div class="form-group">
-                        <h5><label for="talkPoints">Talking Points:</label></h5>
-                        <ul class="list-group list-group-flush" id="talkPoints">
-                        </ul>
-                    </div>
+                    <div class="text_limit">
+                        <div class="form-group">
+                            <h5><label for="talkPoints">Talking Points:</label></h5>
+                            <ul class="list-group list-group-flush" id="talkPoints">
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <div class="input-group col-7">
@@ -272,30 +308,31 @@
                             </div>
                             <input type="text" class="form-control" id="insertQ">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="addQuestion">Add</button>
+                                <button class="btn btn-secondary" type="button" id="addQuestion">Add</button>
                             </div>
                         </div>
                     </div>
-                    <div class ="text_limit">
-                    <div class="form-group">
-                        <h5><label for="questions">Questionnaire:</label></h5>
-                        <ul class="list-group" id="questions">
-                        </ul>
-                    </div>
+                    <div class="text_limit">
+                        <div class="form-group">
+                            <h5><label for="questions">Questionnaire:</label></h5>
+                            <ul class="list-group" id="questions">
+                            </ul>
+                        </div>
                     </div>
                     <div class="test">
-                        <div class = "form-group row">
-                        <div class="col-md-3">
-                            <button id="submitCamp" class="btn btn-block btn-dark btn-secondary" type="button">Save Campaign
-                            </button>
-                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <button id="submitCamp" class="btn btn-block btn-dark btn-secondary" type="button">Save
+                                    Campaign
+                                </button>
+                            </div>
 
 
-
-                        <div class="col-md-3">
-                            <button id="saveCamp" class="btn btn-block btn-dark btn-secondary" type="submit">Create Campaign
-                            </button>
-                        </div>
+                            <div class="col-md-3">
+                                <button id="saveCamp" class="btn btn-block btn-dark btn-secondary" type="submit">Create
+                                    Campaign
+                                </button>
+                            </div>
                         </div>
                     </div>
 

@@ -101,7 +101,7 @@ class Assignment(models.Model):
 
     campaign = models.ForeignKey(to='Campaign', to_field='id', on_delete=models.CASCADE, verbose_name='Campaign')
     canvasser = models.ForeignKey(to='User', to_field='id', on_delete=models.PROTECT, verbose_name='Canvasser')
-    date = models.ForeignKey(to='CampaignDate', to_field='id', on_delete=models.PROTECT, verbose_name='Visit Date')
+    date = models.ForeignKey(to='CampaignDate', to_field='id', on_delete=models.PROTECT, verbose_name='Visit Date', default=None)
     locations = models.ManyToManyField(to='Location', verbose_name='Locations')
 
     def dict(self):

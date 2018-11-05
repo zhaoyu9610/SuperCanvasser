@@ -29,7 +29,10 @@ def campaigns(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'campaigns': json.dumps(utils.get_campaigns(uid))}
+            data = {
+                'role': roles,
+                'campaigns': json.dumps(utils.get_campaigns(uid))
+            }
             print(data)
             return render(request, 'campaigns.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
@@ -42,7 +45,11 @@ def campaign(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'campaign': json.dumps(utils.get_campaign(uid, cid))}
+            data = {
+                'role': roles,
+                'campaign': json.dumps(utils.get_campaign(uid, cid)),
+                'geo': []
+            }
             return render(request, 'campaign.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -54,7 +61,11 @@ def campaign_create(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'canvassers': json.dumps(utils.get_canvassers()), 'managers': json.dumps(utils.get_managers())}
+            data = {
+                'role': roles,
+                'canvassers': json.dumps(utils.get_canvassers()),
+                'managers': json.dumps(utils.get_managers())
+            }
             return render(request, 'campaign_create.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -66,7 +77,12 @@ def campaign_edit(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'campaign': json.dumps(utils.get_campaign(uid, cid)), 'canvassers': json.dumps(utils.get_canvassers()), 'managers': json.dumps(utils.get_managers())}
+            data = {
+                'role': roles,
+                'campaign': json.dumps(utils.get_campaign(uid, cid)),
+                'canvassers': json.dumps(utils.get_canvassers()),
+                'managers': json.dumps(utils.get_managers())
+            }
             return render(request, 'campaign_edit.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -78,7 +94,10 @@ def campaign_assignments(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'assignments': json.dumps(utils.get_assignments(uid, cid))}
+            data = {
+                'role': roles,
+                'assignments': json.dumps(utils.get_assignments(uid, cid))
+            }
             return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -90,7 +109,10 @@ def campaign_result(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'result': json.dumps(utils.get_result(uid, cid))}
+            data = {
+                'role': roles,
+                'result': json.dumps(utils.get_result(uid, cid))
+            }
             return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -102,7 +124,11 @@ def campaign_assignment(request, cid, aid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles, 'assignment': json.dumps(utils.get_assignment(uid, cid, aid))}
+            data = {
+                'role': roles,
+                'assignment': json.dumps(utils.get_assignment(uid, cid, aid)),
+                'geo':[]
+            }
             return render(request, 'assignment.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:

@@ -27,19 +27,28 @@ class ManagerHandler:
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_manager(uid):
+                campaign = models.Campaign.objects.filter(id=id, managers__id=uid)
+                if 'managers' in campaign_dict:
+                    managers = campaign_dict.pop('managers', [])
+                    managers.apped(uid)
+                    campaign.managers.set(managers)
+                if 'canvassers' in campaign_dict:
+                    canvassers = campaign_dict.pop('canvassers', [])
+                    campaign.canvassers.set(canvassers)
+                if 'locations' in campaign_dict:
+                    locations = campaign_dict.pop('locations', [])
+                    location_id = []
+                    for l in locations:
+                        loc = models.Location.objects.create(**l)
+                        location_id.append(loc.id)
+                    campaign.locations.set(location_id)
                 if 'end_date' in campaign_dict:
                     d = campaign_dict['end_date']
                     campaign_dict['end_date'] = datetime.date(d[0], d[1], d[2])
                 if 'start_date' in campaign_dict:
                     d = campaign_dict['start_date']
                     campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
-                models.Campaign.objects.filter(id=id, managers__id=uid).update(**campaign_dict)
-                if 'managers' in campaign_dict:
-                    models.Campaign.objects.filter(id=id, managers__id=uid).managers.set(campaign_dict['managers'])
-                if 'canvassers' in campaign_dict:
-                    models.Campaign.objects.filter(id=id, managers__id=uid).canvassers.set(campaign_dict['canvassers'])
-                if 'locations' in campaign_dict:
-                    models.Campaign.objects.filter(id=id, managers__id=uid).locations.set(campaign_dict['locations'])
+                campaign.update(**campaign_dict)
                 return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not manager')
@@ -61,15 +70,18 @@ class ManagerHandler:
                 if 'start_date' in campaign_dict:
                     d = campaign_dict['start_date']
                     campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                locations = campaign_dict.pop('locations', [])
+                managers = campaign_dict.pop('managers', [])
+                canvassers = campaign_dict.pop('canvassers', [])
                 campaign = models.Campaign.objects.create(**campaign_dict)
-                campaign_dict['managers'] = [uid]
-                if 'managers' in campaign_dict:
-                    campaign.managers.set(campaign_dict['managers'])
-                if 'canvassers' in campaign_dict:
-                    campaign.canvassers.set(campaign_dict['canvassers'])
-                if 'locations' in campaign_dict:
-                    campaign.locations.set(campaign_dict['locations'])
-                return utils.generate_response(request, {})
+                managers.apped(uid)
+                campaign.managers.set(managers)
+                campaign.canvassers.set(canvassers)
+                location_id = []
+                for l in locations:
+                    loc = models.Location.objects.create(**l)
+                    location_id.append(loc.id)
+                campaign.locations.set(location_id)
             else:
                 return utils.generate_error(request, 'Not manager')
         else:

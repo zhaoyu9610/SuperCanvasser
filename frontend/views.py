@@ -29,6 +29,7 @@ def campaigns(request):
         roles = utils.get_roles(uid)
         if roles[1]:
             data = {'role': roles, 'campaigns': json.dumps(utils.get_campaigns(uid))}
+            print(data)
             return render(request, 'campaigns.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:

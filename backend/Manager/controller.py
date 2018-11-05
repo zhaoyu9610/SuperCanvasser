@@ -1,4 +1,4 @@
-from backend import utils, models
+from backend import utils, models, geoutils
 import json
 import datetime
 
@@ -91,3 +91,17 @@ class ManagerHandler:
                 return utils.generate_error(request, 'Not manager')
         else:
             return utils.generate_error(request, 'Not logged in')
+
+    def generate_assignments(request, cid):
+        campaign = models.Campaign.objects.filter(id=cid).get().dict()
+        campaign_id = cid
+        locations = campaign['locations']
+        max_hour = 3
+        average_speed = 20
+        duration = 2
+        canvassers = campaign['canvassers']
+        start_date = campaign['start_date']
+        end_date = campaign['end_date']
+        geoutils.generate_assignment(campaign_id, locations, max_hour, average_speed, duration, canvassers, start_date, end_date)
+        return utils.generate_response(request, {})
+

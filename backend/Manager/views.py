@@ -22,3 +22,7 @@ def campaign_create(request):
 @csrf_exempt
 def canvasser_availabilities(request):
     return handler.availabilities(request)
+
+
+def generate_assignment(request, cid):
+    return handler.generate_assignemnts(request, cid)

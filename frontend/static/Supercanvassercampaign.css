@@ -21,6 +21,20 @@ h1 {
   text-align:center;
 }
 
+.text_limit{
+
+    word-wrap: break-word;
+}
+
+.list_item{
+
+    padding-top:5px;
+}
+.test{
+    padding-left:400px;
+
+}
+
 ul {
 
     max-width: 460px;

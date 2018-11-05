@@ -61,8 +61,8 @@ class ManagerHandler:
                 if 'start_date' in campaign_dict:
                     d = campaign_dict['start_date']
                     campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
-                campaign_dict['managers'] = [uid]
                 campaign, _ = models.Campaign.objects.update_or_create(**campaign_dict)
+                campaign_dict['managers'] = [uid]
                 if 'managers' in campaign_dict:
                     campaign.managers.set(campaign_dict['managers'])
                 if 'canvassers' in campaign_dict:

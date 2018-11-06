@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 admin1.html
 {% block content %}
-    {% for a in settings %}
-        <p>{{ a.name }} {{ a.value }}</p>
+    <p>{{assignment.id}}  {{assignment.duration}} {{assignment.date.date}} {{assignment.canvassers.id}}</p>
+    {% for item in assignment.locations %}
+        {{ item.street }}{{ item.city }}{{ item.state }}
     {% endfor %}
+
 {% endblock %}

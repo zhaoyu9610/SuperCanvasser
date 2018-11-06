@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for a in settings %}
-        <p>{{ a.name }} {{ a.value }}</p>
+{% for assignment in assignments %}
+            <tr>
+                <td>{{ result[0] }}</td>
+                <td>{{ result[1] }}</td>
+                <td>{{ result[2] }}</td>
+            </tr>
+{% endfor %}
+    {% for assignment in assignments %}
+        <p>{{ assignment.name }} {{ a.value }}</p>
     {% endfor %}
 {% endblock %}

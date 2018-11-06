@@ -72,6 +72,7 @@ def assign_to_canvasser(assignment_list, canvassers, start_date, end_date, durat
         assignment = models.Assignment.objects.create(duration=duration, campaign_id=campaign_id, canvasser=canvasser,
                                                       date=models.CampaignDate.objects.filter(date=date).get())
         assignment.locations.set(location_id)
+        assignment.save()
 
 def find_earliest(canvassers, start_date, end_date):
     canvasser_id_list = []

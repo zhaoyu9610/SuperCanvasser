@@ -123,15 +123,16 @@
 
     $(document).ready(function() {
         $("#viewAssignment").click(function () {
-            window.location.href="/campaigns/"+obj.id+">" +"/assignments";
+            window.location.href="/campaigns/"+obj.id +"/assignments";
         });
     });
 
 
-
-
-
-
+    $(document).ready(function() {
+        $("#editCamp").click(function () {
+            window.location.href="/campaigns/"+obj.id +"/edit";
+        });
+    });
 
 
     </script>

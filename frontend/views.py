@@ -185,7 +185,14 @@ def admin(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[0]:
-            data = {'role': roles, 'users': json.dumps(utils.get_users()), 'settings': json.dumps(utils.get_settings())}
+            # data = {'role': roles, 'users': json.dumps(utils.get_users()), 'settings': json.dumps(utils.get_settings())}
+            data = {
+        'settings': [{'id': 1, 'value': 8.0, 'name': 'hours'}, {'id': 2, 'value': 60.0, 'name': 'speed'}],
+        'users':[{'id': 1, 'email': 'admin@admin.com', 'password': 'admin', 'admin': True, 'canvasser': False, 'manager': False, 'phone': '0000000000', 'gender': True, 'address': ''}, {'id': 2, 'email': 'manager@manager.com', 'password': 'manager', 'admin': False, 'canvasser': False, 'manager': True, 'phone': '0000000000', 'gender': True, 'address': ''}, {'id': 3, 'email': 'canvasser@canvasser.com', 'password': 'canvasser', 'admin': False, 'canvasser': True, 'manager': False, 'phone': '0000000000', 'gender': True, 'address': ''}],
+        'role': [True, True, True]
+    }
+            data['users'] = json.dumps(data['users'])
+            data['settings'] = json.dumps(data['settings'])
             return render(request, 'admin.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:

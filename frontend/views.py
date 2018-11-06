@@ -145,6 +145,7 @@ def campaign_result(request, cid):
 
 def canvasser_assignments(request):
     if 'cookie' in request.COOKIES:
+        print("asdfasdfasdf")
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:

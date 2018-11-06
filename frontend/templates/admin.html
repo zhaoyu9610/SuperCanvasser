@@ -56,7 +56,7 @@
                 manTrue = "";
             if(users[i].admin == false)
                 adminTrue = "";
-            $("#addToUsers").append("<tr>"+"<td>"+ users[i].email +"</td>"+"<td id = 'adminTd'>"
+            $("#addToUsers").append("<tr>"+"<td>"+ users[i].id +"</td>"+"<td>"+ users[i].email +"</td>"+"<td id = 'adminTd'>"
             + "<input id = 'adminbox' type='checkbox'" + adminTrue +">" +"</td>"+"<td id = 'canvasserTd'>"
             + "<input id = 'canvasserbox' type='checkbox'" + canTrue +">" +"</td>"+"<td id = 'managerTd'>"
             + "<input id = 'managerbox' type='checkbox'" + manTrue +">" +"</td>"+"</tr>");
@@ -73,17 +73,35 @@
 
     });
 
+    var allUsers = new Array();
     $(document).ready(function () {
         $("#updateUsers").click(function () {
-            var table = document.getElementById("adminTable");
-            for (var i = 0, row; row = table.rows[i]; i++) {
-            alert(users[i].email);
 
+        $('#adminTable tr').each(function(){
+            $(this).find('td').each(function(){
+            alert($(this).html());
+                <!--if(!(isNaN($(this).html()))){-->
+                    <!--var a = {"id":$(this).html()}-->
+                    <!--alert(JSON.stringify(a));-->
+                <!--}-->
+                <!--else{-->
+                    <!--var a = {"adm-->
+                <!--}-->
 
-            for (var j = 0, col; col = row.cells[j]; j++) {
-            alert("td");
-         }
-        }
+             })
+        })
+
+            	$.ajax({
+                type: "POST",
+                url: "/api/update_account",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({"users": [{"id":1, "admin":false, }]}),
+                success: function (result) {
+                    alert(result);
+
+                }
+            });
 
         });
     });
@@ -166,7 +184,7 @@
                     <table class="table table-hover" id="adminTable">
                         <thead class="thead-dark">
                         <tr>
-
+                            <th scope="col">ID#</th>
                             <th scope="col">User Email</th>
                             <th scope="col">Admin</th>
                             <th scope="col">Canvasser</th>

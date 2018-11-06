@@ -34,38 +34,30 @@ def generate_assignment(campaign_id):
     while locations:
         start_location = secure_random.choice(locations)
         total_time = duration
-        current_assignment = []
+        current_assignment = [start_location]
+        duration_list = []
         current_location = start_location
 
-        next_location, distance = select_next_location(locations, current_location)
-        total_time = total_time + distance / average_speed + duration
-        current_assignment.append(next_location)
-        locations.remove(next_location)
+        locations.remove(current_location)
 
-        while total_time < max_hour:
+        while total_time < max_hour and len(locations) > 0:
             next_location, distance = select_next_location(locations, current_location)
-            total_time = total_time + distance / average_speed + duration
-            current_assignment.append(next_location)
-            print('total time')
-            print(total_time)
-            print('len of current assign')
-            print(len(current_assignment))
-            locations.remove(next_location)
-            print('len of remaining locations')
-            print(len(locations))
+            if total_time + distance / average_speed + duration < max_hour:
+                total_time = total_time + distance / average_speed + duration
+                current_location = next_location
+                current_assignment.append(next_location)
+                locations.remove(next_location)
+            else:
+                break
         assignment_list.append(current_assignment)
+        duration_list.append(total_time)
     assign_to_canvasser(assignment_list, canvassers, start_date_new, end_date_new, duration, campaign_id)
 
 
 def assign_to_canvasser(assignment_list, canvassers, start_date, end_date, duration, campaign_id):
 
     for assignment in assignment_list:
-        print('execute here')
         canvasser, date = find_earliest(canvassers, start_date, end_date)
-        print('here as well')
-        print('canvasser id and date')
-        print(canvasser.id)
-        print(date)
         location_id = []
         for location in assignment:
             location_id.append(location['id'])
@@ -79,28 +71,19 @@ def find_earliest(canvassers, start_date, end_date):
     for canvasser in canvassers:
         canvasser_id_list.append(canvasser['id'])
     available_canvassers = models.Availability.objects.filter(canvasser_id__in=canvasser_id_list).order_by('date').all()
-    print('len of available canvasser')
-    print(available_canvassers)
     for date in list(available_canvassers):
-        print(type(date.date.date))
-        print(type(start_date))
         if date.date.date > start_date and date.date.date < end_date:
-            print('return value')
-            print(date.canvasser)
-            print(date.date.date)
             return date.canvasser, date.date.date
     raise Exception('No Canvasser Available')
 
 def select_next_location(locations, start_location):
     distance_list = []
     for location in locations:
-        print('location while select')
-        print(location)
         distance_list.append(calculate_distance(start_location, location))
         print(distance_list)
+    print('distance list')
+    print(distance_list)
     index = find_minimum(distance_list)
-    print('min distance')
-    print(index)
     return [locations[index], distance_list[index]]
 
 def calculate_distance(start_location, location):

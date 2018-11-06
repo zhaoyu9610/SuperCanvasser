@@ -142,4 +142,4 @@ def find_minimum(distance_list):
                 index = distance_list.index(distance)
         return index
     else:
-        return 0e
+        return 0

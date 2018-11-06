@@ -40,8 +40,11 @@ class AdministratorHandler:
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_admin(uid):
+                print(users_dict)
                 for i in range(int(len(users_dict) / 5)):
-                    id, email, admin, manager, canvasser = users_dict[i*5:5]
+                    print(i)
+                    print(users_dict[i*5:5])
+                    id, email, admin, canvasser, manager = users_dict[i*5:i*5+5]
                     models.User.objects.filter(id=id).update(**{'admin': admin, "canvasser": canvasser, "manager": manager})
                 return utils.generate_response(request, {})
             else:

@@ -62,11 +62,12 @@ def canvasser_get_next(uid):
 
 
 def find_closet(result):
-    if result:
+    if not result:
         return None
     for a in result:
         if is_smallest(a, result):
-            return a
+            print("current assignment found")
+            return a.dict()
 
 
 def is_smallest(a, result):

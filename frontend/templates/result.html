@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for a in assignment %}
+        <p>{{ a.name }} {{ a.value }}</p>
+    {% endfor %}
+{% endblock %}

@@ -12,6 +12,7 @@ def generate_log_lat(location):
     geolocation = geolocator.geocode(address)
     return geolocation.longitude, geolocation.latitude
 
+
 def date_format(date):
     return datetime.date(date[0], date[1], date[2])
 
@@ -61,7 +62,7 @@ def assign_to_canvasser(assignment_list, canvassers, start_date, end_date, durat
 
     for assignment in assignment_list:
         print('execute here')
-        canvasser, date = find_earliest(canvassers, start_date, end_date)
+        avail, canvasser, date = find_earliest(canvassers, start_date, end_date)
         print('here as well')
         print('canvasser id and date')
         print(canvasser.id)
@@ -73,12 +74,15 @@ def assign_to_canvasser(assignment_list, canvassers, start_date, end_date, durat
                                                       date=models.CampaignDate.objects.filter(date=date).get())
         assignment.locations.set(location_id)
         assignment.save()
+        avail.assignment = assignment
+        avail.save()
+
 
 def find_earliest(canvassers, start_date, end_date):
     canvasser_id_list = []
     for canvasser in canvassers:
         canvasser_id_list.append(canvasser['id'])
-    available_canvassers = models.Availability.objects.filter(canvasser_id__in=canvasser_id_list).order_by('date').all()
+    available_canvassers = models.Availability.objects.filter(canvasser_id__in=canvasser_id_list, assignment=None).order_by('date').all()
     print('len of available canvasser')
     print(available_canvassers)
     for date in list(available_canvassers):
@@ -88,8 +92,9 @@ def find_earliest(canvassers, start_date, end_date):
             print('return value')
             print(date.canvasser)
             print(date.date.date)
-            return date.canvasser, date.date.date
+            return date, date.canvasser, date.date.date
     raise Exception('No Canvasser Available')
+
 
 def select_next_location(locations, start_location):
     distance_list = []
@@ -103,12 +108,15 @@ def select_next_location(locations, start_location):
     print(index)
     return [locations[index], distance_list[index]]
 
+
 def calculate_distance(start_location, location):
     inter_location = find_inter_location(start_location,location)
     return calculate_distance_helper(start_location, inter_location) + calculate_distance_helper(location, inter_location)
 
+
 def find_inter_location(start_location, location):
     return geolocator.reverse(str(start_location['longitude']) + "," +str(location['latitude']))
+
 
 def calculate_distance_helper(start_location, location):
     long1 = np.radians(start_location['longitude'])
@@ -121,6 +129,7 @@ def calculate_distance_helper(start_location, location):
     c = 2 * np.arcsin(np.sqrt(a))
     r = 3956
     return c * r
+
 
 def find_minimum(distance_list):
     if len(distance_list)>1:

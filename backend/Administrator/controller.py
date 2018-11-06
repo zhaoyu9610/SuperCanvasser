@@ -31,16 +31,17 @@ class AdministratorHandler:
         else:
             return utils.generate_error(request, 'Not logged in')
 
-    def user_edit(self, request, id):
+    def user_edit(self, request):
         try:
             body = json.loads(request.body)
-            user_dict = body['user']
+            users_dict = body['users']
         except Exception as e:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_admin(uid):
-                models.User.objects.filter(id=id).update(**user_dict)
+                for user in users_dict:
+                    models.User.objects.filter(id=user['id']).update(**user)
                 return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not admin')

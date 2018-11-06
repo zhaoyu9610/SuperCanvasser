@@ -36,7 +36,6 @@ def campaigns(request):
                 'role': roles,
                 'campaigns': json.dumps(utils.get_campaigns(uid))
             }
-            print(data)
             return render(request, 'campaigns.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -102,7 +101,7 @@ def campaign_assignments(request, cid):
                 'role': roles,
                 'assignments': json.dumps(utils.get_assignments(uid, cid))
             }
-            return render(request, 'assignments.html', data)
+            return render(request, 'assignments1.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')
@@ -117,7 +116,7 @@ def campaign_result(request, cid):
                 'role': roles,
                 'result': json.dumps(utils.get_result(uid, cid))
             }
-            return render(request, 'assignments.html', data)
+            return render(request, 'result1.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')
@@ -134,7 +133,7 @@ def campaign_assignment(request, cid, aid):
                 'assignment': json.dumps(assignment),
                 'geo': utils.get_geo(assignment['locations'])
             }
-            return render(request, 'assignment.html', data)
+            return render(request, 'assignment1.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')

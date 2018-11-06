@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for assignment in assignments %}
-            <tr>
-                <td>{{ result[0] }}</td>
-                <td>{{ result[1] }}</td>
-                <td>{{ result[2] }}</td>
-            </tr>
-{% endfor %}
     {% for assignment in assignments %}
-        <p>{{ assignment.name }} {{ a.value }}</p>
+        <p>Assignment: {{assignment.id}}</p><br>
+        <p>Duration: {{assignment.duration}}</p><br>
+        <p>Date: {{assignment.date.date}}</p><br>
+        <p>Canvasser: {{assignment.canvassers.id}}</p><br>
+        <p>Number of locations: {{ assignment.locations|length }}</p><br>
+        <a href="assignments/{{ assignment.id }}">Detail</a>
+        <hr>
     {% endfor %}
 {% endblock %}

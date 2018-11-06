@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
-admin1.html
+
 {% block content %}
-    <p>{{assignment.id}}  {{assignment.duration}} {{assignment.date.date}} {{assignment.canvassers.id}}</p>
-    {% for item in assignment.locations %}
-        {{ item.street }}{{ item.city }}{{ item.state }}
-    {% endfor %}
+    <p>Assignment: {{assignment.id}}</p><br>
+    <p>Duration: {{assignment.duration}}</p><br>
+    <p>Date: {{assignment.date.date}}</p><br>
+    <p>Canvasser: {{assignment.canvassers.id}}</p><br>
+    <p>Locations: </p>
+    <ul>
+        {% for item in assignment.locations %}
+        <li>{{ item.street }}{{ item.city }}{{ item.state }}</li>
+        {% endfor %}
+    </ul>
 
 {% endblock %}

@@ -1,4 +1,5 @@
 from backend import models
+import datetime
 
 
 def generate_error_data(request, msg):
@@ -43,8 +44,37 @@ def get_result(uid, cid):
 
 
 def get_assignment(uid, cid, aid):
-    assignment = models.Assignment.objects.filter(id=cid, campaign_id=cid).get()
+    assignment = models.Assignment.objects.filter(id=aid, campaign_id=cid).get()
     return assignment.dict()
+
+
+def canvasser_get_assignment(uid, aid):
+    assignment = models.Assignment.objects.filter(id=aid).get()
+    return assignment.dict()
+
+
+def canvasser_get_next(uid):
+    result = []
+    for a in models.Assignment.objects.filter().all():
+        if a.date.date >= datetime.date.today():
+            result.append(a)
+    return find_closet(result)
+
+
+def find_closet(result):
+    if not result:
+        return None
+    for a in result:
+        if is_smallest(a, result):
+            print("current assignment found")
+            return a.dict()
+
+
+def is_smallest(a, result):
+    for b in result:
+        if a.date.date > b.date.date:
+            return False
+    return True
 
 
 def get_users():
@@ -87,3 +117,11 @@ def get_geo(locations):
     result = []
     for location in locations:
         result.append([location['latitude'], location['longitude']])
+    return result
+
+
+def get_canvasser_assignments(uid):
+    result = []
+    for assignment in models.Assignment.objects.filter(canvasser_id=uid).all():
+        result.append(assignment.dict())
+    return result

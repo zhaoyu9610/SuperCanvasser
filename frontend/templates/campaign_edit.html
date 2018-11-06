@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="">
 
-    <title>Super Canvasser Edit Campaign</title>
+    <title>Super Canvasser Create Campaign</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'supercanvassercampaign.css' %}">
@@ -17,10 +17,15 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
+
     <script>
     var roles = new Array();
     var talkingPoints = new Array();
     var questions = new Array();
+    var canvassers = new Array();
+    var managers = new Array();
+    var canObj = {{canvassers|safe}};
+    var manObj = {{managers|safe}};
     $( document ).ready(function() {
         {% for val in role %}
             roles.push({{val|yesno:"true,false"}});
@@ -39,26 +44,6 @@
          }
     });
 
-    $(document).ready(function(){
-        $("ul").on("click", "button", function(e) {
-            e.preventDefault();
-            $(this).parent().remove();
-     });
-    });
-    $(document).ready(function(){
-        $("#addTalk").click(function () {
-            talkingPoints.push($("#insertTalk").val());
-            $("#talkPoints").append('<div class = "container">'+"<li class='list-group-item'>"+$("#insertTalk").val() +'<button type="button" class="btn btn-outline-secondary float-right">X</button>'+"</li>" + '</div>');
-            })
-    });
-
-    $(document).ready(function(){
-        $("#addQuestion").click(function () {
-            questions.push($("#insertQ").val());
-            $("#questions").append($("<li>").text($("#insertQ").val()));
-            })
-    });
-
     $(document).ready(function () {
         $("#logout").click(function () {
             $.ajax({
@@ -70,6 +55,60 @@
             });
         });
     });
+
+    var obj = {{campaign|safe}};
+
+    $(document).ready(function(){
+        var canArr = obj.canvassers;
+        var manArr = obj.manager;
+        var locationsArr = obj.locations;
+        var talkingPArr = obj.talking_points;
+        var questionsArr = obj.questions;
+
+        for(var i = 0; i < canArr.length;i++){
+            canvassers.push(canArr[i].email);
+            $("#canvassers").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+canArr[i].email+"</li>" + '</div>');
+        }
+
+        for(var i = 0; i < manArr.length;i++){
+            managers.push(manArr[i].email);
+            $("#managers").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+manArr[i].email+"</li>" + '</div>');
+        }
+
+        for(var i = 0; i < locationsArr.length;i++){
+            $("#locations").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+locationsArr[i].street+"</li>" + '</div>');
+        }
+
+        for(var i = 0; i < talkingPArr.length;i++){
+            $("#talkingP").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+talkingPArr[i]+"</li>" + '</div>');
+        }
+        for(var i = 0; i < questionsArr.length;i++){
+            $("#questions").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+questionsArr[i]+"</li>" + '</div>');
+        }
+
+    });
+
+
+    $(document).ready(function(){
+        var start = obj.start_date;
+        var end = obj.end_date;
+        var startDate = start[1] + "/" +start[2] +"/"+ start[0];
+        var endDate = end[1] + "/" +end[2] +"/"+ end[0];
+        var fullDate = startDate + " - " + endDate;
+        $("#currentCampaign").html(obj.name);
+        $("#name").val(obj.name);
+        $("#date").val(fullDate);
+        $("#startD").val(startDate);
+        $("#endD").val(endDate);
+        $("#visitDuration").val(obj.duration);
+
+        $("#name").val(obj.name);
+        $("#name").val(obj.name);
+        $("#name").val(obj.name);
+        $("#name").val(obj.name);
+        $("#name").val(obj.name);
+    });
+
     var startDate = new Array();
     var endDate = new Array();
     $( document ).ready(function() {
@@ -91,25 +130,97 @@
         });
      });
 
-    <!--$(document).ready(function () {-->
-        <!--$("#submitCamp").click(function () {-->
-            <!--var duration = $("#visitDuration".val());-->
-            <!--var durationF = parseFloat(duration);-->
-            <!--$.ajax({-->
-                <!--type: "POST",-->
-                <!--url: "/api/manager/campaigns/create",-->
-                <!--contentType: "application/json",-->
-                <!--dataType: "json",-->
-                <!--data: JSON.stringify({"campaign": {"id":"","name": $("#camName").val(), "talking_points":"talkingPoints", "start":"false", "finish": "false",-->
-                 <!--"median":"", "duration":"durationF", "average":"", "sd":"", "questions":questions, "managers":"[]", "canvassers":"[]",-->
-                  <!--"locations":"[]", "start_date": "startDate", "end_date":"endDate"}}),-->
-                <!--success: function (result) {-->
-                   <!--alert(JSON.stringify(result))-->
+    $(document).ready(function(){
+        $("#addCanvasser").click(function () {
+            var found = 0;
+            var exists = 0;
+            for(var i = 0; i < canvassers.length;i++){
+                if(canvassers[i] == $("#canvasserAdd").val()){
+                    exists = 1;
+                    break;
+                }
+            }
+            for(var i = 0; i < canObj.length;i++){
+                if(canObj[i].email == $("#canvasserAdd").val()){
+                    canvassers.push(canObj[i].email);
+                    found = 1;
+                    break;
+                }
+            }
+            if(found == 1 && exists ==0){
+                $("#listCanvassers").append('<div class = "container">'+'<li class ="list_item">'+$("#canvasserAdd").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+                $("#errorCanvasser").html("User added!");
+            }
+            else if(found == 1 && exists ==1){
+                $("#errorCanvasser").html("User already Added!");
+            }
+            else{
+                $("#errorCanvasser").html("Invalid User!");
+            }
+        })
+    });
 
-                <!--}-->
-            <!--});-->
-        <!--});-->
-    <!--});-->
+
+
+    $(document).ready(function(){
+        $("#addManager").click(function () {
+            var found = 0;
+            var exists = 0;
+            for(var i = 0; i < managers.length;i++){
+                if(managers[i] == $("#managerAdd").val()){
+                    exists = 1;
+                    break;
+                }
+            }
+            for(var i = 0; i < manObj.length;i++){
+                if(manObj[i].email == $("#managerAdd").val()){
+                    managers.push(manObj[i].email);
+                    found = 1;
+                    break;
+                }
+            }
+            if(found == 1 && exists ==0){
+                $("#listManagers").append('<div class = "container">'+'<li class ="list_item">'+$("#managerAdd").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+                $("#errorManager").html("User added!");
+            }
+            else if(found == 1 && exists ==1){
+                $("#errorManager").html("User already Added!");
+            }
+            else{
+                $("#errorManager").html("Invalid User!");
+            }
+        })
+    });
+
+
+    $(document).ready(function () {
+        $("#saveCamp").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/api/manager/campaigns/"+obj.id+"/edit",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({"campaign":{"name": $("#name").val()}}),
+                success: function (result) {
+                    alert(JSON.stringify(result));
+
+                }
+            });
+        });
+    });
+
+
+    $(document).ready(function() {
+        $("#viewAssignment").click(function () {
+            window.location.href="/campaigns/"+obj.id+">" +"/assignments";
+        });
+    });
+
+
+
+
+
+
 
 
 
@@ -120,36 +231,37 @@
 
 
 <body>
-<div class="container">
+<div class="jumbotron">
+    <div class="container">
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <div class="navbar-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+
+                    <div class="collapse navbar-collapse" id="menu1">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item" id="showManager"><a class="nav-link" href="/campaigns">Manager</a></li>
+                            <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/canvasser">Canvasser</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse">
+
+                    </button>
+                </div>
 
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" id="showManager"><a class="nav-link" href="/campaigns">Manager</a></li>
-                        <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/canvasser">Canvasser</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/campaigns">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
+                        <li id="logout" class="nav-item"><a class="nav-link" href="#">Sign out</a></li>
                     </ul>
                 </div>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse">
-
-                </button>
             </div>
+        </nav>
+    </div>
 
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="/campaigns">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
-                    <li id = "logout" class="nav-item"><a class="nav-link" href="#">Sign out</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
-
-<div class="jumbotron">
 
     <div class="container">
         <br>
@@ -157,29 +269,33 @@
         Edit Campaign
         </span></h2>
         <hr/>
+        <br>
         <div class="row">
+
             <div class="col">
                 <br>
-                <form id = "creatingCamp">
+
+                <form id="creatingCamp">
                     <div class="form-group row">
                         <div class="input-group col-8">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="camName">Campaign Name</span>
+                                <span class="input-group-text" id="campName">Campaign Name</span>
                             </div>
-                            <input type="text" class="form-control">
+                            <input id="name" type="text" class="form-control">
                         </div>
                     </div>
                     <br>
                     <div class="form-group row">
                         <div class="input-group col-5">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="camCalendar"><i class="fa fa-calendar"></i></span>
+                                        <span class="input-group-text" id="camCalendar"><i
+                                                class="fa fa-calendar"></i></span>
                             </div>
                             <input type="text" id="date" class="form-control">
                         </div>
                         <div class="input-group col-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="camDuration">Visit Duration</span>
+                                <span class="input-group-text" id="camDuration">Visit Duration [Hrs.]</span>
                             </div>
                             <input type="text" id="visitDuration" class="form-control">
                         </div>
@@ -201,29 +317,82 @@
                     </div>
                     <br>
                     <div class="form-group row">
-                        <div class="input-group col-4">
+                        <div class = "form-group">
+                        <div class="input-group col-8">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="canAdd">Add Canvassers</span>
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
                             </div>
-                            <input type="text" class="form-control">
+
+                            <input id="canvasserAdd" type="text" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" id="addCanvasser">Add</button>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+
+                            <h5><label for="canvassers">Canvassers for this Campaign:</label></h5>
+                            <ul class="list-group" id="canvassers">
+                            </ul>
+
                         </div>
                     </div>
+                    <p id="errorCanvasser"></p>
+
                     <div class="form-group row">
                         <div class="input-group col-4">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="manAdd">Add Managers</span>
                             </div>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="managerAdd">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" id="addManager">Add</button>
+                            </div>
                         </div>
+                    </div>
+                    <p id="errorManager"></p>
+                    <div class="form-group">
+                        <h5><label for="managers">Managers for this Campaign:</label></h5>
+                        <ul class="list-group" id="managers">
+                        </ul>
                     </div>
                     <div class="form-group row">
                         <div class="input-group col-7">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="locations">Add Locations</span>
+                                <span class="input-group-text" id="streetLabel">Street</span>
                             </div>
-                            <input type="text" class="form-control">
+                            <input id="street" type="text" class="form-control">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="input-group col-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">City</span>
+                            </div>
+                            <input id="city" type="text" class="form-control">
+                        </div>
+                        <div class="input-group col-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="stateLabel">State</span>
+                            </div>
+                            <input id="state" type="text" class="form-control" maxlength="2" placeholder="NY">
+                        </div>
+                        <div class="input-group col-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="zipLabel">Zip</span>
+                            </div>
+                            <input id="zip" type="text" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" id="addLocation">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h5><label for="locations">Locations:</label></h5>
+                        <ul class="list-group" id="locations">
+                        </ul>
+                    </div>
+
 
                     <br>
 
@@ -234,15 +403,17 @@
                             </div>
                             <input type="text" class="form-control" id="insertTalk">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="addTalk">Add</button>
+                                <button class="btn btn-secondary" type="button" id="addTalk">Add</button>
                             </div>
 
                         </div>
                     </div>
-                    <div class="form-group">
-                        <h5><label for="talkPoints">Talking Points:</label></h5>
-                        <ul class="list-group list-group-flush" id="talkPoints">
-                        </ul>
+                    <div class="text_limit">
+                        <div class="form-group">
+                            <h5><label for="talkingP">Talking Points:</label></h5>
+                            <ul class="list-group list-group-flush" id="talkingP">
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <div class="input-group col-7">
@@ -251,20 +422,23 @@
                             </div>
                             <input type="text" class="form-control" id="insertQ">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="addQuestion">Add</button>
+                                <button class="btn btn-secondary" type="button" id="addQuestion">Add</button>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <h5><label for="questions">Questionnaire:</label></h5>
-                        <ul class="list-group list-group-flush" id="questions">
-                        </ul>
+                    <div class="text_limit">
+                        <div class="form-group">
+                            <h5><label for="questions">Questionnaire:</label></h5>
+                            <ul class="list-group" id="questions">
+                            </ul>
+                        </div>
                     </div>
 
-                    <div>
-                        <button  id="editCamp" class="btn btn-block btn-dark btn-outline-primary" type="button">Edit Campaign</button>
+                    <div class="col-md-3">
+                        <button id="saveCamp" class="btn btn-block btn-dark btn-secondary" type="button">Save
+                            Changes
+                        </button>
                     </div>
-
 
                 </form>
 
@@ -273,9 +447,11 @@
     </div>
 </div>
 
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
 <!--

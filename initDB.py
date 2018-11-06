@@ -9,7 +9,7 @@ django.setup()
 from backend import models
 
 # create all the date in 2018 month 10, 11, 12
-for month in [10, 11, 12]:
+for month in [11, 12]:
     for day in range(31):
         try:
             dt = date(year=2018, month=month, day=day+1)

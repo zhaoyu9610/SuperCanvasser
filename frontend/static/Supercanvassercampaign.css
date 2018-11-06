@@ -12,7 +12,10 @@ body {
   background-position: center;
   background-size: cover;
 }
+h3{
+padding-left:20px;
 
+}
 h1 {
   color: white;
   padding-bottom:20px;
@@ -20,8 +23,49 @@ h1 {
   font-style: italic;
   text-align:center;
 }
+#center{
+  padding-top:30px;
+  text-align: justify;
+  margin: 0 auto;
+  width: 25%;
+}
+.list-group{
+    max-height: 200px;
+    margin-bottom: 10px;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+.flex-container {
+  display: flex;
+   justify-content: space-between;
+   flex-direction: row;
+}
+#adminTd{
+    vertical-align: middle;
+    text-align: center;
+
+
+}
+#managerTd{
+    vertical-align: middle;
+    text-align: center;
+
+
+}
+#canvasserTd{
+    vertical-align: middle;
+    text-align: center;
+
+
+}
 .space{
-    padding-top:25px;
+    padding-top:30px;
+    padding:20px;
+
+}
+form-group{
+    padding-right:20px;
+
 
 }
 
@@ -34,10 +78,7 @@ h1 {
 
     padding-top:5px;
 }
-.test{
-    padding-left:400px;
 
-}
 
 ul {
 

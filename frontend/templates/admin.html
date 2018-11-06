@@ -67,8 +67,8 @@
     $( document ).ready(function() {
         for(var i = 0; i <parameters.length;i++){
 
-            $("#addToParameters").append("<tr>"+"<td>"+ parameters[i].name +"</td>"+"<td id = 'paraVal'>"
-            + "<input type='text' value = " +parameters[i].value+">" +"</td>"+"</tr>");
+            $("#addToParameters").append("<tr>"+"<td>"+ parameters[i].name +"</td>"+"<td>"
+            + "<input class = 'paraVal' type='text' value = " +parameters[i].value+">" +"</td>"+"</tr>");
         }
 
     });
@@ -76,29 +76,36 @@
     var allUsers = new Array();
     $(document).ready(function () {
         $("#updateUsers").click(function () {
+            var temp = [];
+            $('#adminTable tr').each(function(){
+                var i = 0;
+                $(this).find('td').each(function(){
+                     var box = $(this).find('input[type="checkbox"]');
+                     if(box.length) {
+                        var status = box.prop('checked');
+                        if(status == true){
+                            temp.push(true);
 
-        $('#adminTable tr').each(function(){
-            $(this).find('td').each(function(){
-            alert($(this).html());
-                <!--if(!(isNaN($(this).html()))){-->
-                    <!--var a = {"id":$(this).html()}-->
-                    <!--alert(JSON.stringify(a));-->
-                <!--}-->
-                <!--else{-->
-                    <!--var a = {"adm-->
-                <!--}-->
+                        }
+                         else{
+                            temp.push(false);
+                        }
+                     }
+                     else{
+                        temp.push($(this).html());
+                     }
 
-             })
-        })
-
-            	$.ajax({
+             });
+        });
+            alert(temp);
+            $.ajax({
                 type: "POST",
-                url: "/api/update_account",
+                url: "/api/administrator/update_users",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"users": [{"id":1, "admin":false, }]}),
+                data: JSON.stringify({"users": temp}),
                 success: function (result) {
-                    alert(result);
+                    alert(JSON.stringify(result));
 
                 }
             });
@@ -106,25 +113,27 @@
         });
     });
 
+    $(document).ready(function () {
+        $("#updateParameters").click(function () {
 
-
-    $(document).ready(function() {
-        $("#submit").click(function () {
-
-
-    			$.ajax({
+            var value = document.getElementsByClassName("paraVal");
+            alert(value[0].value);
+            alert(value[1].value);
+            $.ajax({
                 type: "POST",
-                url: "/api/update_account",
+                url: "/api/administrator/update_parameters",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"email": $("#changeUser").val(), "password": $("#changePassword").val()}),
+                data: JSON.stringify({parameters: [{"name":"hours", "value":value[0].value}, {"name":"speed", "value":value[1].value}]}),
                 success: function (result) {
-                    alert(result);
+                    alert(JSON.stringify(result));
 
                 }
             });
         });
     });
+
+
 
     $(document).ready(function () {
         $("#logout").click(function () {

@@ -53,6 +53,7 @@ def campaign(request, cid):
                 'campaign': json.dumps(campaign),
                 'geo': utils.get_geo(campaign['locations'])
             }
+            print(data['geo'])
             return render(request, 'campaign.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
@@ -99,7 +100,7 @@ def campaign_assignments(request, cid):
         if roles[1]:
             data = {
                 'role': roles,
-                'assignments': json.dumps(utils.get_assignments(uid, cid))
+                'assignments': utils.get_assignments(uid, cid)
             }
             return render(request, 'assignments1.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
@@ -130,7 +131,7 @@ def campaign_assignment(request, cid, aid):
             assignment = utils.get_assignment(uid, cid, aid)
             data = {
                 'role': roles,
-                'assignment': json.dumps(assignment),
+                'assignment': assignment,
                 'geo': utils.get_geo(assignment['locations'])
             }
             return render(request, 'assignment1.html', data)
@@ -149,8 +150,8 @@ def canvasser_assignments(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
-            data = {'role': roles}
-            return render(request, 'assignments.html', data)
+            data = {'role': roles, 'assignments': utils.get_canvasser_assignments(uid)}
+            return render(request, 'assignments1.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')

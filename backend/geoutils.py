@@ -93,6 +93,7 @@ def find_earliest(canvassers, start_date, end_date):
             print(date.canvasser)
             print(date.date.date)
             return date, date.canvasser, date.date.date
+    print("No time find for the case")
     raise Exception('No Canvasser Available')
 
 

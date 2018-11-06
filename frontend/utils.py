@@ -87,3 +87,11 @@ def get_geo(locations):
     result = []
     for location in locations:
         result.append([location['latitude'], location['longitude']])
+    return result
+
+
+def get_canvasser_assignments(uid):
+    result = []
+    for assignment in models.Assignment.objects.filter(canvasser_id=uid).all():
+        result.append(assignment.dict())
+    return result

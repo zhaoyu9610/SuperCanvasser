@@ -13,18 +13,17 @@
     <h3>My Google Maps Demo</h3>
     <!--The div element for the map -->
     <div id="map"></div>
-    <script>
+           <script>
 // Initialize and add the map
 function initMap() {
-  // The location of Uluru
-  var uluru = {lat: 40.925690, lng: -73.141129};
-  var uluru2 = {lat: 40.712776, lng: -74.005974};
-  // The map, centered at Uluru
+
+  var locations = [[40.8840484, -73.0056325]];
+
   var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 8, center: uluru});
-  // The marker, positioned at Uluru
-  var marker = new google.maps.Marker({position: uluru, map: map});
-  var marker = new google.maps.Marker({position: uluru2, map: map});
+      document.getElementById('map'), {zoom: 11, center: {lat: locations[0][0], lng: locations[0][1]}});
+  for (i=0; i <locations.length; i ++){
+      var marker = new google.maps.Marker({position: {lat: locations[i][0], lng: locations[i][1]}, map: map})
+  }
 }
     </script>
     <!--Load the API from the specified URL

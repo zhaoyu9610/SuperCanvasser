@@ -190,7 +190,7 @@
                 url: "/api/manager/campaigns/create",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"campaign": {}}),
+                data: JSON.stringify({"campaign": {"name": $("#camName").val()}}),
                 success: function (result) {
                    alert(JSON.stringify(result))
 

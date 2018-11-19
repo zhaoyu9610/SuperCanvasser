@@ -106,11 +106,14 @@ class ManagerHandler:
             return utils.generate_error(request, 'Not logged in')
 
     def generate_assignments(self, request, cid):
-        try:
-            geoutils.generate_assignment(cid)
-            return utils.generate_response(request, {})
-        except Exception as e:
-            return utils.generate_error(request, '')
+        geoutils.generate_assignment(cid)
+        return utils.generate_response(request, {})
+        # try:
+        #     geoutils.generate_assignment(cid)
+        #     return utils.generate_response(request, {})
+        # except Exception as e:
+        #     print(e)
+        #     return utils.generate_error(request, 'Error in controller.generate_assignments')
 
     def campaign_start(self, request, cid):
         models.Campaign.objects.filter(id=cid).update(start=True)

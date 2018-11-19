@@ -20,10 +20,12 @@ def date_format(date):
 def generate_assignment(campaign_id):
     campaign = models.Campaign.objects.filter(id=campaign_id).get().dict()
 
+    models.Assignment.objects.filter(campaign_id=campaign_id).delete()
+
     campaign_id = campaign['id']
     locations = campaign['locations']
-    max_hour = 4
-    average_speed = 20
+    max_hour = models.Parameter.objects.filter(name='hours').get().value
+    average_speed = models.Parameter.objects.filter(name='speed').get().value
     duration = campaign['duration']
     canvassers = campaign['canvassers']
     start_date = campaign['start_date']
@@ -39,16 +41,17 @@ def generate_assignment(campaign_id):
         current_location = start_location
 
         next_location, distance = select_next_location(locations, current_location)
+        print('len of current assign')
+        print(len(current_assignment))
         total_time = total_time + distance / average_speed + duration
+        current_location = next_location
         current_assignment.append(next_location)
         locations.remove(next_location)
 
-        while total_time < max_hour:
+        while total_time < max_hour and len(locations)>1:
             next_location, distance = select_next_location(locations, current_location)
             total_time = total_time + distance / average_speed + duration
             current_assignment.append(next_location)
-            print('total time')
-            print(total_time)
             print('len of current assign')
             print(len(current_assignment))
             locations.remove(next_location)
@@ -59,14 +62,10 @@ def generate_assignment(campaign_id):
 
 
 def assign_to_canvasser(assignment_list, canvassers, start_date, end_date, duration, campaign_id):
-
+    print('number of assignment list')
+    print(assignment_list)
     for assignment in assignment_list:
-        print('execute here')
         avail, canvasser, date = find_earliest(canvassers, start_date, end_date)
-        print('here as well')
-        print('canvasser id and date')
-        print(canvasser.id)
-        print(date)
         location_id = []
         for location in assignment:
             location_id.append(location['id'])
@@ -84,7 +83,7 @@ def find_earliest(canvassers, start_date, end_date):
         canvasser_id_list.append(canvasser['id'])
     available_canvassers = models.Availability.objects.filter(canvasser_id__in=canvasser_id_list, assignment=None).order_by('date').all()
     print('len of available canvasser')
-    print(available_canvassers)
+    print(len(available_canvassers))
     for date in list(available_canvassers):
         print(type(date.date.date))
         print(type(start_date))
@@ -100,13 +99,10 @@ def find_earliest(canvassers, start_date, end_date):
 def select_next_location(locations, start_location):
     distance_list = []
     for location in locations:
-        print('location while select')
-        print(location)
         distance_list.append(calculate_distance(start_location, location))
-        print(distance_list)
+    print('distance list')
+    print(distance_list)
     index = find_minimum(distance_list)
-    print('min distance')
-    print(index)
     return [locations[index], distance_list[index]]
 
 
@@ -129,7 +125,7 @@ def calculate_distance_helper(start_location, location):
     a = np.sin(dlat / 2) ** 2 + np.cos(lati1) * np.cos(lati2) * np.sin(dlon / 2) ** 2
     c = 2 * np.arcsin(np.sqrt(a))
     r = 3956
-    return c * r
+    return c * r /1000
 
 
 def find_minimum(distance_list):

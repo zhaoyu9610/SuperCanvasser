@@ -1,21 +1,5 @@
-<!doctype html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="">
-
-    <title>Super Canvasser Create Campaign</title>
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'supercanvassercampaign.css' %}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+{% extends 'base.html' %}
+{% block content %}
 
     <script>
     var roles = new Array();
@@ -29,23 +13,6 @@
 
     var canObj = {{canvassers|safe}};
     var manObj = {{managers|safe}};
-    $( document ).ready(function() {
-        {% for val in role %}
-            roles.push({{val|yesno:"true,false"}});
-        {% endfor %}
-         if(roles[0] == true && roles[1] == true){
-            $("#showManager").show();
-            $("#showCanvasser").show();
-         }
-         else if(roles[0] == true && roles[1] == false){
-            $("#showManager").hide();
-            $("#showCanvasser").show();
-         }
-         else if(roles[0] == false && roles[1] == true){
-            $("#showManager").show();
-            $("#showCanvasser").hide();
-         }
-    });
 
     $(document).ready(function(){
         $("ul").on("click", "button", function(e) {
@@ -201,8 +168,8 @@
                 url: "/api/manager/campaigns/create",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
-                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
+                data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : JSON.stringify(talkingPoints),
+                                      "locations" : locations,"questions": JSON.stringify(questions), "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
                    alert(JSON.stringify(result))
 
@@ -216,38 +183,8 @@
 
     </script>
 
-</head>
 
 
-<body>
-<div class="container">
-
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-
-                <div class="collapse navbar-collapse" id="menu1">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" id="showManager"><a class="nav-link" href="/campaigns">Manager</a></li>
-                        <li class="nav-item" id="showCanvasser"><a class="nav-link" href="#">Canvasser</a></li>
-                    </ul>
-                </div>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse">
-
-                </button>
-            </div>
-
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="/campaigns">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
-                    <li id="logout" class="nav-item"><a class="nav-link" href="#">Sign out</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
 
 <div class="jumbotron">
 
@@ -410,18 +347,4 @@
 
 </div>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
-
-<!--
-  ================================================== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-</body>
-</html>
+{% endblock %}

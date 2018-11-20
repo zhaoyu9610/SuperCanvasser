@@ -35,7 +35,7 @@
         </div>
     </div>
     <br><br><br>
-
+{{campaigns}}
     <table class="table table-hover" id = "camTable">
         <thead class="thead-dark">
         <tr>
@@ -43,7 +43,7 @@
         </tr>
         </thead>
         {% for item in campaigns %}
-        <tr><td><a href="/campaigns/obj[i].id" class = 'campaignLink'>{{item.name}}</a></td></tr>
+        <tr><td><a href="/campaigns/{{item.id}}" class = 'campaignLink'>{{item.name}}</a></td></tr>
         {% endfor %}
         <tbody id = "addToTable">
 

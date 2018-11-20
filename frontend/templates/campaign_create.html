@@ -23,6 +23,10 @@
     var questions = new Array();
     var canvassers = new Array();
     var managers = new Array();
+    var locations = new Array();
+    var startDate = new Array();
+    var endDate = new Array();
+
     var canObj = {{canvassers|safe}};
     var manObj = {{managers|safe}};
     $( document ).ready(function() {
@@ -121,7 +125,10 @@
 
     $(document).ready(function(){
         $("#addLocation").click(function () {
-            $("#listLocations").append('<div class = "container">'+'<li class ="list_item">'+$("#street").val()+ "<br>"+ " "+$("#city").val() + ", "+$("#state").val() +" "+$("#zip").val()  +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+            locations = ($('#listofLocations').val().split('\n'));
+            for(var i = 0; i <locations.length;i++){
+                $("#listLocations").append('<div class = "container">'+'<li class ="list_item">'+ locations[i] +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+            }
             })
     });
 
@@ -144,8 +151,6 @@
         });
     });
 
-    var startDate = new Array();
-    var endDate = new Array();
     $( document ).ready(function() {
         $(function() {
             startDate = [];
@@ -161,6 +166,10 @@
                 endDate.push(start.format('YYYY'));
                 endDate.push(start.format('MM'));
                 endDate.push(start.format('DD'));
+                for(var i = 0; i <3;i++){
+                    startDate[i] = parseInt(startDate[i]);
+                    endDate[i] = parseInt(endDate[i]);
+                }
             });
         });
      });
@@ -185,12 +194,15 @@
     $(document).ready(function () {
         $("#submitCamp").click(function () {
 
+            var duration = parseFloat($("#visitDuration").val());
+            alert(locations);
             $.ajax({
                 type: "POST",
                 url: "/api/manager/campaigns/create",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"campaign": {"name": $("#camName").val()}}),
+                data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
+                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
                    alert(JSON.stringify(result))
 
@@ -324,38 +336,22 @@
                     <div class="form-group row">
                         <div class="input-group col-7">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="streetLabel">Street</span>
+                                <span class="input-group-text" id="locationLabel">Add Locations</span>
                             </div>
-                            <input id="street" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="input-group col-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">City</span>
-                            </div>
-                            <input id="city" type="text" class="form-control">
-                        </div>
-                        <div class="input-group col-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="stateLabel">State</span>
-                            </div>
-                            <input id="state" type="text" class="form-control" maxlength="2" placeholder="NY">
-                        </div>
-                        <div class="input-group col-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="zipLabel">Zip</span>
-                            </div>
-                            <input id="zip" type="text" class="form-control">
-                            <div class="input-group-append">
+                            <textarea id = "listofLocations" class="form-control"></textarea>
+                                                        <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button" id="addLocation">Add</button>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group row">
+
                     </div>
                     <div class="form-group">
                         <h5><label for="listLocations">Locations:</label></h5>
                         <ul class="list-group" id="listLocations">
                         </ul>
+
                     </div>
 
 

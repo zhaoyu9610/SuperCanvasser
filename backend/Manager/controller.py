@@ -59,6 +59,7 @@ class ManagerHandler:
         try:
             body = json.loads(request.body)
             campaign_dict = body['campaign']
+            print(campaign_dict)
         except Exception as e:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:

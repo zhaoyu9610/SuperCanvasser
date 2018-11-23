@@ -43,6 +43,18 @@ h1 {
 .campaignLink{
     color: #2E2E2E;
 }
+.padding_adds {
+    padding-right:550px;
+    padding-bottom:0px;
+
+}
+#errorCanvasser{
+color:red;
+}
+#errorManager{
+color:red;
+}
+
 
 #adminTd{
     vertical-align: middle;

@@ -84,9 +84,9 @@ def campaign_edit(request, cid):
         if roles[1]:
             data = {
                 'role': roles,
-                'campaign': json.dumps(utils.get_campaign(uid, cid)),
-                'canvassers': json.dumps(utils.get_canvassers()),
-                'managers': json.dumps(utils.get_managers())
+                'campaign': utils.get_campaign(uid, cid),
+                'canvassers': utils.get_canvassers(),
+                'managers': utils.get_managers()
             }
             return render(request, 'campaign_edit.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))

@@ -10,13 +10,127 @@
     var locations = new Array();
     var startDate = new Array();
     var endDate = new Array();
+    var allCanvassers = new Array();
+    var allManagers = new Array();
+
+    $(document).ready(function(){
+        $(".canvassersInfo").each(function() {
+
+            allCanvassers.push($( this ).text());
+        });
+
+    });
+
+    $(document).ready(function(){
+        $(".managersInfo").each(function() {
+            allManagers.push($(this).text());
+
+        });
+
+    });
+
+    $(document).on('click', '.delete-user-canvasser', function() {
+        var str = $(this).parent().text().split(" ");
+        var user = str[0];
+
+        for(var i = 0; i < canvassers.length;i++){
+
+                if(canvassers[i] == user){
+                    canvassers.splice(i);
+                    break;
+                }
+        }
+        $(this).parent().remove();
+
+    });
+
+    $(document).on('click', '.add-user-canvasser', function() {
+            var found = 0;
+            var exists = 0;
+            var str = $(this).parent().text().split("\n");
+            var user = str[0];
+
+            for(var i = 0; i < canvassers.length;i++){
+
+                if(canvassers[i] == user){
+                    exists = 1;
+                    break;
+                }
+            }
+            for(var i = 0; i < allCanvassers.length;i++){
+                if(allCanvassers[i] == user){
+                    canvassers.push(user);
+                    found = 1;
+                    break;
+                }
+            }
+            if(found == 1 && exists ==0){
+                $("#canvassers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>'+"</li>");
+                $("#successCanvasser").html("User added!");
+                $("#errorCanvasser").html("");
+            }
+            else if(found == 1 && exists ==1){
+                $("#errorCanvasser").html("User already Added!");
+                $("#successCanvasser").html("");
+            }
+            else{
+                $("#errorCanvasser").html("Invalid User!");
+                $("#successCanvasser").html("");
+            }
+
+    });
 
 
-    $(document).on('click', '.float-right', function() {
-        var str = $(this).parent().text().split("\n");
+    $(document).on('click', '.delete-user-manager', function() {
+        var str = $(this).parent().text().split(" ");
         var user = str[0];
         $(this).parent().remove();
-        alert(user);
+
+        for(var i = 0; i < managers.length;i++){
+
+                if(managers[i] == user){
+                    managers.splice(i);
+                    break;
+                }
+        }
+
+    });
+
+    $(document).on('click', '.add-user-manager', function() {
+            var found = 0;
+            var exists = 0;
+            var str = $(this).parent().text().split("\n");
+            var user = str[0];
+
+
+            for(var i = 0; i < managers.length;i++){
+
+                if(managers[i] == user){
+                    exists = 1;
+                    break;
+                }
+            }
+            for(var i = 0; i < allManagers.length;i++){
+                if(allManagers[i] == user){
+                    managers.push(user);
+                    found = 1;
+                    break;
+                }
+            }
+            if(found == 1 && exists ==0){
+                $("#managers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-manager float-right"> X</button>'+"</li>");
+                $("#successManager").html("User added!");
+                $("#errorManager").html("");
+            }
+            else if(found == 1 && exists ==1){
+                $("#errorManager").html("User already Added!");
+                $("#successManager").html("");
+            }
+            else{
+                $("#errorManager").html("Invalid User!");
+                $("#successManager").html("");
+            }
+
     });
 
     $(document).ready(function(){
@@ -40,8 +154,6 @@
         });
     });
 
-    var obj = {{campaign|safe}};
-
 
     $(document).ready(function(){
         var start = obj.start_date;
@@ -64,8 +176,6 @@
         $("#name").val(obj.name);
     });
 
-    var startDate = new Array();
-    var endDate = new Array();
     $( document ).ready(function() {
         $(function() {
             startDate = [];
@@ -85,77 +195,19 @@
         });
      });
 
-    $(document).ready(function(){
-        $("#addCanvasser").click(function () {
-            var found = 0;
-            var exists = 0;
-            for(var i = 0; i < canvassers.length;i++){
-                if(canvassers[i] == $("#canvasserAdd").val()){
-                    exists = 1;
-                    break;
-                }
-            }
-            for(var i = 0; i < canObj.length;i++){
-                if(canObj[i].email == $("#canvasserAdd").val()){
-                    canvassers.push(canObj[i].email);
-                    found = 1;
-                    break;
-                }
-            }
-            if(found == 1 && exists ==0){
-                $("#listCanvassers").append('<div class = "container">'+'<li class ="list_item">'+$("#canvasserAdd").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
-                $("#errorCanvasser").html("User added!");
-            }
-            else if(found == 1 && exists ==1){
-                $("#errorCanvasser").html("User already Added!");
-            }
-            else{
-                $("#errorCanvasser").html("Invalid User!");
-            }
-        })
-    });
-
-
-
-    $(document).ready(function(){
-        $("#addManager").click(function () {
-            var found = 0;
-            var exists = 0;
-            for(var i = 0; i < managers.length;i++){
-                if(managers[i] == $("#managerAdd").val()){
-                    exists = 1;
-                    break;
-                }
-            }
-            for(var i = 0; i < manObj.length;i++){
-                if(manObj[i].email == $("#managerAdd").val()){
-                    managers.push(manObj[i].email);
-                    found = 1;
-                    break;
-                }
-            }
-            if(found == 1 && exists ==0){
-                $("#listManagers").append('<div class = "container">'+'<li class ="list_item">'+$("#managerAdd").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
-                $("#errorManager").html("User added!");
-            }
-            else if(found == 1 && exists ==1){
-                $("#errorManager").html("User already Added!");
-            }
-            else{
-                $("#errorManager").html("Invalid User!");
-            }
-        })
-    });
 
 
     $(document).ready(function () {
         $("#saveCamp").click(function () {
+            var duration = parseFloat($("#visitDuration").val());
+
             $.ajax({
                 type: "POST",
                 url: "/api/manager/campaigns/"+obj.id+"/edit",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"campaign":{"name": $("#name").val()}}),
+                data:  JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints.toString(),
+                                      "locations" : locations,"questions": questions.toString(), "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
                     alert(JSON.stringify(result));
 
@@ -181,37 +233,20 @@
 
 <body>
 <div class="jumbotron">
-    <div class="container">
 
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <div class="container">
-                <div class="navbar-header">
+<ul class = "getInfo">
+    {% for item in canvassers%}
+    <li class = "canvassersInfo">{{item.email}}</li>
+    {%endfor%}
+</ul>
 
-                    <div class="collapse navbar-collapse" id="menu1">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item" id="showManager"><a class="nav-link" href="/campaigns">Manager</a></li>
-                            <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/canvasser">Canvasser</a>
-                            </li>
-                        </ul>
-                    </div>
+    <ul class = "getInfo">
+    {% for item in managers%}
+     <li class = "managersInfo">{{item.email}}</li>
+    {%endfor%}
+</ul>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse">
-
-                    </button>
-                </div>
-
-                <div class="collapse navbar-collapse" id="menu">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link" href="/campaigns">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
-                        <li id="logout" class="nav-item"><a class="nav-link" href="#">Sign out</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-
-
+{{campaign}}
     <div class="container">
         <br>
         <h2><span class="createHead">
@@ -230,7 +265,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Campaign Name</span>
                             </div>
-                            <input id="name" type="text" class="form-control" value={{campaign.name}}>
+                            <input id="camName" type="text" class="form-control" value={{campaign.name}}>
                         </div>
                     </div>
                     <br>
@@ -270,29 +305,35 @@
                     <br>
 
                     <p id="errorCanvasser"></p>
+                    <p id="successCanvasser"></p>
                     <div class="form-group row">
-                        <div class="input-group">
-                            <div class="input-group col-4">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="canAdd">Add Canvassers</span>
-                                </div>
-                                <input id="canvasserAdd" type="text" class="form-control">
-                                <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button" id="addCanvasser">Add</button>
-                                </div>
 
-                            </div>
+                                                <div class="form-group">
+                            <h5><label class = "campaignLabel" for="canvassers">Available Canvassers:</label></h5>
+
+                            <ol class="list-group" id="allCanvassers">
+                                {% for item in canvassers %}
+
+                                <li class="list-group-item">{{item.email}}
+                                    <button type="button" class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
+                                                class="fa fa-arrow-right"></i></button>
+                                </li>
+
+                                {% endfor %}
+
+                            </ol>
 
                         </div>
 
                         <div class="padding_adds"></div>
                         <div class="form-group">
 
-                            <h5><label for="canvassers">Canvassers for this Campaign:</label></h5>
+                            <label class = "campaignLabel" for="canvassers">Campaign's Canvassers:</label>
                             <ul class="list-group" id="canvassers">
-                                {% for item in canvassers %}
-                                <li class="list-group-item list-group-item-dark">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
+
+                                {% for item in campaign.canvassers %}
+                                <li class="list-group-item">{{item.email}}
+                                    <button type="button" class="btn btn-secondary btn-sm float-right"> X</button>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -301,32 +342,46 @@
                     </div>
 
                     <p id="errorManager"></p>
+                    <p id="successManager"></p>
 
                     <div class="form-group row">
-                        <div class="input-group">
-                            <div class="input-group col-4">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="manAdd">Add Managers</span>
-                                </div>
-                                <input type="text" class="form-control" id="managerAdd">
-                                <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button" id="addManager">Add</button>
-                                </div>
-                            </div>
-                        </div>
+                                                <div class="form-group">
+                            <h5><label class = "campaignLabel" for="managers">Available Managers:</label></h5>
 
-
-                        <div class="padding_adds"></div>
-                        <div class="form-group">
-                            <h5><label for="managers">Managers for this Campaign:</label></h5>
-                            <ul class="list-group" id="managers">
+                            <ol class="list-group" id="allManagers">
                                 {% for item in managers %}
-                                <li class="list-group-item list-group-item-dark">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
+
+                                <li class="list-group-item">{{item.email}}
+                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right"><i
+                                                class="fa fa-arrow-right"></i></button>
                                 </li>
+
                                 {% endfor %}
-                            </ul>
+
+                            </ol>
+
                         </div>
+
+                         <div class="padding_adds"></div>
+
+                        <div class="form-group">
+                            <h5><label class = "campaignLabel" for="canvassers">Campaign's Managers:</label></h5>
+
+                            <ul class="list-group" id="managers">
+                                {% for item in campaign.managers %}
+                                    {{item}}
+                                <li class="list-group-item">{{item.email}}
+                                    <button type="button" id = "x" class="btn btn-secondary btn-sm delete-user-manager float-right"> X</button>
+                                </li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        </div>
+
+
+
                     </div>
 
                     <div class="form-group row">

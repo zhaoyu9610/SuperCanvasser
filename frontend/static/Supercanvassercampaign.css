@@ -30,8 +30,10 @@ h1 {
   width: 25%;
 }
 .list-group{
+
     max-height: 200px;
-    margin-bottom: 10px;
+    width: 300px;
+    padding:10px !important;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
 }
@@ -44,7 +46,7 @@ h1 {
     color: #2E2E2E;
 }
 .padding_adds {
-    padding-right:550px;
+    padding-right:150px;
     padding-bottom:0px;
 
 }
@@ -54,6 +56,12 @@ color:red;
 #errorManager{
 color:red;
 }
+#successManager{
+color:green;
+}
+#successCanvasser{
+color:green;
+}
 
 
 #adminTd{
@@ -62,6 +70,24 @@ color:red;
 
 
 }
+
+.getInfo{
+display: none;
+
+}
+.campaignLabel{
+font-size:20px;
+padding-top:5px;
+padding-left:10px;
+color:#2E2E2E;
+
+}
+
+.list-group-item{
+border-color:#2E2E2E !important;
+ background-color: transparent !important;
+ }
+
 #managerTd{
     vertical-align: middle;
     text-align: center;
@@ -74,10 +100,7 @@ color:red;
 
 
 }
-.space{
 
-
-}
 form-group{
     padding-right:20px;
 
@@ -110,6 +133,12 @@ label {
 }
 .currentCampaign{
     color:#212121;
+}
+.prependInput{
+    max-height:38px;
+}
+.appendButton{
+max-height:38px;
 }
 
 .jumbotron{

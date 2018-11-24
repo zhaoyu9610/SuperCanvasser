@@ -68,8 +68,8 @@ def campaign_create(request):
         if roles[1]:
             data = {
                 'role': roles,
-                'canvassers': json.dumps(utils.get_canvassers()),
-                'managers': json.dumps(utils.get_managers())
+                'canvassers': utils.get_canvassers(),
+                'managers': utils.get_managers()
             }
             return render(request, 'campaign_create.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))

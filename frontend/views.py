@@ -204,7 +204,7 @@ def canvass(request):
             assignment, questions = utils.canvasser_get_next(uid)
             if assignment and assignment.date.date == datetime.date.today():
                 return render(request, 'canvass.html', {'role': roles,
-                                                        'assignment': assignment,
+                                                        'assignment': assignment.dict(),
                                                         'geo': utils.get_geo(assignment['locations']),
                                                         'questions': questions})
             else:

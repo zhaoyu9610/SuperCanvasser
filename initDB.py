@@ -8,14 +8,6 @@ django.setup()
 
 from backend import models
 
-for month in [11, 12]:
-    for day in range(31):
-        try:
-            dt = date(year=2018, month=month, day=day+1)
-            models.CampaignDate.objects.update_or_create(date=dt)
-        except ValueError as e:
-            pass
-
 admin, _ = models.User.objects.update_or_create(
     email='admin@admin.com',
     password='admin',
@@ -31,6 +23,8 @@ manager, _ = models.User.objects.update_or_create(
     canvasser=False,
 )
 
+canvasser_id = []
+
 for i in range(12):
     canvasser, _ = models.User.objects.update_or_create(
         email='canvasser{}@canvasser.com'.format(i),
@@ -39,6 +33,17 @@ for i in range(12):
         manager=False,
         canvasser=True,
     )
+    canvasser_id.append(canvasser.id)
+
+for month in [11, 12]:
+    for day in range(31):
+        try:
+            dt = date(year=2018, month=month, day=day + 1)
+            dtobj, _ = models.CampaignDate.objects.update_or_create(date=dt)
+            for id in canvasser_id:
+                models.Availability.objects.create(**{'date': dtobj, 'canvasser_id': id})
+        except ValueError as e:
+            pass
 
 models.Parameter.objects.update_or_create(name='hours', value=8)
 models.Parameter.objects.update_or_create(name='speed', value=60)

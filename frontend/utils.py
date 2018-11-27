@@ -68,7 +68,7 @@ def find_closet(result):
     for a in result:
         if is_smallest(a, result):
             print("current assignment found")
-            return a.dict(), a.campaign.questions
+            return a, a.campaign.questions
 
 
 def is_smallest(a, result):

@@ -132,12 +132,13 @@ class Assignment(models.Model):
         return self.campaign.__str__() + ' ' + str(self.id)
 
 
-class Result(models.Model):
+class LocationResult(models.Model):
     id = models.AutoField(primary_key=True)
     number_of_people = models.IntegerField(verbose_name='The number of people spoke to', default=0)
     rating = models.IntegerField(verbose_name='rating', default=0)
     answers = models.TextField(verbose_name='answers', default='[]')
     notes = models.TextField(verbose_name='brief note', default='')
+    result = models.TextField(verbose_name='result', default='[]')
 
     assignment = models.ForeignKey(to='Assignment', to_field='id', on_delete=models.SET_DEFAULT, default=None, verbose_name='Assignment')
     location = models.ForeignKey(to='Location', to_field='id', verbose_name='Location', on_delete=models.SET_DEFAULT, default=None)
@@ -148,3 +149,18 @@ class Result(models.Model):
 
     def __str__(self):
         return self.assignment.__str__() + ' result'
+
+
+class CampaignResult(models.Model):
+    id = models.AutoField(primary_key=True)
+
+    campaign = models.ForeignKey(to='Campaign', to_field='id', on_delete=models.CASCADE, verbose_name='Campaign')
+    location_result = models.ManyToManyField(to='LocationResult', verbose_name='location result')
+    result = models.TextField(verbose_name='result')
+
+    def dict(self):
+        return {'id': self.id, 'assignment': self.campaign.dict(), 'location_result': [a.dict() for a in self.locations.all()],
+                'result': self.result}
+
+    def __str__(self):
+        return self.campaign.__str__() + ' result'

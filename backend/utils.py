@@ -2,6 +2,7 @@ import json
 from django.http import HttpResponse
 from . import models
 import logging
+import datetime
 
 logger = logging.getLogger('django')
 
@@ -54,12 +55,23 @@ def get_user(users):
 def add_locations(locations):
     result = []
     for l in locations:
-        number, street, city, state, zipcode = l.replace(' ', '').split(',')
+        number, street, city, state, zipcode = l.split(',')
         location, _ = models.Location.objects.update_or_create(
-            street=number + ' ' + street,
-            city=city,
-            state=state,
-            zipcode=zipcode
+            street=number.strip() + ' ' + street.strip(),
+            city=city.strip(),
+            state=state.strip(),
+            zipcode=zipcode.strip()
         )
         result.append(location.id)
+    return result
+
+
+def get_dates(dates):
+    result = []
+    for start, end in dates:
+        d1 = datetime.date(start[0], start[1], start[2])
+        d2 = datetime.date(end[0], end[1], end[2])
+        delta = d2 - d1
+        for i in range(delta.days + 1):
+            result.append(d1 + datetime.timedelta(i))
     return result

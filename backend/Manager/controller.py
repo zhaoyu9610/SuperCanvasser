@@ -66,14 +66,23 @@ class ManagerHandler:
             uid = request.COOKIES['cookie']
             if utils.check_manager(uid):
                 if 'end_date' in campaign_dict:
-                    d = campaign_dict['end_date']
-                    campaign_dict['end_date'] = datetime.date(d[0], d[1], d[2])
+                    if len(campaign_dict['end_date']) > 0:
+                        d = campaign_dict['end_date']
+                        campaign_dict['end_date'] = datetime.date(d[0], d[1], d[2])
+                    else:
+                        campaign_dict.pop('end_date')
                 if 'start_date' in campaign_dict:
-                    d = campaign_dict['start_date']
-                    campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                    if len(campaign_dict['start_date']) > 0:
+                        d = campaign_dict['start_date']
+                        campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                    else:
+                        campaign_dict.pop('start_date')
+                if campaign_dict['duration'] is None:
+                    campaign_dict.pop('duration')
                 locations = campaign_dict.pop('locations', [])
                 managers = campaign_dict.pop('managers', [])
                 canvassers = campaign_dict.pop('canvassers', [])
+                print(campaign_dict)
                 campaign = models.Campaign.objects.create(**campaign_dict)
                 managers.append(uid)
                 campaign.managers.set(managers)

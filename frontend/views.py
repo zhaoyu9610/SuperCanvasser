@@ -103,7 +103,7 @@ def campaign_assignments(request, cid):
                 'role': roles,
                 'assignments': utils.get_assignments(uid, cid)
             }
-            return render(request, 'assignments1.html', data)
+            return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')
@@ -121,7 +121,7 @@ def campaign_result(request, cid):
                 'result': json.dumps(utils.get_result(uid, cid)),
                 'campaign': utils.get_campaign(uid, cid)
             }
-            return render(request, 'result1.html', data)
+            return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')
@@ -138,7 +138,7 @@ def campaign_assignment(request, cid, aid):
                 'assignment': assignment,
                 'geo': utils.get_geo(assignment['locations'])
             }
-            return render(request, 'assignment1.html', data)
+            return render(request, 'assignment.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')
@@ -158,7 +158,7 @@ def canvasser_assignments(request):
         if roles[2]:
             data = {'role': roles, 'assignments': utils.get_canvasser_assignments(uid)}
             print(data)
-            return render(request, 'assignments1.html', data)
+            return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')
@@ -176,7 +176,7 @@ def canvasser_assignment(request, aid):
                 'geo': utils.get_geo(assignment['locations'])
             }
             print(data)
-            return render(request, 'assignment1.html', data)
+            return render(request, 'assignment.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
     else:
         return redirect('login')
@@ -189,7 +189,7 @@ def current_assignment(request):
         if roles[2]:
             assignment = utils.canvasser_get_next(uid)
             if assignment:
-                return render(request, 'assignment1.html', {'role': roles, 'assignment': assignment, 'geo': utils.get_geo(assignment['locations'])})
+                return render(request, 'assignment.html', {'role': roles, 'assignment': assignment, 'geo': utils.get_geo(assignment['locations'])})
             else:
                 return generate_error(request, "No current assignment")
         return render(request, 'error.html', utils.generate_error_data(request, ''))
@@ -205,7 +205,8 @@ def admin(request):
             data = {
                'settings': utils.get_settings(),
                 'users':utils.get_users(),
-                'role': utils.get_roles(uid)
+                'role': utils.get_roles(uid),
+                'units': ['', '']
             }
             data['users'] = json.dumps(data['users'])
             data['settings'] = json.dumps(data['settings'])

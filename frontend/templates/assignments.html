@@ -1,3 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for assignment in assignments %}
+        <p>Assignment: {{assignment.id}}</p><br>
+        <p>Duration: {{assignment.duration}}</p><br>
+        <p>Date: {{assignment.date.date}}</p><br>
+        <p>Canvasser: {{assignment.canvassers.id}}</p><br>
+        <p>Number of locations: {{ assignment.locations|length }}</p><br>
+        <a href="assignments/{{ assignment.id }}">Detail</a>
+        <hr>
+    {% endfor %}
+{% endblock %}
+
+
+
 <!doctype html>
 {% load static %}
 <html lang="en">
@@ -55,6 +71,7 @@
 
 
 </head>
+
 
 
 <body>

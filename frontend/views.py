@@ -95,10 +95,13 @@ def campaign_assignments(request, cid):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[1]:
+            assignments = utils.get_assignments(uid, cid)
             data = {
                 'role': roles,
-                'assignments': utils.get_assignments(uid, cid)
+                'assignments': assignments
             }
+            if len(assignments) == 0:
+                return render(request, 'error.html', utils.generate_error_data(request, 'No assignments for current campaign, please generate assignment first'))
             return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note manager'))
     else:

@@ -29,13 +29,31 @@
 
     });
 
+    $(document).ready(function(){
+        $(".camManagers").each(function() {
+            var man = $(this).text().split("\n");
+            managers.push(man[0]);
+
+        });
+    });
+
+    $(document).ready(function(){
+        $(".camCanvassers").each(function() {
+            var can = $(this).text().split("\n");
+            canvassers.push(can[0]);
+
+
+        });
+
+    });
+
     $(document).on('click', '.delete-user-canvasser', function() {
         var str = $(this).parent().text().split(" ");
         var user = str[0];
 
         for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] == user){
+                if(canvassers[i] = user){
                     canvassers.splice(i);
                     break;
                 }
@@ -52,15 +70,17 @@
 
             for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] == user){
+                if(canvassers[i] = user){
                     exists = 1;
                     break;
                 }
             }
             for(var i = 0; i < allCanvassers.length;i++){
-                if(allCanvassers[i] == user){
-                    canvassers.push(user);
+                if(allCanvassers[i] = user){
                     found = 1;
+                    if(exists == 0){
+                        canvassers.push(user);
+                    }
                     break;
                 }
             }
@@ -86,9 +106,10 @@
         var user = str[0];
         $(this).parent().remove();
 
+
         for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] == user){
+                if(managers[i] = user){
                     managers.splice(i);
                     break;
                 }
@@ -102,18 +123,19 @@
             var str = $(this).parent().text().split("\n");
             var user = str[0];
 
-
             for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] == user){
-                    exists = 1;
+                if(managers[i] = user){
+                    exists= 1;
                     break;
                 }
             }
             for(var i = 0; i < allManagers.length;i++){
-                if(allManagers[i] == user){
-                    managers.push(user);
+                if(allManagers[i] = user){
                     found = 1;
+                    if(exists == 0){
+                        managers.push(user);
+                    }
                     break;
                 }
             }
@@ -133,14 +155,65 @@
 
     });
 
+
+    $(document).ready(function(){
+        $("#addTalk").click(function () {
+            talkingPoints.push($("#talkPoints").val());
+            alert(talkingPoints);
+            $("#talkingP").append('<li class ="list-group-item">'+$("#talkPoints").val() +'<button type="button" class="btn btn-secondary btn-sm delete-talk float-right">X</button>'+"</li>");
+            })
+    });
+
     $(document).ready(function(){
         $("#addLocation").click(function () {
             locations = ($('#listofLocations').val().split('\n'));
             for(var i = 0; i <locations.length;i++){
-                $("#locations").append('<div class = "container">'+'<li class ="list_item">'+ locations[i] +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+                $("#listLocations").append('<li class ="list-group-item">'+ locations[i] +'<button type="button" class="btn btn-secondary btn-sm delete-location float-right">X</button>'+"</li>");
             }
             })
     });
+
+    $(document).ready(function(){
+        $("#addQuestion").click(function () {
+            questions.push($("#insertQ").val());
+            $("#questions").append('<li class = "list-group-item">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary btn-sm delete-question float-right">X</button>'+"</li>");
+            })
+    });
+
+    $(document).on('click', '.delete-talk', function() {
+        var str = $(this).parent().text().split(" ");
+        var point = str[0];
+        $(this).parent().remove();
+        alert(talkingPoints);
+
+        for(var i = 0; i < talkingPoints.length;i++){
+
+                if(talkingPoints[i] = point){
+                    talkingPoints.splice(i);
+                    alert(talkingPoints);
+
+                    break;
+                }
+        }
+
+    });
+
+    $(document).on('click', '.delete-question', function() {
+        var str = $(this).parent().text().split(" ");
+        var q = str[0];
+        $(this).parent().remove();
+
+        for(var i = 0; i < questions.length;i++){
+
+                if(questions[i] = q){
+                    questions.splice(i);
+
+                    break;
+                }
+        }
+
+    });
+
 
     $(document).ready(function () {
         $("#logout").click(function () {
@@ -155,26 +228,26 @@
     });
 
 
-    $(document).ready(function(){
-        var start = obj.start_date;
-        var end = obj.end_date;
-        var startDate = start[1] + "/" +start[2] +"/"+ start[0];
-        var endDate = end[1] + "/" +end[2] +"/"+ end[0];
-        var fullDate = startDate + " - " + endDate;
-        $("#currentCampaign").html(obj.name);
-        $("#name").val(obj.name);
-        $("#date").val(fullDate);
-        alert(startDate);
-        $("#startD").val(startDate);
-        $("#endD").val(endDate);
-        $("#visitDuration").val(obj.duration);
+    <!--$(document).ready(function(){-->
+        <!--var start = obj.start_date;-->
+        <!--var end = obj.end_date;-->
+        <!--var startDate = start[1] + "/" +start[2] +"/"+ start[0];-->
+        <!--var endDate = end[1] + "/" +end[2] +"/"+ end[0];-->
+        <!--var fullDate = startDate + " - " + endDate;-->
+        <!--$("#currentCampaign").html(obj.name);-->
+        <!--$("#name").val(obj.name);-->
+        <!--$("#date").val(fullDate);-->
+        <!--alert(startDate);-->
+        <!--$("#startD").val(startDate);-->
+        <!--$("#endD").val(endDate);-->
+        <!--$("#visitDuration").val(obj.duration);-->
 
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-    });
+        <!--$("#name").val(obj.name);-->
+        <!--$("#name").val(obj.name);-->
+        <!--$("#name").val(obj.name);-->
+        <!--$("#name").val(obj.name);-->
+        <!--$("#name").val(obj.name);-->
+    <!--});-->
 
     $( document ).ready(function() {
         $(function() {
@@ -206,8 +279,8 @@
                 url: "/api/manager/campaigns/"+obj.id+"/edit",
                 contentType: "application/json",
                 dataType: "json",
-                data:  JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints.toString(),
-                                      "locations" : locations,"questions": questions.toString(), "canvassers" : canvassers,"managers": managers}}),
+                data:  JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
+                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
                     alert(JSON.stringify(result));
 
@@ -226,27 +299,24 @@
 
 
 
+
 </script>
 
-</head>
 
-
-<body>
 <div class="jumbotron">
 
-<ul class = "getInfo">
-    {% for item in canvassers%}
-    <li class = "canvassersInfo">{{item.email}}</li>
-    {%endfor%}
-</ul>
+    <ul class="getInfo">
+        {% for item in canvassers%}
+        <li class="canvassersInfo">{{item.email}}</li>
+        {%endfor%}
+    </ul>
 
-    <ul class = "getInfo">
-    {% for item in managers%}
-     <li class = "managersInfo">{{item.email}}</li>
-    {%endfor%}
-</ul>
+    <ul class="getInfo">
+        {% for item in managers%}
+        <li class="managersInfo">{{item.email}}</li>
+        {%endfor%}
+    </ul>
 
-{{campaign}}
     <div class="container">
         <br>
         <h2><span class="createHead">
@@ -308,15 +378,16 @@
                     <p id="successCanvasser"></p>
                     <div class="form-group row">
 
-                                                <div class="form-group">
-                            <h5><label class = "campaignLabel" for="canvassers">Available Canvassers:</label></h5>
+                        <div class="form-group">
+                            <h5><label class="campaignLabel" for="canvassers">Available Canvassers:</label></h5>
 
                             <ol class="list-group" id="allCanvassers">
                                 {% for item in canvassers %}
 
                                 <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
-                                                class="fa fa-arrow-right"></i></button>
+                                    <button type="button"
+                                            class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
+                                            class="fa fa-arrow-right"></i></button>
                                 </li>
 
                                 {% endfor %}
@@ -328,12 +399,12 @@
                         <div class="padding_adds"></div>
                         <div class="form-group">
 
-                            <label class = "campaignLabel" for="canvassers">Campaign's Canvassers:</label>
+                            <label class="campaignLabel" for="canvassers">Campaign's Canvassers:</label>
                             <ul class="list-group" id="canvassers">
 
                                 {% for item in campaign.canvassers %}
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm float-right"> X</button>
+                                <li class="list-group-item camCanvassers">{{item.email}}
+                                    <button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -345,14 +416,15 @@
                     <p id="successManager"></p>
 
                     <div class="form-group row">
-                                                <div class="form-group">
-                            <h5><label class = "campaignLabel" for="managers">Available Managers:</label></h5>
+                        <div class="form-group">
+                            <h5><label class="campaignLabel" for="managers">Available Managers:</label></h5>
 
                             <ol class="list-group" id="allManagers">
                                 {% for item in managers %}
 
                                 <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right"><i
+                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right">
+                                        <i
                                                 class="fa fa-arrow-right"></i></button>
                                 </li>
 
@@ -362,16 +434,19 @@
 
                         </div>
 
-                         <div class="padding_adds"></div>
+                        <div class="padding_adds"></div>
 
                         <div class="form-group">
-                            <h5><label class = "campaignLabel" for="canvassers">Campaign's Managers:</label></h5>
+                            <h5><label class="campaignLabel" for="canvassers">Campaign's Managers:</label></h5>
 
                             <ul class="list-group" id="managers">
-                                {% for item in campaign.managers %}
-                                    {{item}}
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" id = "x" class="btn btn-secondary btn-sm delete-user-manager float-right"> X</button>
+
+                                {% for item in campaign.manager %}
+
+                                <li class="list-group-item camManagers">{{item.email}}
+                                    <button type="button" id="x"
+                                            class="btn btn-secondary btn-sm delete-user-manager float-right"> X
+                                    </button>
                                 </li>
 
                                 {% endfor %}
@@ -379,7 +454,6 @@
                             </ul>
 
                         </div>
-
 
 
                     </div>
@@ -419,7 +493,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="talking">Add Talking Point</span>
                             </div>
-                            <input type="text" class="form-control" id="insertTalk">
+                            <input type="text" class="form-control" id="talkPoints">
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button" id="addTalk">Add</button>
                             </div>

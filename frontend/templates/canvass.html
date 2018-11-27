@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+
+    $(document).ready(function () {
+        $("#logout").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/logout",
+                success: function (result) {
+                    window.location.href ="/";
+                }
+            });
+        });
+    });
+
+</script>
+
+<div class="jumbotron">
+
+
+</div>
+{% endblock %}
+

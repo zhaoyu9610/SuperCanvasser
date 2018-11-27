@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <script>
+<script>
 
     var talkingPoints = new Array();
     var questions = new Array();
@@ -13,7 +13,7 @@
     var allCanvassers = new Array();
     var allManagers = new Array();
 
-        $(document).ready(function(){
+    $(document).ready(function(){
         $(".canvassersInfo").each(function() {
 
             allCanvassers.push($( this ).text());
@@ -35,7 +35,7 @@
 
         for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] == user){
+                if(canvassers[i] = user){
                     canvassers.splice(i);
                     break;
                 }
@@ -53,13 +53,13 @@
 
             for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] == user){
+                if(canvassers[i] = user){
                     exists = 1;
                     break;
                 }
             }
             for(var i = 0; i < allCanvassers.length;i++){
-                if(allCanvassers[i] == user){
+                if(allCanvassers[i] = user){
                     canvassers.push(user);
                     found = 1;
                     break;
@@ -90,7 +90,7 @@
 
         for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] == user){
+                if(managers[i] = user){
                     managers.splice(i);
                     break;
                 }
@@ -107,13 +107,13 @@
 
             for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] == user){
+                if(managers[i] = user){
                     exists = 1;
                     break;
                 }
             }
             for(var i = 0; i < allManagers.length;i++){
-                if(allManagers[i] == user){
+                if(allManagers[i] = user){
                     managers.push(user);
                     found = 1;
                     break;
@@ -206,16 +206,17 @@
         $("#submitCamp").click(function () {
 
             var duration = parseFloat($("#visitDuration").val());
-            alert(locations);
+
             $.ajax({
                 type: "POST",
                 url: "/api/manager/campaigns/create",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints.toString(),
-                                      "locations" : locations,"questions": questions.toString(), "canvassers" : canvassers,"managers": managers}}),
+                data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
+                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
-                   alert(JSON.stringify(result))
+                   alert(JSON.stringify(result));
+                   window.location.href ="/campaigns";
 
                 }
             });
@@ -225,23 +226,22 @@
 
 
 
-    </script>
 
-
+</script>
 
 
 <div class="jumbotron">
-    <ul class = "getInfo">
-    {% for item in canvassers%}
-    <li class = "canvassersInfo">{{item.email}}</li>
-    {%endfor%}
-</ul>
+    <ul class="getInfo">
+        {% for item in canvassers%}
+        <li class="canvassersInfo">{{item.email}}</li>
+        {%endfor%}
+    </ul>
 
-    <ul class = "getInfo">
-    {% for item in managers%}
-     <li class = "managersInfo">{{item.email}}</li>
-    {%endfor%}
-</ul>
+    <ul class="getInfo">
+        {% for item in managers%}
+        <li class="managersInfo">{{item.email}}</li>
+        {%endfor%}
+    </ul>
 
     <div class="container">
         <br>
@@ -249,205 +249,205 @@
         Create Campaign
         </span></h2>
         <hr/>
-                <br>
-                <form id="creatingCamp">
-                    <div class="form-group row">
-                        <div class="input-group col-8">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Campaign Name</span>
-                            </div>
-                            <input type="text" class="form-control" id="camName" required>
-                        </div>
+        <br>
+        <form id="creatingCamp">
+            <div class="form-group row">
+                <div class="input-group col-8">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Campaign Name</span>
                     </div>
-                    <br>
-                    <div class="form-group row">
-                        <div class="input-group col-5">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="camCalendar"><i class="fa fa-calendar"></i></span>
-                            </div>
-                            <input type="text" id="date" class="form-control">
-                        </div>
-                        <div class="input-group col-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="camDuration">Visit Duration [Hrs.]</span>
-                            </div>
-                            <input type="text" id="visitDuration" class="form-control">
-                        </div>
+                    <input type="text" class="form-control" id="camName" required>
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <div class="input-group col-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="camCalendar"><i class="fa fa-calendar"></i></span>
                     </div>
-
-                    <div class="form-group row">
-                        <div class="input-group col-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="startDate">From</span>
-                            </div>
-                            <input type="text" id="startD" class="form-control">
-                        </div>
-                        <div class="input-group col-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="endDate">To</span>
-                            </div>
-                            <input type="text" id="endD" class="form-control">
-                        </div>
-
+                    <input type="text" id="date" class="form-control">
+                </div>
+                <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="camDuration">Visit Duration [Hrs.]</span>
                     </div>
-                    <br>
+                    <input type="text" id="visitDuration" class="form-control">
+                </div>
+            </div>
 
-                                       <p id="errorCanvasser"></p>
-                    <p id="successCanvasser"></p>
-                    <div class="form-group row">
-
-                                                <div class="form-group">
-                            <h5><label class = "campaignLabel" for="canvassers">Available Canvassers:</label></h5>
-
-                            <ol class="list-group" id="allCanvassers">
-                                {% for item in canvassers %}
-
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
-                                                class="fa fa-arrow-right"></i></button>
-                                </li>
-
-                                {% endfor %}
-
-                            </ol>
-
-                        </div>
-
-                        <div class="padding_adds"></div>
-                        <div class="form-group">
-
-                            <label class = "campaignLabel" for="canvassers">Campaign's Canvassers:</label>
-                            <ul class="list-group" id="canvassers">
-
-                                {% for item in campaign.canvassers %}
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm float-right"> X</button>
-                                </li>
-                                {% endfor %}
-                            </ul>
-
-                        </div>
+            <div class="form-group row">
+                <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="startDate">From</span>
                     </div>
-
-                    <p id="errorManager"></p>
-                    <p id="successManager"></p>
-
-                    <div class="form-group row">
-                                                <div class="form-group">
-                            <h5><label class = "campaignLabel" for="managers">Available Managers:</label></h5>
-
-                            <ol class="list-group" id="allManagers">
-                                {% for item in managers %}
-
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right"><i
-                                                class="fa fa-arrow-right"></i></button>
-                                </li>
-
-                                {% endfor %}
-
-                            </ol>
-
-                        </div>
-
-                         <div class="padding_adds"></div>
-
-                        <div class="form-group">
-                            <h5><label class = "campaignLabel" for="canvassers">Campaign's Managers:</label></h5>
-
-                            <ul class="list-group" id="managers">
-                                {% for item in campaign.managers %}
-                                    {{item}}
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" id = "x" class="btn btn-secondary btn-sm delete-user-manager float-right"> X</button>
-                                </li>
-
-                                {% endfor %}
-
-                            </ul>
-
-                        </div>
-
-
-
+                    <input type="text" id="startD" class="form-control">
+                </div>
+                <div class="input-group col-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="endDate">To</span>
                     </div>
+                    <input type="text" id="endD" class="form-control">
+                </div>
 
+            </div>
+            <br>
 
+            <p id="errorCanvasser"></p>
+            <p id="successCanvasser"></p>
+            <div class="form-group row">
 
-                    <div class="form-group row">
-                        <div class="input-group col-7">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="locationLabel">Add Locations</span>
-                            </div>
-                            <textarea id = "listofLocations" class="form-control"></textarea>
-                                                        <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button" id="addLocation">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
+                <div class="form-group">
+                    <h5><label class="campaignLabel" for="canvassers">Available Canvassers:</label></h5>
 
-                    </div>
-                    <div class="form-group">
-                        <h5><label for="listLocations">Locations:</label></h5>
-                        <ul class="list-group" id="listLocations">
-                        </ul>
+                    <ol class="list-group" id="allCanvassers">
+                        {% for item in canvassers %}
 
-                    </div>
+                        <li class="list-group-item">{{item.email}}
+                            <button type="button" class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
+                                    class="fa fa-arrow-right"></i></button>
+                        </li>
 
+                        {% endfor %}
 
-                    <br>
+                    </ol>
 
-                    <div class="form-group row">
-                        <div class="input-group col-7">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="talking">Add Talking Point</span>
-                            </div>
-                            <input type="text" class="form-control" id="insertTalk">
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button" id="addTalk">Add</button>
-                            </div>
+                </div>
 
-                        </div>
-                    </div>
-                    <div class="text_limit">
-                        <div class="form-group">
-                            <h5><label for="talkPoints">Talking Points:</label></h5>
-                            <ul class="list-group list-group-flush" id="talkPoints">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="input-group col-7">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="questionsLabel">Add Question</span>
-                            </div>
-                            <input type="text" class="form-control" id="insertQ">
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button" id="addQuestion">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text_limit">
-                        <div class="form-group">
-                            <h5><label for="questions">Questionnaire:</label></h5>
-                            <ul class="list-group" id="questions">
-                            </ul>
-                        </div>
-                    </div>
+                <div class="padding_adds"></div>
+                <div class="form-group">
 
+                    <label class="campaignLabel" for="canvassers">Campaign's Canvassers:</label>
+                    <ul class="list-group" id="canvassers">
 
-                </form>
+                        {% for item in campaign.canvassers %}
+                        <li class="list-group-item">{{item.email}}
+                            <button type="button" class="btn btn-secondary btn-sm float-right"> X</button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+
+            <p id="errorManager"></p>
+            <p id="successManager"></p>
+
+            <div class="form-group row">
+                <div class="form-group">
+                    <h5><label class="campaignLabel" for="managers">Available Managers:</label></h5>
+
+                    <ol class="list-group" id="allManagers">
+                        {% for item in managers %}
+
+                        <li class="list-group-item">{{item.email}}
+                            <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right"><i
+                                    class="fa fa-arrow-right"></i></button>
+                        </li>
+
+                        {% endfor %}
+
+                    </ol>
+
+                </div>
+
+                <div class="padding_adds"></div>
+
+                <div class="form-group">
+                    <h5><label class="campaignLabel" for="canvassers">Campaign's Managers:</label></h5>
+
+                    <ul class="list-group" id="managers">
+                        {% for item in campaign.managers %}
+                        {{item}}
+                        <li class="list-group-item">{{item.email}}
+                            <button type="button" id="x"
+                                    class="btn btn-secondary btn-sm delete-user-manager float-right"> X
+                            </button>
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
 
             </div>
 
-                   <div id="center">
 
-                                <button id="submitCamp" class="btn btn-block btn-dark btn-secondary" type="button">Save
-                                    Campaign
-                                </button>
-
+            <div class="form-group row">
+                <div class="input-group col-7">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="locationLabel">Add Locations</span>
                     </div>
+                    <textarea id="listofLocations" class="form-control"></textarea>
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button" id="addLocation">Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+
+            </div>
+            <div class="form-group">
+                <h5><label for="listLocations">Locations:</label></h5>
+                <ul class="list-group" id="listLocations">
+                </ul>
+
+            </div>
+
+
+            <br>
+
+            <div class="form-group row">
+                <div class="input-group col-7">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="talking">Add Talking Point</span>
+                    </div>
+                    <input type="text" class="form-control" id="insertTalk">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button" id="addTalk">Add</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="text_limit">
+                <div class="form-group">
+                    <h5><label for="talkPoints">Talking Points:</label></h5>
+                    <ul class="list-group list-group-flush" id="talkPoints">
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="input-group col-7">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="questionsLabel">Add Question</span>
+                    </div>
+                    <input type="text" class="form-control" id="insertQ">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button" id="addQuestion">Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text_limit">
+                <div class="form-group">
+                    <h5><label for="questions">Questionnaire:</label></h5>
+                    <ul class="list-group" id="questions">
+                    </ul>
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+
+    <div id="center">
+
+        <button id="submitCamp" class="btn btn-block btn-dark btn-secondary" type="button">Save
+            Campaign
+        </button>
+
+    </div>
 
 </div>
 

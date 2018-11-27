@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from backend.utils import generate_error
 from . import utils
 import json
+import datetime
 
 
 def login(request):
@@ -34,7 +34,7 @@ def campaigns(request):
                 'campaigns': utils.get_campaigns(uid)
             }
             return render(request, 'campaigns.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:
         return redirect('login')
 
@@ -52,7 +52,7 @@ def campaign(request, cid):
             }
             print(data['geo'])
             return render(request, 'campaign.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are note manager'))
     else:
         return redirect('login')
 
@@ -68,7 +68,7 @@ def campaign_create(request):
                 'managers': utils.get_managers()
             }
             return render(request, 'campaign_create.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:
         return redirect('login')
 
@@ -85,7 +85,7 @@ def campaign_edit(request, cid):
                 'managers': utils.get_managers()
             }
             return render(request, 'campaign_edit.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:
         return redirect('login')
 
@@ -100,14 +100,12 @@ def campaign_assignments(request, cid):
                 'assignments': utils.get_assignments(uid, cid)
             }
             return render(request, 'assignments.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are note manager'))
     else:
         return redirect('login')
 
 
 def campaign_result(request, cid):
-    print(request.COOKIES)
-    print(utils.get_roles(cid))
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
@@ -118,7 +116,7 @@ def campaign_result(request, cid):
                 'campaign': utils.get_campaign(uid, cid)
             }
             return render(request, 'result.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:
         return redirect('login')
 
@@ -133,30 +131,25 @@ def campaign_assignment(request, cid, aid):
                 'role': roles,
                 'assignment': assignment,
                 'geo': utils.get_geo(assignment['locations']),
-                'questions': utils.get_questions(aid)
+                'questions': utils.get_questions(aid),
+                'canvass': False
             }
             return render(request, 'assignment.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:
         return redirect('login')
 
 
-def campaign_result(request, cid):
-    pass
-
-
 def canvasser_assignments(request):
     if 'cookie' in request.COOKIES:
-        print("asdfasdfasdf")
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
-        print("asdfasdfasdfasdf")
         print(roles)
         if roles[2]:
             data = {'role': roles, 'assignments': utils.get_canvasser_assignments(uid)}
             print(data)
             return render(request, 'assignments.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))
     else:
         return redirect('login')
 
@@ -171,11 +164,12 @@ def canvasser_assignment(request, aid):
                 'role': roles,
                 'assignment': assignment,
                 'geo': utils.get_geo(assignment['locations']),
-                'questions': utils.get_questions(aid)
+                'questions': utils.get_questions(aid),
+                'canvass': False
             }
             print(data)
             return render(request, 'assignment.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))
     else:
         return redirect('login')
 
@@ -190,10 +184,29 @@ def current_assignment(request):
                 return render(request, 'assignment.html', {'role': roles,
                                                            'assignment': assignment,
                                                            'geo': utils.get_geo(assignment['locations']),
-                                                           'questions': questions})
+                                                           'questions': questions,
+                                                           'canvass': True})
             else:
-                return generate_error(request, "No current assignment")
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+                return render(request, 'error.html', utils.generate_error_data(request, 'No current assignment'))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))
+    else:
+        return redirect('login')
+
+
+def canvass(request):
+    if 'cookie' in request.COOKIES:
+        uid = request.COOKIES['cookie']
+        roles = utils.get_roles(uid)
+        if roles[2]:
+            assignment, questions = utils.canvasser_get_next(uid)
+            if assignment and assignment.date.date == datetime.date.today():
+                return render(request, 'canvass.html', {'role': roles,
+                                                        'assignment': assignment,
+                                                        'geo': utils.get_geo(assignment['locations']),
+                                                        'questions': questions})
+            else:
+                return render(request, 'error.html', utils.generate_error_data(request, "No assignment to canvass today"))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))
     else:
         return redirect('login')
 
@@ -212,6 +225,6 @@ def admin(request):
             data['users'] = json.dumps(data['users'])
             data['settings'] = json.dumps(data['settings'])
             return render(request, 'admin.html', data)
-        return render(request, 'error.html', utils.generate_error_data(request, ''))
+        return render(request, 'error.html', utils.generate_error_data(request, 'You are not admin'))
     else:
         return redirect('login')

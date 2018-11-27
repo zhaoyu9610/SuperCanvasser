@@ -14,4 +14,5 @@ urlpatterns = [
     path('assignments', views.canvasser_assignments, name='table for assignments for a canvasser'),
     path('assignments/<int:aid>', views.canvasser_assignment, name='view page for an assignment'),
     path('assignments/current', views.current_assignment, name='view page for current assignment'),
+    path('assignments/canvass', views.canvass, name='canvass the current assignment'),
     path('admin', views.admin, name='home page for admin')]

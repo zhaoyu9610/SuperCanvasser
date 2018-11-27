@@ -3,7 +3,8 @@ import datetime
 
 
 def generate_error_data(request, msg):
-    return {}
+    return {'msg': msg,
+            'url': request.build_absolute_uri()}
 
 
 def get_roles(uid):

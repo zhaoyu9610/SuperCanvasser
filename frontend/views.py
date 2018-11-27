@@ -24,10 +24,6 @@ def account(request):
         return redirect('login')
 
 
-def signup(request):
-    return render(request, 'signup.html', {})
-
-
 def campaigns(request):
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
@@ -136,7 +132,8 @@ def campaign_assignment(request, cid, aid):
             data = {
                 'role': roles,
                 'assignment': assignment,
-                'geo': utils.get_geo(assignment['locations'])
+                'geo': utils.get_geo(assignment['locations']),
+                'questions': utils.get_questions(aid)
             }
             return render(request, 'assignment.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, ''))
@@ -173,7 +170,8 @@ def canvasser_assignment(request, aid):
             data = {
                 'role': roles,
                 'assignment': assignment,
-                'geo': utils.get_geo(assignment['locations'])
+                'geo': utils.get_geo(assignment['locations']),
+                'questions': utils.get_questions(aid)
             }
             print(data)
             return render(request, 'assignment.html', data)
@@ -187,9 +185,12 @@ def current_assignment(request):
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[2]:
-            assignment = utils.canvasser_get_next(uid)
+            assignment, questions = utils.canvasser_get_next(uid)
             if assignment:
-                return render(request, 'assignment.html', {'role': roles, 'assignment': assignment, 'geo': utils.get_geo(assignment['locations'])})
+                return render(request, 'assignment.html', {'role': roles,
+                                                           'assignment': assignment,
+                                                           'geo': utils.get_geo(assignment['locations']),
+                                                           'questions': questions})
             else:
                 return generate_error(request, "No current assignment")
         return render(request, 'error.html', utils.generate_error_data(request, ''))

@@ -30,17 +30,13 @@ class ManagerHandler:
                 campaign = models.Campaign.objects.filter(id=id, managers__id=uid)
                 if 'managers' in campaign_dict:
                     managers = campaign_dict.pop('managers', [])
-                    managers.apped(uid)
-                    campaign.managers.set(managers)
+                    campaign.managers.set(utils.get_user(managers))
                 if 'canvassers' in campaign_dict:
                     canvassers = campaign_dict.pop('canvassers', [])
-                    campaign.canvassers.set(canvassers)
+                    campaign.canvassers.set(utils.get_user(canvassers))
                 if 'locations' in campaign_dict:
                     locations = campaign_dict.pop('locations', [])
-                    location_id = []
-                    for l in locations:
-                        loc = models.Location.objects.create(**l)
-                        location_id.append(loc.id)
+                    location_id = utils.add_locations(locations)
                     campaign.locations.set(location_id)
                 if 'end_date' in campaign_dict:
                     d = campaign_dict['end_date']
@@ -82,16 +78,10 @@ class ManagerHandler:
                 locations = campaign_dict.pop('locations', [])
                 managers = campaign_dict.pop('managers', [])
                 canvassers = campaign_dict.pop('canvassers', [])
-                print(campaign_dict)
                 campaign = models.Campaign.objects.create(**campaign_dict)
-                managers.append(uid)
-                campaign.managers.set(managers)
-                campaign.canvassers.set(canvassers)
-                location_id = []
-                for l in locations:
-                    loc = models.Location.objects.create(**l)
-                    location_id.append(loc.id)
-                campaign.locations.set(location_id)
+                campaign.managers.set(utils.get_user(managers))
+                campaign.canvassers.set(utils.get_user(canvassers))
+                campaign.locations.set(utils.add_locations(locations))
                 return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not manager')

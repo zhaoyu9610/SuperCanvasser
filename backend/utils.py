@@ -42,3 +42,24 @@ def check_manager(uid):
 def check_canvasser(uid):
     user = models.User.objects.get(id=uid)
     return user.canvasser
+
+
+def get_user(users):
+    result = []
+    for u in users:
+        result.append(models.User.objects.filter(email=u).get().id)
+    return result
+
+
+def add_locations(locations):
+    result = []
+    for l in locations:
+        number, street, city, state, zipcode = l.replace(' ', '').split(',')
+        location, _ = models.Location.objects.update_or_create(
+            street=number + ' ' + street,
+            city=city,
+            state=state,
+            zipcode=zipcode
+        )
+        result.append(location.id)
+    return result

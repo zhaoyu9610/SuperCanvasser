@@ -49,13 +49,13 @@ def get_assignment(uid, cid, aid):
 
 
 def canvasser_get_assignment(uid, aid):
-    assignment = models.Assignment.objects.filter(id=aid).get()
+    assignment = models.Assignment.objects.filter(canvasser_id=uid, id=aid).get()
     return assignment.dict()
 
 
 def canvasser_get_next(uid):
     result = []
-    for a in models.Assignment.objects.filter().all():
+    for a in models.Assignment.objects.filter(canvasser_id=uid).all():
         if a.date.date >= datetime.date.today():
             result.append(a)
     return find_closet(result)
@@ -63,11 +63,11 @@ def canvasser_get_next(uid):
 
 def find_closet(result):
     if not result:
-        return None
+        return None, None
     for a in result:
         if is_smallest(a, result):
             print("current assignment found")
-            return a.dict()
+            return a.dict(), a.campaign.questions
 
 
 def is_smallest(a, result):
@@ -125,3 +125,7 @@ def get_canvasser_assignments(uid):
     for assignment in models.Assignment.objects.filter(canvasser_id=uid).all():
         result.append(assignment.dict())
     return result
+
+
+def get_questions(aid):
+    return models.Assignment.objects.filter(id=aid).get().campaign.questions.split('\n')

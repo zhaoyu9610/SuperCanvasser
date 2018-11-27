@@ -25,12 +25,10 @@ def logout(request):
     return utils.generate_error(request, 'Not logged in')
 
 
-@csrf_exempt
-def signup(request):
-    return handler.signup(request)
-
-
 def update_account(request):
     return handler.update_account(request)
 
 
+# @csrf_exempt
+# def signup(request):
+#     return handler.signup(request)

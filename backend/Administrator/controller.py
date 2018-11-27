@@ -3,34 +3,6 @@ import json
 
 
 class AdministratorHandler:
-    def users(self, request):
-        if 'cookie' in request.COOKIES:
-            uid = request.COOKIES['cookie']
-            if utils.check_admin(uid):
-                result = []
-                users = models.User.objects.all()
-                for user in users:
-                    result.append(user.dict())
-                return utils.generate_response(request, {'users': result})
-            else:
-                return utils.generate_error(request, 'Not admin')
-        else:
-            return utils.generate_error(request, 'Not logged in')
-
-    def parameters(self, request):
-        if 'cookie' in request.COOKIES:
-            uid = request.COOKIES['cookie']
-            if utils.check_admin(uid):
-                result = []
-                parameters = models.Parameter.objects.all()
-                for parameter in parameters:
-                    result.append(parameter.dict())
-                return utils.generate_response(request, {'parameters': result})
-            else:
-                return utils.generate_error(request, 'Not admin')
-        else:
-            return utils.generate_error(request, 'Not logged in')
-
     def user_edit(self, request):
         try:
             body = json.loads(request.body)
@@ -68,3 +40,31 @@ class AdministratorHandler:
                 return utils.generate_error(request, 'Not admin')
         else:
             return utils.generate_error(request, 'Not logged in')
+
+    # def users(self, request):
+    #     if 'cookie' in request.COOKIES:
+    #         uid = request.COOKIES['cookie']
+    #         if utils.check_admin(uid):
+    #             result = []
+    #             users = models.User.objects.all()
+    #             for user in users:
+    #                 result.append(user.dict())
+    #             return utils.generate_response(request, {'users': result})
+    #         else:
+    #             return utils.generate_error(request, 'Not admin')
+    #     else:
+    #         return utils.generate_error(request, 'Not logged in')
+    #
+    # def parameters(self, request):
+    #     if 'cookie' in request.COOKIES:
+    #         uid = request.COOKIES['cookie']
+    #         if utils.check_admin(uid):
+    #             result = []
+    #             parameters = models.Parameter.objects.all()
+    #             for parameter in parameters:
+    #                 result.append(parameter.dict())
+    #             return utils.generate_response(request, {'parameters': result})
+    #         else:
+    #             return utils.generate_error(request, 'Not admin')
+    #     else:
+    #         return utils.generate_error(request, 'Not logged in')

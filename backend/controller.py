@@ -22,21 +22,6 @@ class ApplicationHandler:
         else:
             return utils.generate_error(request, 'No such user')
 
-    def signup(self, request):
-        try:
-            body = json.loads(request.body)
-            email = body['email']
-            password = body['password']
-        except Exception as e:
-            return utils.generate_error(request, 'Parameter error')
-        user = {'email': email, 'password': password}
-        user_obj = models.User.objects.create(**user)
-        try:
-            user_obj.save()
-        except Exception as e:
-            return utils.generate_error(request, 'Email already used')
-        return utils.generate_response(request, {})
-
     def update_account(self, request):
         try:
             body = json.loads(request.body)
@@ -50,3 +35,18 @@ class ApplicationHandler:
             return utils.generate_response(request, {})
         else:
             return utils.generate_error(request, 'Not logged in')
+
+    # def signup(self, request):
+    #     try:
+    #         body = json.loads(request.body)
+    #         email = body['email']
+    #         password = body['password']
+    #     except Exception as e:
+    #         return utils.generate_error(request, 'Parameter error')
+    #     user = {'email': email, 'password': password}
+    #     user_obj = models.User.objects.create(**user)
+    #     try:
+    #         user_obj.save()
+    #     except Exception as e:
+    #         return utils.generate_error(request, 'Email already used')
+    #     return utils.generate_response(request, {})

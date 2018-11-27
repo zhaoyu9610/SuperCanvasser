@@ -35,7 +35,7 @@
 
         for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] == user){
+                if(canvassers[i] = user){
                     canvassers.splice(i);
                     break;
                 }
@@ -53,13 +53,13 @@
 
             for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] == user){
+                if(canvassers[i] = user){
                     exists = 1;
                     break;
                 }
             }
             for(var i = 0; i < allCanvassers.length;i++){
-                if(allCanvassers[i] == user){
+                if(allCanvassers[i] = user){
                     canvassers.push(user);
                     found = 1;
                     break;
@@ -90,7 +90,7 @@
 
         for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] == user){
+                if(managers[i] = user){
                     managers.splice(i);
                     break;
                 }
@@ -107,13 +107,13 @@
 
             for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] == user){
+                if(managers[i] = user){
                     exists = 1;
                     break;
                 }
             }
             for(var i = 0; i < allManagers.length;i++){
-                if(allManagers[i] == user){
+                if(allManagers[i] = user){
                     managers.push(user);
                     found = 1;
                     break;
@@ -212,8 +212,8 @@
                 url: "/api/manager/campaigns/create",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints.toString(),
-                                      "locations" : locations,"questions": questions.toString(), "canvassers" : canvassers,"managers": managers}}),
+                data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
+                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
                    alert(JSON.stringify(result));
                    window.location.href ="/campaigns";

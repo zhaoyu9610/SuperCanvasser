@@ -226,27 +226,24 @@
 
 
 
+
 </script>
 
-</head>
 
-
-<body>
 <div class="jumbotron">
 
-<ul class = "getInfo">
-    {% for item in canvassers%}
-    <li class = "canvassersInfo">{{item.email}}</li>
-    {%endfor%}
-</ul>
+    <ul class="getInfo">
+        {% for item in canvassers%}
+        <li class="canvassersInfo">{{item.email}}</li>
+        {%endfor%}
+    </ul>
 
-    <ul class = "getInfo">
-    {% for item in managers%}
-     <li class = "managersInfo">{{item.email}}</li>
-    {%endfor%}
-</ul>
+    <ul class="getInfo">
+        {% for item in managers%}
+        <li class="managersInfo">{{item.email}}</li>
+        {%endfor%}
+    </ul>
 
-{{campaign}}
     <div class="container">
         <br>
         <h2><span class="createHead">
@@ -308,15 +305,16 @@
                     <p id="successCanvasser"></p>
                     <div class="form-group row">
 
-                                                <div class="form-group">
-                            <h5><label class = "campaignLabel" for="canvassers">Available Canvassers:</label></h5>
+                        <div class="form-group">
+                            <h5><label class="campaignLabel" for="canvassers">Available Canvassers:</label></h5>
 
                             <ol class="list-group" id="allCanvassers">
                                 {% for item in canvassers %}
 
                                 <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
-                                                class="fa fa-arrow-right"></i></button>
+                                    <button type="button"
+                                            class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
+                                            class="fa fa-arrow-right"></i></button>
                                 </li>
 
                                 {% endfor %}
@@ -328,7 +326,7 @@
                         <div class="padding_adds"></div>
                         <div class="form-group">
 
-                            <label class = "campaignLabel" for="canvassers">Campaign's Canvassers:</label>
+                            <label class="campaignLabel" for="canvassers">Campaign's Canvassers:</label>
                             <ul class="list-group" id="canvassers">
 
                                 {% for item in campaign.canvassers %}
@@ -345,14 +343,15 @@
                     <p id="successManager"></p>
 
                     <div class="form-group row">
-                                                <div class="form-group">
-                            <h5><label class = "campaignLabel" for="managers">Available Managers:</label></h5>
+                        <div class="form-group">
+                            <h5><label class="campaignLabel" for="managers">Available Managers:</label></h5>
 
                             <ol class="list-group" id="allManagers">
                                 {% for item in managers %}
 
                                 <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right"><i
+                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right">
+                                        <i
                                                 class="fa fa-arrow-right"></i></button>
                                 </li>
 
@@ -362,16 +361,19 @@
 
                         </div>
 
-                         <div class="padding_adds"></div>
+                        <div class="padding_adds"></div>
 
                         <div class="form-group">
-                            <h5><label class = "campaignLabel" for="canvassers">Campaign's Managers:</label></h5>
+                            <h5><label class="campaignLabel" for="canvassers">Campaign's Managers:</label></h5>
 
                             <ul class="list-group" id="managers">
-                                {% for item in campaign.managers %}
-                                    {{item}}
+
+                                {% for item in campaign.manager %}
+
                                 <li class="list-group-item">{{item.email}}
-                                    <button type="button" id = "x" class="btn btn-secondary btn-sm delete-user-manager float-right"> X</button>
+                                    <button type="button" id="x"
+                                            class="btn btn-secondary btn-sm delete-user-manager float-right"> X
+                                    </button>
                                 </li>
 
                                 {% endfor %}
@@ -379,7 +381,6 @@
                             </ul>
 
                         </div>
-
 
 
                     </div>

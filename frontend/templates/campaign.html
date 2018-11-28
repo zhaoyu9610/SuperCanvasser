@@ -83,7 +83,15 @@
 
     $(document).ready(function() {
         $("#createAssignment").click(function () {
-            window.location.href="/api/manager/campaigns/"+obj.id +"/create_assignment";
+                $.ajax({
+                    type: "GET",
+                    url: "/api/manager/campaigns/"+obj.id+"/create_assignment",
+                    success: function (result) {
+                    alert(JSON.stringify(result));
+                    window.location.href="/campaigns/"+obj.id+"/assignments";
+
+                    }
+                });
         });
     });
 

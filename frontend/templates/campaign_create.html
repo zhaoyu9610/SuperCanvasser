@@ -135,7 +135,12 @@
 
     $(document).ready(function(){
         $("#addLocation").click(function () {
-            locations = ($('#listofLocations').val().split('\n'));
+            var temp = new Array();
+
+            temp = ($('#listofLocations').val().split('\n'));
+            for (var i = 0;i <temp.length;i++){
+                locations.push(temp[i]);
+            }
             for(var i = 0; i <locations.length;i++){
                 $("#listLocations").append('<li class ="list-group-item">'+ locations[i] +'<button type="button" class="btn btn-secondary float-right delete-location"> X</button>'+"</li>");
             }

@@ -118,7 +118,6 @@
 
 
 <div class="jumbotron">
-    {{questions}}
     <ul class="getInfo">
         {% for item in assignment.locations%}
         <li class="locationInfo">{{item.id}}</li>
@@ -190,8 +189,9 @@
                         {% for item in questions %}
                         <div class="assignQ">
                             <h5>Question: {{item}}</h5>
-                            <input type="radio" name="{{item}}" value="True"> True<br>
-                            <input type="radio" name="{{item}}" value="False"> False<br>
+                            <input type="radio" name="{{item}}" value="True"> Yes<br>
+                            <input type="radio" name="{{item}}" value="False"> No<br>
+                            <input type="radio" name="{{item}}" value="Null"> Undecided<br>
                         </div>
                         {% endfor%}
                         <br>

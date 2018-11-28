@@ -47,14 +47,16 @@
 
     });
 
-    $(document).on('click', '.delete-user-canvasser', function() {
+     $(document).on('click', '.delete-user-canvasser', function() {
         var str = $(this).parent().text().split(" ");
         var user = str[0];
+        alert("1"+user+"1");
+        alert("!"+canvassers[0]+"!");
 
         for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] = user){
-                    canvassers.splice(i);
+                if(canvassers[i] == user){
+                    canvassers.splice(i,1);
                     break;
                 }
         }
@@ -68,33 +70,27 @@
             var str = $(this).parent().text().split("\n");
             var user = str[0];
 
-            for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] = user){
+            for(var i = 0; i < canvassers.length;i++){
+                if(canvassers[i] == user){
                     exists = 1;
                     break;
                 }
             }
-            for(var i = 0; i < allCanvassers.length;i++){
-                if(allCanvassers[i] = user){
-                    found = 1;
-                    if(exists == 0){
-                        canvassers.push(user);
-                    }
-                    break;
-                }
-            }
-            if(found == 1 && exists ==0){
+
+            if(exists == 0){
+                alert(canvassers);
+                canvassers.push(user);
                 $("#canvassers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>'+"</li>");
                 $("#successCanvasser").html("User added!");
                 $("#errorCanvasser").html("");
             }
-            else if(found == 1 && exists ==1){
+            else if(exists == 1){
                 $("#errorCanvasser").html("User already Added!");
                 $("#successCanvasser").html("");
             }
             else{
-                $("#errorCanvasser").html("Invalid User!");
+                $("#errorCanvasser").html("Invalid Error");
                 $("#successCanvasser").html("");
             }
 
@@ -109,8 +105,8 @@
 
         for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] = user){
-                    managers.splice(i);
+                if(managers[i] == user){
+                    managers.splice(i,1);
                     break;
                 }
         }
@@ -118,33 +114,26 @@
     });
 
     $(document).on('click', '.add-user-manager', function() {
-            var found = 0;
             var exists = 0;
             var str = $(this).parent().text().split("\n");
             var user = str[0];
 
+
             for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] = user){
-                    exists= 1;
+                if(managers[i] == user){
+                    exists = 1;
                     break;
                 }
             }
-            for(var i = 0; i < allManagers.length;i++){
-                if(allManagers[i] = user){
-                    found = 1;
-                    if(exists == 0){
-                        managers.push(user);
-                    }
-                    break;
-                }
-            }
-            if(found == 1 && exists ==0){
+
+            if(exists ==0){
+                managers.push(user);
                 $("#managers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-manager float-right"> X</button>'+"</li>");
                 $("#successManager").html("User added!");
                 $("#errorManager").html("");
             }
-            else if(found == 1 && exists ==1){
+            else if(exists ==1){
                 $("#errorManager").html("User already Added!");
                 $("#successManager").html("");
             }
@@ -189,10 +178,25 @@
         for(var i = 0; i < talkingPoints.length;i++){
 
                 if(talkingPoints[i] = point){
-                    talkingPoints.splice(i);
+                    talkingPoints.splice(i,1);
                     alert(talkingPoints);
 
                     break;
+                }
+        }
+
+    });
+
+    $(document).on('click', '.delete-location', function() {
+        var str = $(this).parent().text().split(" X");
+        var loc = str[0];
+        $(this).parent().remove();
+
+        for(var i = 0; i < locations.length;i++){
+                if(locations[i] == loc){
+                    locations.splice(i,1);
+                    break;
+
                 }
         }
 
@@ -206,7 +210,7 @@
         for(var i = 0; i < questions.length;i++){
 
                 if(questions[i] = q){
-                    questions.splice(i);
+                    questions.splice(i,1);
 
                     break;
                 }
@@ -295,6 +299,7 @@
             window.location.href="/campaigns/"+obj.id+">" +"/assignments";
         });
     });
+
 
 
 
@@ -404,7 +409,9 @@
 
                                 {% for item in campaign.canvassers %}
                                 <li class="list-group-item camCanvassers">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>
+                                    <button type="button"
+                                            class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X
+                                    </button>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -423,9 +430,9 @@
                                 {% for item in managers %}
 
                                 <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right">
-                                        <i
-                                                class="fa fa-arrow-right"></i></button>
+                                    <button type="button"
+                                            class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
+                                            class="fa fa-arrow-right"></i></button>
                                 </li>
 
                                 {% endfor %}
@@ -443,10 +450,10 @@
 
                                 {% for item in campaign.manager %}
 
-                                <li class="list-group-item camManagers">{{item.email}}
-                                    <button type="button" id="x"
-                                            class="btn btn-secondary btn-sm delete-user-manager float-right"> X
-                                    </button>
+                                <li class="list-group-item">{{item.email}}
+                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right">
+                                        <i
+                                                class="fa fa-arrow-right"></i></button>
                                 </li>
 
                                 {% endfor %}

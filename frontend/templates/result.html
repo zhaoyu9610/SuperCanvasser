@@ -4,38 +4,64 @@
 <div class="jumbotron">
 
 {{result}}
-    {{campaign}}
-
         <hr>
     <br>
     <div class="form-group row">
 
         <div class="input-group col-4">
-            <h5>{{</h5>
+            <h5>{{campaign.name}} Result's</h5>
         </div>
 
     </div>
-    <br><br>
 
-    <table class="table table-hover results" id="camTable">
+    <table class="table table-hover results" id="overallTable">
+       <caption>{{campaign.name}} Result's</caption>
         <thead class="thead-dark">
+
         <tr>
-            <th scope="col">{{campaign.name}}</th>
             <th scope = "col">"Rating Avg"</th>
             <th scope = "col">"Rating Median"</th>
             <th scope = "col">"Rating Standard Deviation"</th>
 
         </tr>
-        </thead>
+     </thead>
+        <tbody id="addToTable">
         <tr>
-            <td></td>
             <td>{{result.rating_avg}}</td>
 
             <td>{{result.rating_sd}}</td>
 
             <td>{{result.rating_median}}</td>
         </tr>
-        <tbody id="addToTable">
+
+
+        </tbody>
+    </table>
+{{result.location}}
+
+    <table class="table table-hover results" id="resultsTable">
+       <caption>{{campaign.name}}'s individual loaction results</caption>
+        <thead class="thead-dark">
+
+        <tr>
+            <th scope = "col">"Locations"</th>
+            <th scope = "col">"# of participants"</th>
+            <th scope = "col">"Location rating"</th>
+            <th scope = "col">"Average Number yes"</th>
+
+        </tr>
+     </thead>
+        <tbody id="addResults">
+        {% for item in result.locations%}
+        <tr>
+
+            <td>{{item.0}}</td>
+
+            <td>{{item.1}}</td>
+            <td>{{item.2}}</td>
+
+        </tr>
+        {%endfor%}
 
         </tbody>
     </table>

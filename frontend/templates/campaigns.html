@@ -46,12 +46,13 @@
             <th scope="col">Your Campaigns</th>
         </tr>
         </thead>
+        <tbody id="addToTable">
         {% for item in campaigns %}
         <tr>
             <td><a href="/campaigns/{{item.id}}" class='campaignLink'>{{item.name}}</a></td>
         </tr>
         {% endfor %}
-        <tbody id="addToTable">
+
 
         </tbody>
     </table>

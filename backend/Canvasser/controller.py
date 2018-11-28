@@ -24,24 +24,27 @@ class CanvasserHandler:
 
     def submit(self, request):
         try:
+            print(request.body)
             body = json.loads(request.body)
-            data = body['data']
-            print(data)
+            id = body['id']
+            results = body['results']
+            print(id)
+            print(results)
         except Exception as e:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_canvasser(uid):
-                assignment = models.Assignment.objects.filter(id=data['id']).get()
-                for key, value in data['result'].items():
+                assignment = models.Assignment.objects.filter(id=id).get()
+                for r in results:
                     models.LocationResult.objects.create(
-                        **{'number_of_people': len(value['answer']),
-                           'rating': value['rating'],
-                           'answers': value['answer'],
-                           'notes': value['notes'],
-                           'result': utils.get_result(value['answer'], value['rating'], key),
+                        **{'number_of_people': len(r['answer']),
+                           'rating': r['rating'],
+                           'answers': r['answer'],
+                           'notes': r['notes'],
+                           'result': utils.get_result(r['answer'], r['rating'], r['id']),
                            'assignment_id': assignment.id,
-                           'location_id': key})
+                           'location_id': r['id']})
                     utils.check_assignment(assignment)
                 return utils.generate_response(request, {})
             else:

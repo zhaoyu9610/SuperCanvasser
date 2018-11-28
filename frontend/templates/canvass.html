@@ -98,10 +98,11 @@
 
     $(document).ready(function () {
         $("#completeAssignment").click(function (e) {
+            alert(JSON.stringify({"id":$("#assignId").text(), "results":allResults}));
             $.ajax({
                 type: "POST",
                 url: "/api/canvasser/submit",
-                data: JSON.stringify({"id":$("#assignID"), "results":allResults}),
+                data: JSON.stringify({"id":$("#assignId").text(), "results":allResults}),
                 success: function (result) {
                     alert(JSON.stringify(result));
                 }

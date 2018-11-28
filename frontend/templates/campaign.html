@@ -115,25 +115,24 @@
     <div class="container">
         <h1 id="currentCampaign" class="text-dark"></h1><hr/>
         <div class="row float-right">
-
             <div class="col">
-                <button id="createAssignment" class="btn btn-block btn-dark btn-secondary">Create Assignment</button>
+                <button id="createAssignment" class="btn btn-block btn-dark btn-secondary"
+                        {% if rules.0 %} disabled {% endif %}>Create Assignment</button>
             </div>
             <div class="col">
-                <button id="editCamp" class="btn btn-block btn-dark btn-secondary">Edit Campaign</button>
+                <button id="editCamp" class="btn btn-block btn-dark btn-secondary"
+                        {% if rules.0 %} disabled {% endif %}>Edit Campaign</button>
             </div>
             <div class="col">
                 <button id="viewAssignment" class="btn btn-block btn-dark btn-secondary">View Assignments</button>
             </div>
             <div class="col">
-                <button id="viewResults" class="btn btn-block btn-dark btn-secondary">View Results</button>
+                <button id="viewResults" class="btn btn-block btn-dark btn-secondary"
+                        {% if not rules.1 %} disabled {% endif %}>View Results</button>
             </div>
             <div class="col">
-
-                {% if 'start' in campaign %}
-                <button id="launch" class="btn btn-block btn-dark btn-secondary">Launch Campaign</button>
-
-                {% endif %}
+                <button id="launch" class="btn btn-block btn-dark btn-secondary"
+                        {% if rules.0 %} disabled {% endif %}>Launch Campaign</button>
             </div>
         </div>
         <br>
@@ -154,6 +153,17 @@
                             <input id="name" type="text" class="form-control" disabled>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="input-group col-8">
+                            <h5><label>Start: {{ rules.0 }}</label></h5>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="input-group col-8">
+                            <h5><label>Finish: {{ rules.1 }}</label></h5>
+                        </div>
+                    </div>
+
                     <br>
                     <div class="form-group row">
                         <div class="input-group col-5">

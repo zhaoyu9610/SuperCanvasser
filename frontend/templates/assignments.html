@@ -14,6 +14,7 @@
         <tr>
             <th scope="col">Campaign's Assignments</th>
             <th scope ="col">Number of Locations</th>
+            <th scope ="col">Finished</th>
         </tr>
         </thead>
         <tbody id = "addToTable">
@@ -22,6 +23,7 @@
 
             <td><a href="assignments/{{assignment.id}}" class='assignmentLink'>Assignment</a></td>
              <td>{{ assignment.locations|length }}</td>
+             <td>{{ assignment.finished }}</td>
         </tr>
          {% endfor %}
         </tbody>

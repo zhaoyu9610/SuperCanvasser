@@ -81,7 +81,7 @@ def get_dates(dates):
 
 flatten = lambda l: [item for sublist in l for item in sublist]
 
-same = lambda a, v:  int(a is v)
+same = lambda a, v:  int(a == v)
 
 def get_result(answer, rating, location, note):
     result = [[[same(c, 'True') for c in a], [same(c, 'False') for c in a], [same(c, 'Null') for c in a]] for a in answer]
@@ -133,4 +133,5 @@ def generate_campaign_result(campaign, results):
     campaign.median = result['rating_median']
     campaign.finish = True
     campaign.save()
+    print(result)
     return result

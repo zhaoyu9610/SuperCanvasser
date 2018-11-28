@@ -74,7 +74,7 @@ class Location(models.Model):
         if not self.lon or not self.lat:
             self.lon, self.lat = geoutils.generate_log_lat({'id': self.id, 'street': self.number + ' ' + self.street, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode,})
             self.save()
-        return {'id': self.id, 'number': self.number, 'street': self.street, 'unit': self.unit, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat, 'name': self.name()}
+        return {'id': self.id, 'number': self.number, 'street': self.street, 'unit': self.unit, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat}
 
     def __str__(self):
         return self.street + " " + self.state
@@ -100,7 +100,7 @@ class Campaign(models.Model):
 
     def dict(self):
         return {'id': self.id, 'name': self.name, 'talking_points': json.loads(self.talking_points), 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
-                'average': self.average, 'sd': self.sd, 'questions': json.loads(self.questions), 'manager': [a.dict() for a in self.managers.all()], 'canvassers': [a.dict() for a in self.canvassers.all()],
+                'average': self.average, 'sd': self.sd, 'questions': self.questions, 'manager': [a.dict() for a in self.managers.all()], 'canvassers': [a.dict() for a in self.canvassers.all()],
                 'locations': [a.dict() for a in self.locations.all()], 'start_date':  [self.start_date.year, self.start_date.month, self.start_date.day],
                 'end_date': [self.end_date.year, self.end_date.month, self.end_date.day]}
 
@@ -123,6 +123,7 @@ class Parameter(models.Model):
 class Assignment(models.Model):
     id = models.AutoField(primary_key=True)
     duration = models.FloatField(verbose_name='Duration')
+    finished = models.BooleanField(verbose_name='Finished', default=False)
 
     campaign = models.ForeignKey(to='Campaign', to_field='id', on_delete=models.CASCADE, verbose_name='Campaign')
     canvasser = models.ForeignKey(to='User', to_field='id', on_delete=models.PROTECT, verbose_name='Canvasser')
@@ -131,7 +132,7 @@ class Assignment(models.Model):
 
     def dict(self):
         return {'id': self.id, 'duration': self.duration, 'campaign': self.campaign.dict(), 'canvassers': self.canvasser.dict(),
-                'date': self.date.dict(), 'locations': [a.dict() for a in self.locations.all()]}
+                'date': self.date.dict(), 'locations': [a.dict() for a in self.locations.all()], 'finished': self.finished}
 
     def __str__(self):
         return self.campaign.__str__() + ' ' + str(self.id)

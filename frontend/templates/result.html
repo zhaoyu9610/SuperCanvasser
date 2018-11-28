@@ -17,26 +17,20 @@
     <table class="table table-hover results" id="overallTable">
        <caption>{{campaign.name}} Result's</caption>
         <thead class="thead-dark">
-
         <tr>
             <th scope = "col">"Rating Avg"</th>
             <th scope = "col">"Rating Median"</th>
             <th scope = "col">"Rating Standard Deviation"</th>
             <th scope = "col">"Total # People"</th>
-
         </tr>
      </thead>
         <tbody id="addToTable">
         <tr>
             <td>{{result.rating_avg}}</td>
-
             <td>{{result.rating_sd}}</td>
-
             <td>{{result.rating_median}}</td>
             <td>{{result.total_number_of_people}}</td>
         </tr>
-
-
         </tbody>
     </table>
 
@@ -44,7 +38,6 @@
     <table class="table table-hover results" id="resultsTable">
        <caption>{{campaign.name}}'s individual loaction results</caption>
         <thead class="thead-dark">
-
         <tr>
             <th scope = "col">"Locations"</th>
             <th scope = "col">"Number of People"</th>
@@ -52,7 +45,6 @@
             {% for item in questions%}
                 <th scope="col">{{item}}</th>
             {%endfor%}
-
         </tr>
      </thead>
         <tbody id="addResults">
@@ -61,8 +53,7 @@
             <td>{{item.0}}</td>
             <td>{{item.1}}</td>
             <td>{{item.2}}</td>
-            {%for i in item.3%}
-
+            {%for i in item.4%}
             <td>True: {{i.0}}, False: {{i.1}}, Undecided: {{i.2}}</td>
             {%endfor%}
         </tr>

@@ -15,8 +15,10 @@
     <hr/>
             <div class="row float-right">
             <div class="col">
-                {% if 'campaign' in assignment %}
-                <button id="startAssignment" class="btn btn-block btn-dark btn-secondary">Start Assignment</button>
+                {% if role.2 %}
+                    {% if canvass %}
+                        <button id="startAssignment" class="btn btn-block btn-dark btn-secondary">Start Assignment</button>
+                    {% endif %}
                 {% endif %}
 
             </div>
@@ -24,6 +26,13 @@
     <br>
 
     <div class="form-group">
+        <div class="input-group col-5">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="assignDur">Finished:</span>
+            </div>
+            <input id="duration" type="text" class="form-control" disabled value="{{assignment.finished}}">
+        </div>
+        <br>
         <div class="input-group col-5">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="assignDur">Assignment's Duration [hrs]:</span>

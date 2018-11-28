@@ -68,7 +68,9 @@ def find_closet(result):
         return None, None
     for a in result:
         if is_smallest(a, result):
-            return a, a.campaign.questions
+            if a.date.date == datetime.date.today():
+                return a, a.campaign.questions
+            return None, None
 
 
 def is_smallest(a, result):
@@ -138,3 +140,7 @@ def get_talking_points(aid):
 
 def get_result(cid):
     return models.CampaignResult.objects.filter(campaign_id=cid).get().result
+
+def get_rules(cid):
+    campaign = models.Campaign.objects.filter(id=cid).get()
+    return [campaign.start, campaign.finish]

@@ -49,8 +49,10 @@ def campaign(request, cid):
             data = {
                 'role': roles,
                 'campaign': json.dumps(campaign),
-                'geo': utils.get_geo(campaign['locations'])
+                'geo': utils.get_geo(campaign['locations']),
+                'rules': utils.get_rules(cid)
             }
+            print(data['rules'])
             return render(request, 'campaign.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note manager'))
     else:
@@ -119,8 +121,6 @@ def campaign_result(request, cid):
                 'result': json.loads(utils.get_result(cid)),
                 'questions': json.loads(models.Campaign.objects.filter(id=cid).get().questions)
             }
-            print('campaign_result')
-            print(data)
             return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:

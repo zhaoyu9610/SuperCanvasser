@@ -54,7 +54,6 @@ def generate_assignment(campaign_id):
     start_date_new = date_format(start_date)
     end_date_new = date_format(end_date)
     duration_list = []
-    print('speed: ', average_speed, 'duration: ', duration, 'max_hour: ', max_hour)
     while locations:
         start_location = secure_random.choice(locations)
         total_time = duration
@@ -64,15 +63,12 @@ def generate_assignment(campaign_id):
         while total_time < max_hour and locations:
             next_location, distance = select_next_location(locations, current_location)
             temp = total_time + distance / average_speed + duration
-            print(total_time, distance / average_speed + duration, total_time + distance / average_speed + duration)
             if temp <= max_hour:
-                print('add')
                 total_time = total_time + distance / average_speed + duration
                 current_assignment.append(next_location)
                 current_location = next_location
                 locations.remove(next_location)
             else:
-                print('start next assignment')
                 break
         assignment_list.append(current_assignment)
         duration_list.append(total_time)
@@ -123,7 +119,6 @@ def calculate_distance(start_location, location):
     inter_location = find_inter_location(start_location,location)
     d1 = calculate_distance_helper(start_location, inter_location)
     d2 = calculate_distance_helper(location, inter_location)
-    print(start_location['name'], d1, location['name'], d2, 'total', d1+d2)
     return d1+d2
 
 

@@ -68,7 +68,6 @@ def find_closet(result):
         return None, None
     for a in result:
         if is_smallest(a, result):
-            print("current assignment found")
             return a, a.campaign.questions
 
 

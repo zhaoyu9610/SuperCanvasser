@@ -50,7 +50,6 @@ def campaign(request, cid):
                 'campaign': json.dumps(campaign),
                 'geo': utils.get_geo(campaign['locations'])
             }
-            print(data['geo'])
             return render(request, 'campaign.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note manager'))
     else:
@@ -148,10 +147,8 @@ def canvasser_assignments(request):
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
-        print(roles)
         if roles[2]:
             data = {'role': roles, 'assignments': utils.get_canvasser_assignments(uid)}
-            print(data)
             return render(request, 'assignments.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))
     else:
@@ -172,7 +169,6 @@ def canvasser_assignment(request, aid):
                 'talking_points': utils.get_talking_points(aid),
                 'canvass': False
             }
-            print(data)
             return render(request, 'assignment.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))
     else:

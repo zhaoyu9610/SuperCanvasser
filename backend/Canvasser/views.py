@@ -7,3 +7,10 @@ handler = controller.CanvasserHandler()
 @csrf_exempt
 def edit_availability(request):
     return handler.edit_availability(request)
+
+
+@csrf_exempt
+def submit(request):
+    return handler.submit(request)
+
+

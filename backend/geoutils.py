@@ -3,14 +3,23 @@ from . import models
 import random
 import numpy as np
 import datetime
+import requests
 
 geolocator = Nominatim(user_agent="SuperCanvasser404")
 
+key = "AIzaSyCWyA_zlCq4-liVwQBMIuWUWcid5H4vmfs"
+search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
 def generate_log_lat(location):
-    address = location['street'] +' '+ location['city'] +' '+ location['state'] +' '+ location['zipcode']
-    geolocation = geolocator.geocode(address)
-    return geolocation.longitude, geolocation.latitude
+    # address = location['street'] + ' '+ location['state'] + ' ' + location['zipcode']
+    # print(address)
+    # geolocation = geolocator.geocode(address)
+    # return geolocation.longitude, geolocation.latitude
+    search_payload = {"key": key, "query": location['street'] + ' '+ location['state'] + ' ' + location['zipcode']}
+    search_req = requests.get(search_url, params=search_payload)
+    search_json = search_req.json()  # json representation of the data
+    loc = search_json["results"][0]["geometry"]["location"]
+    return loc['lng'], loc['lat']
 
 
 def date_format(date):

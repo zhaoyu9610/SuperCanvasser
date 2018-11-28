@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from . import models
 import logging
 import datetime
+import statistics
+import numpy as np
 
 logger = logging.getLogger('django')
 
@@ -55,9 +57,11 @@ def get_user(users):
 def add_locations(locations):
     result = []
     for l in locations:
-        number, street, city, state, zipcode = l.split(',')
+        number, street, unit, city, state, zipcode = l.split(',')
         location, _ = models.Location.objects.update_or_create(
-            street=number.strip() + ' ' + street.strip(),
+            number=number.strip(),
+            street=street.strip(),
+            unit=unit.strip(),
             city=city.strip(),
             state=state.strip(),
             zipcode=zipcode.strip()
@@ -74,4 +78,56 @@ def get_dates(dates):
         delta = d2 - d1
         for i in range(delta.days + 1):
             result.append(d1 + datetime.timedelta(i))
+    return result
+
+
+def get_result(answer, rating, location):
+    result = [[int(c) for c in a] for a in answer]
+    total = [sum(a) for a in result]
+    n = np.array(result)
+    question_total = n.sum(axis=0).tolist()
+    number = len(total)
+    return json.dumps({'total': number,
+                       'question_sum': question_total,
+                       'rating': rating,
+                       'people_sum': total,
+                       'location': location})
+
+
+def check_assignment(assignment):
+    if len(models.LocationResult.objects.filter(campaign_id=assignment.campaign_id).all()) == len(models.Campaign.objects.filter(id=assignment.campaign_id).get().locations.all()):
+        results = []
+        location_result_id = []
+        for location_result in models.LocationResult.objects.filter(campaign_id=assignment.campaign_id).all():
+            results.append(json.loads(location_result.result))
+            location_result_id.append(location_result.id)
+        result = generate_campaign_result(assignment.campaign, results)
+        r, _ = models.CampaignResult.objects.update_or_create(
+            **{'campaign_id': assignment.campaign_id,
+               'result': json.dumps(result)})
+        r.location_result.set(location_result_id)
+
+
+def generate_campaign_result(campaign, results):
+    total = [a['total'] for a in results]
+    question_sum = np.array([a['question_sum'] for a in results]).sum(axis=0).tolist()
+    rating = [a['rating'] for a in results]
+    flatten = lambda l: [item for sublist in l for item in sublist]
+    people_sum = [a['people_sum'] for a in results]
+    people_sum = flatten(people_sum)
+    np_people_sum = np.array(people_sum)
+    locations = [a['location'] for a in results]
+    np_rating = np.array(rating)
+    result = {'rating_avg': np_rating.mean(),
+                'rating_sd': np_rating.std(),
+                'rating_median': np.median(np_rating),
+                'locations': list(zip(locations, rating, total, question_sum)),
+                'people_avg': np_people_sum.mean(),
+                'people_sd': np_people_sum.std(),
+                'people_median': np.median(np_people_sum)}
+    campaign.median = result['rating_avg']
+    campaign.sd = result['rating_sd']
+    campaign.median = result['rating_median']
+    campaign.finish = True
+    campaign.save()
     return result

@@ -74,7 +74,7 @@ class Location(models.Model):
         if not self.lon or not self.lat:
             self.lon, self.lat = geoutils.generate_log_lat({'id': self.id, 'street': self.number + ' ' + self.street, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode,})
             self.save()
-        return {'id': self.id, 'number': self.number, 'street': self.street, 'unit': self.unit, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat}
+        return {'id': self.id, 'number': self.number, 'street': self.street, 'unit': self.unit, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode, 'longitude': self.lon, 'latitude': self.lat, 'name': self.name()}
 
     def __str__(self):
         return self.street + " " + self.state

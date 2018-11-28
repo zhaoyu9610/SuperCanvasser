@@ -196,19 +196,20 @@ def current_assignment(request):
         return redirect('login')
 
 
-def canvass(request):
+def canvass(request, aid):
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
         if roles[2]:
-            assignment, questions = utils.canvasser_get_next(uid)
-            if assignment:
-                return render(request, 'canvass.html', {'role': roles,
-                                                        'assignment': assignment.dict(),
-                                                        'geo': utils.get_geo(assignment.dict()['locations']),
-                                                        'questions': questions})
-            else:
-                return render(request, 'error.html', utils.generate_error_data(request, "No assignment to canvass today"))
+            assignment = utils.canvasser_get_assignment(uid, aid)
+            data = {
+                'role': roles,
+                'assignment': assignment,
+                'geo': utils.get_geo(assignment['locations']),
+                'questions': utils.get_questions(aid),
+                'canvass': False
+            }
+            return render(request, 'canvass.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))
     else:
         return redirect('login')

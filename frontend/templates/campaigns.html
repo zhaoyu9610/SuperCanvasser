@@ -9,17 +9,6 @@
         });
     });
 
-    $(document).ready(function () {
-        $("#logout").click(function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/logout",
-                success: function (result) {
-                    window.location.href ="/";
-                }
-            });
-        });
-    });
 
 </script>
 

@@ -23,19 +23,6 @@
     });
 
 
-    $(document).ready(function () {
-        $("#logout").click(function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/logout",
-                success: function (result) {
-                    window.location.href ="/";
-                }
-            });
-        });
-    });
-
-
     $(document).ready(function(){
         $("ul").on("click", "button", function(e) {
             e.preventDefault();

@@ -6,18 +6,6 @@
     var visited = new Array();
     var allResults = new Array();
 
-    $(document).ready(function () {
-        $("#logout").click(function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/logout",
-                success: function (result) {
-                    window.location.href ="/";
-                }
-            });
-        });
-    });
-
 
     $(document).on('click', 'a', function() {
         key = $(this).html().split(" ");

@@ -218,20 +218,6 @@
 
     });
 
-
-    $(document).ready(function () {
-        $("#logout").click(function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/logout",
-                success: function (result) {
-                    window.location.href ="/";
-                }
-            });
-        });
-    });
-
-
     <!--$(document).ready(function(){-->
         <!--var start = obj.start_date;-->
         <!--var end = obj.end_date;-->

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="jumbotron">
 
-{{result}}
+
         <hr>
     <br>
     <div class="form-group row">
@@ -22,6 +22,7 @@
             <th scope = "col">"Rating Avg"</th>
             <th scope = "col">"Rating Median"</th>
             <th scope = "col">"Rating Standard Deviation"</th>
+            <th scope = "col">"Total # People"</th>
 
         </tr>
      </thead>
@@ -32,12 +33,13 @@
             <td>{{result.rating_sd}}</td>
 
             <td>{{result.rating_median}}</td>
+            <td>{{result.total_number_of_people}}</td>
         </tr>
 
 
         </tbody>
     </table>
-{{result.location}}
+
 
     <table class="table table-hover results" id="resultsTable">
        <caption>{{campaign.name}}'s individual loaction results</caption>
@@ -45,24 +47,35 @@
 
         <tr>
             <th scope = "col">"Locations"</th>
-            <th scope = "col">"# of participants"</th>
-            <th scope = "col">"Location rating"</th>
-            <th scope = "col">"Average Number yes"</th>
+            <th scope = "col">"Number of People"</th>
+            <th scope = "col">"Rating"</th>
+            {% for item in questions%}
+                <th scope="col">{{item}}</th>
+            {%endfor%}
 
         </tr>
      </thead>
         <tbody id="addResults">
         {% for item in result.locations%}
         <tr>
-
             <td>{{item.0}}</td>
-
             <td>{{item.1}}</td>
             <td>{{item.2}}</td>
+            {%for i in item.3%}
 
+            <td>True: {{i.0}}, False: {{i.1}}, Undecided: {{i.2}}</td>
+            {%endfor%}
         </tr>
         {%endfor%}
+        <tr>
+            <td>Total:</td>
+            <td>{{result.total_number_of_people}}</td>
+            <td>{{result.rating_avg}}</td>
+            {%for i in result.total_question_sum%}
 
+            <td>True: {{i.0}}, False: {{i.1}}, Undecided: {{i.2}}</td>
+            {%endfor%}
+        </tr>
         </tbody>
     </table>
 

@@ -119,6 +119,8 @@ def campaign_result(request, cid):
                 'result': json.loads(utils.get_result(cid)),
                 'questions': json.loads(models.Campaign.objects.filter(id=cid).get().questions)
             }
+            print('campaign_result')
+            print(data)
             return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:

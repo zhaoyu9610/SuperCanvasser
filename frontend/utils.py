@@ -138,4 +138,4 @@ def get_talking_points(aid):
 
 
 def get_result(cid):
-    return models.CampaignResult.objects.filter(id=cid).get().result
+    return models.CampaignResult.objects.filter(campaign_id=cid).get().result

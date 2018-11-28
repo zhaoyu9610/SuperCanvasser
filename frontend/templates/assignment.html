@@ -4,12 +4,13 @@
 <script>
     $(document).ready(function() {
         $("#startAssignment").click(function () {
-            window.location.href="/assignments/canvass";
+            window.location.href="/assignments/canvass/{{assignment.id}}";
         });
     });
 </script>
 
 <div class="jumbotron">
+
     <h1 id="currentCampaign" class="text-dark">Assignment {{assignment.id}}</h1>
     <hr/>
             <div class="row float-right">

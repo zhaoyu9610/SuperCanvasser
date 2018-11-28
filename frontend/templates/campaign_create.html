@@ -35,7 +35,7 @@
 
         for(var i = 0; i < canvassers.length;i++){
 
-                if(canvassers[i] = user){
+                if(canvassers[i] == user){
                     canvassers.splice(i);
                     break;
                 }
@@ -49,24 +49,22 @@
             var exists = 0;
             var str = $(this).parent().text().split("\n");
             var user = str[0];
-            alert(user);
-            alert(canvassers);
 
 
             for(var i = 0; i < canvassers.length;i++){
-                if(canvassers[i] = user){
+                if(canvassers[i] == user){
                     exists = 1;
                     break;
                 }
             }
 
-            if(exists ==0){
+            if(exists == 0){
                 canvassers.push(user);
                 $("#canvassers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>'+"</li>");
                 $("#successCanvasser").html("User added!");
                 $("#errorCanvasser").html("");
             }
-            else if(exists ==1){
+            else if(exists == 1){
                 $("#errorCanvasser").html("User already Added!");
                 $("#successCanvasser").html("");
             }
@@ -86,7 +84,7 @@
 
         for(var i = 0; i < managers.length;i++){
 
-                if(managers[i] = user){
+                if(managers[i] == user){
                     managers.splice(i);
                     break;
                 }
@@ -141,10 +139,6 @@
 
 
 
-
-
-
-
     $(document).ready(function(){
         $("#addLocation").click(function () {
             locations = ($('#listofLocations').val().split('\n'));
@@ -157,9 +151,45 @@
     $(document).ready(function(){
         $("#addQuestion").click(function () {
             questions.push($("#insertQ").val());
-            $("#questions").append('<div class = "container">'+'<li class = "list_item">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+            $("#questions").append('<div class = "container">'+'<li class = "list_item delete-question">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
             })
     });
+
+    $(document).on('click', '.delete-talk', function() {
+        var str = $(this).parent().text().split(" ");
+        var point = str[0];
+        $(this).parent().remove();
+        alert(talkingPoints);
+
+        for(var i = 0; i < talkingPoints.length;i++){
+
+                if(talkingPoints[i] = point){
+                    talkingPoints.splice(i);
+                    alert(talkingPoints);
+
+                    break;
+                }
+        }
+
+    });
+
+    $(document).on('click', '.delete-question', function() {
+        var str = $(this).parent().text().split(" ");
+        var q = str[0];
+        $(this).parent().remove();
+
+        for(var i = 0; i < questions.length;i++){
+
+                if(questions[i] = q){
+                    questions.splice(i);
+
+                    break;
+                }
+        }
+
+    });
+
+
 
     $(document).ready(function () {
         $("#logout").click(function () {

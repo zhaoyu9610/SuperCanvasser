@@ -49,6 +49,8 @@
             var exists = 0;
             var str = $(this).parent().text().split("\n");
             var user = str[0];
+            alert(user);
+            alert(canvassers);
 
 
             for(var i = 0; i < canvassers.length;i++){
@@ -60,8 +62,10 @@
             }
             for(var i = 0; i < allCanvassers.length;i++){
                 if(allCanvassers[i] = user){
-                    canvassers.push(user);
-                    found = 1;
+                   found = 1;
+                    if(exists == 0){
+                        canvassers.push(user);
+                    }
                     break;
                 }
             }
@@ -189,9 +193,9 @@
                 startDate.push(start.format('MM'));
                 startDate.push(start.format('DD'));
                 $("#endD").val(end.format('MM/DD/YYYY'));
-                endDate.push(start.format('YYYY'));
-                endDate.push(start.format('MM'));
-                endDate.push(start.format('DD'));
+                endDate.push(end.format('YYYY'));
+                endDate.push(end.format('MM'));
+                endDate.push(end.format('DD'));
                 for(var i = 0; i <3;i++){
                     startDate[i] = parseInt(startDate[i]);
                     endDate[i] = parseInt(endDate[i]);

@@ -83,7 +83,7 @@ flatten = lambda l: [item for sublist in l for item in sublist]
 
 same = lambda a, v:  int(a is v)
 
-def get_result(answer, rating, location):
+def get_result(answer, rating, location, note):
     result = [[[same(c, True) for c in a], [same(c, False) for c in a], [same(c, None) for c in a]] for a in answer]
     n = np.array(result)
     question_total = n.sum(axis=0).tolist()
@@ -91,7 +91,8 @@ def get_result(answer, rating, location):
     rt = json.dumps({'total': number,
                        'question_sum': question_total,
                        'rating': rating,
-                       'location': location})
+                       'location': location,
+                     'note': note})
     print(rt)
     return rt
 
@@ -113,12 +114,13 @@ def check_assignment(assignment):
 def generate_campaign_result(campaign, results):
     locations = [a['location'] for a in results]
     locations = [models.Location.objects.filter(id=a).get().name() for a in locations]
+    notes = [a['note'] for a in result]
     number_of_people = [a['total'] for a in results]
     total_people = sum(number_of_people)
     location_question_sum = [a['question_sum'] for a in results]
     total_question_sum = np.array(location_question_sum).sum(axis=0).tolist()
     location_rating = [int(a['rating']) for a in results]
-    location_result = list(zip(locations, number_of_people, location_rating, [list(zip(*a)) for a in location_question_sum]))
+    location_result = list(zip(locations, number_of_people, location_rating, note, [list(zip(*a)) for a in location_question_sum]))
     np_rating = np.array(location_rating)
     result = {'rating_avg': np_rating.mean(),
                 'rating_sd': np_rating.std(),

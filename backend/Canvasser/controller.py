@@ -42,7 +42,7 @@ class CanvasserHandler:
                            'rating': r['rating'],
                            'answers': r['answer'],
                            'notes': r['notes'],
-                           'result': utils.get_result(r['answer'], r['rating'], int(r['id'])),
+                           'result': utils.get_result(r['answer'], r['rating'], int(r['id']), r['notes']),
                            'assignment_id': assignment.id,
                            'location_id': int(r['id']),
                            'campaign_id': assignment.campaign_id})

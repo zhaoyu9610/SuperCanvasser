@@ -202,7 +202,7 @@ def canvass(request):
         roles = utils.get_roles(uid)
         if roles[2]:
             assignment, questions = utils.canvasser_get_next(uid)
-            if assignment and assignment.date.date == datetime.date.today():
+            if assignment:
                 return render(request, 'canvass.html', {'role': roles,
                                                         'assignment': assignment.dict(),
                                                         'geo': utils.get_geo(assignment['locations']),

@@ -73,6 +73,7 @@ def generate_assignment(campaign_id):
 def assign_to_canvasser(assignment_list, canvassers, start_date, end_date, duration, campaign_id):
     print('number of assignment list')
     print(assignment_list)
+    print(start_date, end_date)
     for assignment in assignment_list:
         avail, canvasser, date = find_earliest(canvassers, start_date, end_date)
         location_id = []
@@ -91,15 +92,10 @@ def find_earliest(canvassers, start_date, end_date):
     for canvasser in canvassers:
         canvasser_id_list.append(canvasser['id'])
     available_canvassers = models.Availability.objects.filter(canvasser_id__in=canvasser_id_list, assignment=None).order_by('date').all()
-    print('len of available canvasser')
-    print(len(available_canvassers))
+    print('len of available canvasser', len(available_canvassers))
     for date in list(available_canvassers):
-        print(type(date.date.date))
-        print(type(start_date))
-        if date.date.date > start_date and date.date.date < end_date:
-            print('return value')
-            print(date.canvasser)
-            print(date.date.date)
+        print(start_date, end_date, date.date.date)
+        if date.date.date >= start_date and date.date.date <= end_date:
             return date, date.canvasser, date.date.date
     print("No time find for the case")
     raise Exception('No Canvasser Available')

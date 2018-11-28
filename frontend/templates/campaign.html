@@ -87,6 +87,12 @@
         });
     });
 
+    $(document).ready(function() {
+        $("#viewResults").click(function () {
+            window.location.href="/campaigns/"+obj.id+"/result";
+        });
+    });
+
     $(document).ready(function () {
         $("#launch").click(function () {
         var launch = confirm("Are you sure you want to launch campaign? Campaigns can't be edited after being launched.");
@@ -95,6 +101,7 @@
                 type: "GET",
                 url: "/api/manager/campaigns/"+obj.id+"/start",
                 success: function (result) {
+                alert(JSON.stringify(result));
 
                 }
             });
@@ -109,8 +116,6 @@
 
 <div class="jumbotron">
 
-
-
     <div class="container">
         <h1 id="currentCampaign" class="text-dark"></h1><hr/>
         <div class="row float-right">
@@ -123,6 +128,9 @@
             </div>
             <div class="col">
                 <button id="viewAssignment" class="btn btn-block btn-dark btn-secondary">View Assignments</button>
+            </div>
+            <div class="col">
+                <button id="viewResults" class="btn btn-block btn-dark btn-secondary">View Results</button>
             </div>
             <div class="col">
 
@@ -194,18 +202,18 @@
                     </div>
                     <div class="form-group">
                         <h5><label for="locations">Locations:</label></h5>
-                        <ul class="list-group" id="locations">
+                        <ul class="list-group long-display" id="locations">
                         </ul>
                         <div id="map"></div>
                     </div>
                     <div class="form-group">
                         <h5><label for="talkingP">Talking points:</label></h5>
-                        <ul class="list-group" id="talkingP">
+                        <ul class="list-group long-display" id="talkingP">
                         </ul>
                     </div>
                     <div class="form-group">
                         <h5><label for="questions">Questionnaire:</label></h5>
-                        <ul class="list-group" id="questions">
+                        <ul class="list-group long-display" id="questions">
                         </ul>
                     </div>
 

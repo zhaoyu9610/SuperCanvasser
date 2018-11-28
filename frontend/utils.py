@@ -130,11 +130,11 @@ def get_canvasser_assignments(uid):
 
 
 def get_questions(aid):
-    return json.dumps(models.Assignment.objects.filter(id=aid).get().campaign.questions)
+    return json.loads(models.Assignment.objects.filter(id=aid).get().campaign.questions)
 
 
 def get_talking_points(aid):
-    return json.dumps(models.Assignment.objects.filter(id=aid).get().campaign.talking_points)
+    return json.loads(models.Assignment.objects.filter(id=aid).get().campaign.talking_points)
 
 
 def get_result(cid):

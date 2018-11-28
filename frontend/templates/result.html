@@ -1,7 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for a in assignment %}
-        <p>{{ a.name }} {{ a.value }}</p>
-    {% endfor %}
+<div class="jumbotron">
+
+{{result}}
+    {{campaign}}
+
+        <hr>
+    <br>
+    <div class="form-group row">
+
+        <div class="input-group col-4">
+            <h5>{{</h5>
+        </div>
+
+    </div>
+    <br><br>
+
+    <table class="table table-hover results" id="camTable">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">{{campaign.name}}</th>
+            <th scope = "col">"Rating Avg"</th>
+            <th scope = "col">"Rating Median"</th>
+            <th scope = "col">"Rating Standard Deviation"</th>
+
+        </tr>
+        </thead>
+        <tr>
+            <td></td>
+            <td>{{result.rating_avg}}</td>
+
+            <td>{{result.rating_sd}}</td>
+
+            <td>{{result.rating_median}}</td>
+        </tr>
+        <tbody id="addToTable">
+
+        </tbody>
+    </table>
+
+</div>
 {% endblock %}

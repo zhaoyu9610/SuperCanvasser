@@ -61,43 +61,36 @@
         });
     });
 
+    $( document ).ready(function() {
+        $(function() {
+            startDate = [];
+            endDate = [];
+            $('input[id="date"]').daterangepicker({
+                opens: 'left'
+            }, function(start, end, label) {
+                $("#startD").val(start.format('MM/DD/YYYY'));
+                startDate.push(start.format('YYYY'));
+                startDate.push(start.format('MM'));
+                startDate.push(start.format('DD'));
+                $("#endD").val(end.format('MM/DD/YYYY'));
+                endDate.push(end.format('YYYY'));
+                endDate.push(end.format('MM'));
+                endDate.push(end.format('DD'));
+                for(var i = 0; i <3;i++){
+                    startDate[i] = parseInt(startDate[i]);
+                    endDate[i] = parseInt(endDate[i]);
+                }
+                alert(startDate);
+                alert(endDate);
+            });
+        });
+     });
+
+
 
 
     </script>
 
-
-</head>
-
-
-<body>
-<div class="container">
-
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-
-                <div class="collapse navbar-collapse" id="menu">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" id="showManager"><a class="nav-link" href="/manager">Manager</a></li>
-                        <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/canvasser">Canvasser</a></li>
-                    </ul>
-                </div>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse">
-
-                </button>
-            </div>
-
-            <div class="collapse navbar-collapse" id="menu1">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="/campaigns">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/account">Profile</a></li>
-                    <li id="logout" class="nav-item"><a class="nav-link" href="#">Sign out</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
 
 <div class="jumbotron">
     <div class="update">
@@ -124,10 +117,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="dates_unavail">Add Dates Unavailable</span>
                         </div>
-                        <input type="text" class="form-control" id="addD">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="button" id="addDates">Add</button>
-                        </div>
+                        <input type="text" id="date" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">

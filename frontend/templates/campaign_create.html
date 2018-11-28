@@ -133,7 +133,7 @@
     $(document).ready(function(){
         $("#addTalk").click(function () {
             talkingPoints.push($("#insertTalk").val());
-            $("#talkPoints").append('<div class = "container">'+'<li class ="list_item">'+$("#insertTalk").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+            $("#talkPoints").append('<li class ="list-group-item">'+$("#insertTalk").val() +'<button type="button" class="btn btn-secondary float-right delete-talk"> X</button>'+"</li>");
             })
     });
 
@@ -143,7 +143,7 @@
         $("#addLocation").click(function () {
             locations = ($('#listofLocations').val().split('\n'));
             for(var i = 0; i <locations.length;i++){
-                $("#listLocations").append('<div class = "container">'+'<li class ="list_item">'+ locations[i] +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+                $("#listLocations").append('<li class ="list-group-item">'+ locations[i] +'<button type="button" class="btn btn-secondary float-right delete-location"> X</button>'+"</li>");
             }
             })
     });
@@ -151,7 +151,7 @@
     $(document).ready(function(){
         $("#addQuestion").click(function () {
             questions.push($("#insertQ").val());
-            $("#questions").append('<div class = "container">'+'<li class = "list_item delete-question">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary float-right">X</button>'+"</li>" + '</div>');
+            $("#questions").append('<li class = "list-group-item">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary float-right delete-question"> X</button>'+"</li>");
             })
     });
 
@@ -159,15 +159,29 @@
         var str = $(this).parent().text().split(" ");
         var point = str[0];
         $(this).parent().remove();
-        alert(talkingPoints);
 
         for(var i = 0; i < talkingPoints.length;i++){
 
-                if(talkingPoints[i] = point){
+                if(talkingPoints[i] == point){
                     talkingPoints.splice(i);
-                    alert(talkingPoints);
-
                     break;
+                }
+        }
+
+    });
+
+    $(document).on('click', '.delete-location', function() {
+        var str = $(this).parent().text().split(" X");
+        var loc = str[0];
+        $(this).parent().remove();
+
+        for(var i = 0; i < locations.length;i++){
+                alert(locations);
+                alert(loc);
+                if(locations[i] == loc){
+                    locations.splice(i);
+                    break;
+                    alert(locations);
                 }
         }
 
@@ -180,7 +194,7 @@
 
         for(var i = 0; i < questions.length;i++){
 
-                if(questions[i] = q){
+                if(questions[i] == q){
                     questions.splice(i);
 
                     break;
@@ -416,7 +430,7 @@
             </div>
             <div class="form-group">
                 <h5><label for="listLocations">Locations:</label></h5>
-                <ul class="list-group" id="listLocations">
+                <ul class="list-group long-display" id="listLocations">
                 </ul>
 
             </div>
@@ -439,7 +453,7 @@
             <div class="text_limit">
                 <div class="form-group">
                     <h5><label for="talkPoints">Talking Points:</label></h5>
-                    <ul class="list-group list-group-flush" id="talkPoints">
+                    <ul class="list-group list-group-flush long-display" id="talkPoints">
                     </ul>
                 </div>
             </div>
@@ -457,7 +471,7 @@
             <div class="text_limit">
                 <div class="form-group">
                     <h5><label for="questions">Questionnaire:</label></h5>
-                    <ul class="list-group" id="questions">
+                    <ul class="list-group long-display" id="questions">
                     </ul>
                 </div>
             </div>

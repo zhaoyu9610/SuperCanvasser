@@ -116,7 +116,7 @@ def campaign_result(request, cid):
             data = {
                 'role': roles,
                 'campaign': utils.get_campaign(uid, cid),
-                'result': utils.get_result(cid),
+                'result': json.loads(utils.get_result(cid)),
             }
             return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))

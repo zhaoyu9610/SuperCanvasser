@@ -473,7 +473,7 @@
 
                     <div class="form-group">
                         <h5><label for="locations">Locations:</label></h5>
-                        <ul class="list-group" id="locations">
+                        <ul class="list-group long-display" id="locations">
                             {% for item in campaign.locations %}
                             <li class="list-group-item list-group-item-dark">{{item.street}}, {{item.city}},
                                 {{item.state}} {{item.zipcode}}
@@ -503,7 +503,7 @@
                     <div class="text_limit">
                         <div class="form-group">
                             <h5><label for="talkingP">Talking Points:</label></h5>
-                            <ul class="list-group list-group-flush" id="talkingP">
+                            <ul class="list-group list-group-flush long-display" id="talkingP">
 
                                 {% for item in campaign.talking_points %}
                                 <li class="list-group-item list-group-item-dark">{{item}}
@@ -529,7 +529,7 @@
                     <div class="text_limit">
                         <div class="form-group">
                             <h5><label for="questions">Questionnaire:</label></h5>
-                            <ul class="list-group" id="questions">
+                            <ul class="list-group long-display" id="questions">
                                 {% for item in campaign.questions %}
                                 <li class="list-group-item list-group-item-dark">{{item}}
                                     <button type="button" class="btn btn-secondary btn-sm float-right">X</button>

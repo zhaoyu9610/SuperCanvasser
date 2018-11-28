@@ -114,13 +114,13 @@ def check_assignment(assignment):
 def generate_campaign_result(campaign, results):
     locations = [a['location'] for a in results]
     locations = [models.Location.objects.filter(id=a).get().name() for a in locations]
-    notes = [a['note'] for a in result]
+    notes = [a['note'] for a in results]
     number_of_people = [a['total'] for a in results]
     total_people = sum(number_of_people)
     location_question_sum = [a['question_sum'] for a in results]
     total_question_sum = np.array(location_question_sum).sum(axis=0).tolist()
     location_rating = [int(a['rating']) for a in results]
-    location_result = list(zip(locations, number_of_people, location_rating, note, [list(zip(*a)) for a in location_question_sum]))
+    location_result = list(zip(locations, number_of_people, location_rating, notes, [list(zip(*a)) for a in location_question_sum]))
     np_rating = np.array(location_rating)
     result = {'rating_avg': np_rating.mean(),
                 'rating_sd': np_rating.std(),

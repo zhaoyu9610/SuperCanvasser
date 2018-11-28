@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from . import utils
 import json
 import datetime
+from backend import models
 
 
 def login(request):
@@ -116,6 +117,7 @@ def campaign_result(request, cid):
                 'role': roles,
                 'campaign': utils.get_campaign(uid, cid),
                 'result': json.loads(utils.get_result(cid)),
+                'questions': json.loads(models.Campaign.objects.filter(id=cid).get().questions)
             }
             return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))

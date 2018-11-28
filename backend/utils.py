@@ -88,7 +88,7 @@ def get_result(answer, rating, location):
     n = np.array(result)
     question_total = n.sum(axis=0).tolist()
     number = len(answer)
-    rt =  json.dumps({'total': number,
+    rt = json.dumps({'total': number,
                        'question_sum': question_total,
                        'rating': rating,
                        'location': location})

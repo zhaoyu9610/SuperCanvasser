@@ -54,32 +54,24 @@
 
 
             for(var i = 0; i < canvassers.length;i++){
-
                 if(canvassers[i] = user){
                     exists = 1;
                     break;
                 }
             }
-            for(var i = 0; i < allCanvassers.length;i++){
-                if(allCanvassers[i] = user){
-                   found = 1;
-                    if(exists == 0){
-                        canvassers.push(user);
-                    }
-                    break;
-                }
-            }
-            if(found == 1 && exists ==0){
+
+            if(exists ==0){
+                canvassers.push(user);
                 $("#canvassers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>'+"</li>");
                 $("#successCanvasser").html("User added!");
                 $("#errorCanvasser").html("");
             }
-            else if(found == 1 && exists ==1){
+            else if(exists ==1){
                 $("#errorCanvasser").html("User already Added!");
                 $("#successCanvasser").html("");
             }
             else{
-                $("#errorCanvasser").html("Invalid User!");
+                $("#errorCanvasser").html("Invalid Error");
                 $("#successCanvasser").html("");
             }
 

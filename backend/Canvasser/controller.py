@@ -22,10 +22,11 @@ class CanvasserHandler:
         else:
             return utils.generate_error(request, 'Not logged in')
 
-    def sibmit(self, request):
+    def submit(self, request):
         try:
             body = json.loads(request.body)
             data = body['data']
+            print(data)
         except Exception as e:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:

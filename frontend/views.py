@@ -185,8 +185,8 @@ def current_assignment(request):
             assignment, questions = utils.canvasser_get_next(uid)
             if assignment:
                 return render(request, 'assignment.html', {'role': roles,
-                                                           'assignment': assignment,
-                                                           'geo': utils.get_geo(assignment['locations']),
+                                                           'assignment': assignment.dict(),
+                                                           'geo': utils.get_geo(assignment.dict()['locations']),
                                                            'questions': questions,
                                                            'canvass': True})
             else:
@@ -205,7 +205,7 @@ def canvass(request):
             if assignment:
                 return render(request, 'canvass.html', {'role': roles,
                                                         'assignment': assignment.dict(),
-                                                        'geo': utils.get_geo(assignment['locations']),
+                                                        'geo': utils.get_geo(assignment.dict()['locations']),
                                                         'questions': questions})
             else:
                 return render(request, 'error.html', utils.generate_error_data(request, "No assignment to canvass today"))

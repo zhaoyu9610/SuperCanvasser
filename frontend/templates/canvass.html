@@ -86,8 +86,6 @@
         });
     });
 
-    return = {"id": $("#assignId").val() , "result": [result, result1]}
-
     $(document).ready(function () {
         $("#questionnaireButton").click(function (e) {
             if($("#current").val() == ''){
@@ -101,10 +99,11 @@
     $(document).ready(function () {
         $("#completeAssignment").click(function (e) {
             $.ajax({
-                type: "GET",
-                url: "/api/logout",
+                type: "POST",
+                url: "/api/canvasser/submit",
+                data: JSON.stringify({"id":$("#assignID"), "results":allResults}),
                 success: function (result) {
-                    window.location.href ="/";
+                    alert(JSON.stringify(result));
                 }
             });
         });

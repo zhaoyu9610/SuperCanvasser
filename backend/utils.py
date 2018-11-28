@@ -109,23 +109,28 @@ def check_assignment(assignment):
 
 
 def generate_campaign_result(campaign, results):
-    total = [a['total'] for a in results]
-    question_sum = np.array([a['question_sum'] for a in results]).sum(axis=0).tolist()
-    rating = [a['rating'] for a in results]
-    flatten = lambda l: [item for sublist in l for item in sublist]
-    people_sum = [a['people_sum'] for a in results]
-    people_sum = flatten(people_sum)
-    np_people_sum = np.array(people_sum)
     locations = [a['location'] for a in results]
-    np_rating = np.array(rating)
+    number_of_people = [a['total'] for a in results]
+    total_people = sum(number_of_people)
+    location_question_sum = [a['question_sum'] for a in results]
+    total_question_sum = np.array(location_question_sum).sum(axis=0).tolist()
+    location_rating = [int(a['rating']) for a in results]
+    location_result = list(zip(locations, number_of_people, location_rating, location_question_sum))
+    flatten = lambda l: [item for sublist in l for item in sublist]
+    location_people_sum = [a['people_sum'] for a in results]
+    total_people_sum = flatten(location_people_sum)
+    np_people_sum = np.array(total_people_sum)
+    np_rating = np.array(location_rating)
     result = {'rating_avg': np_rating.mean(),
                 'rating_sd': np_rating.std(),
                 'rating_median': np.median(np_rating),
-                'locations': list(zip(locations, rating, total, question_sum)),
-                'people_avg': np_people_sum.mean(),
-                'people_sd': np_people_sum.std(),
-                'people_median': np.median(np_people_sum)}
-    campaign.median = result['rating_avg']
+                'locations': location_result,
+                'truth_per_questionnaire_avg': np_people_sum.mean(),
+                'truth_per_questionnaire_sd': np_people_sum.std(),
+                'truth_per_questionnaire_median': np.median(np_people_sum),
+                'total_number_of_people': total_people,
+              'total_question_sum': total_question_sum}
+    campaign.average = result['rating_avg']
     campaign.sd = result['rating_sd']
     campaign.median = result['rating_median']
     campaign.finish = True

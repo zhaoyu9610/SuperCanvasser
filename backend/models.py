@@ -162,7 +162,7 @@ class CampaignResult(models.Model):
     result = models.TextField(verbose_name='result')
 
     def dict(self):
-        return {'id': self.id, 'assignment': self.campaign.dict(), 'location_result': [a.dict() for a in self.locations.all()],
+        return {'id': self.id, 'assignment': self.campaign.dict(), 'location_result': [a.dict() for a in self.location_result.all()],
                 'result': self.result}
 
     def __str__(self):

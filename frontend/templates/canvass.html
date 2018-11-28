@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 <script>
+    var dict = {};
+    var key;
+    var visited = new Array();
+    var allResults = new Array();
 
     $(document).ready(function () {
         $("#logout").click(function () {
@@ -14,11 +18,238 @@
         });
     });
 
+
+    $(document).on('click', 'a', function() {
+        key = $(this).html().split(" ");
+        key = key[0];
+    });
+
+
+
+    $(document).ready(function () {
+        $(".locationInfo").each(function() {
+            dict[$(this).text().split("\n")] = [];
+            console.log(dict);
+
+        });
+
+    });
+
+    $(document).ready(function () {
+        $("#questionsSave").click(function () {
+        alert(key);
+        var values = {};
+        var vals = new Array();
+        $.each($('#questionnaire').serializeArray(), function(i, field) {
+            values[field.name] = field.value;
+            vals.push(field.value);
+
+        });
+
+        dict[key].push(vals);
+        $("#questionnaire").trigger("reset");
+
+            console.log(dict);
+        });
+    });
+
+    $(document).ready(function () {
+        $("a").click(function () {
+
+            $("#next").val(($(this).text()));
+        });
+    });
+
+    $(document).ready(function () {
+        $("#set").click(function () {
+
+           $("#current").val($("#next").val());
+           var loc = $("#current").val().split(".");
+           key = loc[0];
+
+           for(var i = 0;i <visited.length;i++){
+                if(visited[i] == key){
+                    $("#errorCanvasser").html("Already Visited!");
+                    $("current").val("");
+                }
+           }
+           visited.push(key);
+
+        });
+    });
+
+    $(document).ready(function () {
+        $("#complete").click(function (e) {
+            var result = {};
+            result = {"answer": dict, "rating": $("#rating").val(), "notes" : $("$notes").val(), "id": key};
+            allResults.push(result);
+        });
+    });
+
+    return = {"id": $("#assignId").val() , "result": [result, result1]}
+
+    $(document).ready(function () {
+        $("#questionnaireButton").click(function (e) {
+            if($("#current").val() == ''){
+                $("#errorCanvasser").html("Set a location!");
+                e.stopPropagation();
+
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#completeAssignment").click(function (e) {
+            $.ajax({
+                type: "GET",
+                url: "/api/logout",
+                success: function (result) {
+                    window.location.href ="/";
+                }
+            });
+        });
+    });
+
+
+
+
+
 </script>
 
+
 <div class="jumbotron">
+    <ul class="getInfo">
+        {% for item in assignment.locations%}
+        <li class="locationInfo">{{item.id}}</li>
+        {%endfor%}
+    </ul>
+    <p id = "assignId" class = "getInfo">{{assignment.id}}</p>
+
+    <br>
+    <div class="form-group row">
+        <div class="input-group col-6">
+            <div id="map"></div>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Locations:
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for item in assignment.locations %}
+
+                <a class="dropdown-item">{{item.id}}. {{item.street}} {{item.city}} {{item.state}} {{item.zipcode}}</a>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="space">
+            <button class="btn btn-outline-dark" type="button" id="set">Set Location</button>
+        </div>
+        <div class="space">
+            <button class="btn btn-outline-dark" type="button" id="questionnaireButton" data-toggle="modal"
+                    data-target="#questions">Questionnaire
+            </button>
+        </div>
+        <div class = "space"></div>
+        <p id = "errorCanvasser"></p>
+    </div>
+    <div class="form-group row">
+        <div class="input-group col-6">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Next Location: </span>
+            </div>
+            <input type="text" class="form-control" id="next" disabled>
+        </div>
+        <br>
+        <div class="input-group col-6">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Current Location: </span>
+            </div>
+            <input type="text" class="form-control" id="current" disabled>
+        </div>
+    </div>
+
+    <button type = "button"  id = "completeAssignment" class = "btn btn-dark">Complete Assignment</button>
+
+    <div class="modal fade" id="questions" tabindex="-1" role="dialog" aria-labelledby="Questionnaire"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="questionTitle">Questionnaire</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="questionnaire">
+                        {% for item in questions %}
+                        <div class="assignQ">
+                            <h5>Question: {{item}}</h5>
+                            <input type="radio" name="{{item}}" value="True"> True<br>
+                            <input type="radio" name="{{item}}" value="False"> False<br>
+                        </div>
+                        {% endfor%}
+                        <br>
+                        <button type="button" id="questionsSave" class="btn btn-primary">Submit answers</button>
+                        <br>
+                        <br>
+                      <div class="input-group col-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Rating: </span>
+                        </div>
+                        <input type="number" class="form-control" id="rating" maxlength="1"  max ="5" min="0">
+                    </div>
+                        <br>
+                        <br>
+                       <div class="input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Notes: </span>
+                        </div>
+                        <textarea id="notes" class="form-control"></textarea>
+                    </div>
+                    </form>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="complete" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 </div>
+
+
+<script>
+// Initialize and add the map
+function initMap() {
+
+  var locations = {{ geo }};
+
+  var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 11, center: {lat: locations[0][0], lng: locations[0][1]}});
+  for (i=0; i <locations.length; i ++){
+      var marker = new google.maps.Marker({position: {lat: locations[i][0], lng: locations[i][1]}, map: map})
+  }
+}
+
+
+
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2KRRab6Gis0ec2h5D5EFCdiiZMbbf-Pw&callback=initMap">
+</script>
 {% endblock %}
 

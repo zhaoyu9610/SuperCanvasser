@@ -1,14 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
- <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-       }
-    </style>
-
 
     <script>
 
@@ -95,9 +87,23 @@
         });
     });
 
+    $(document).ready(function () {
+        $("#launch").click(function () {
+        var launch = confirm("Are you sure you want to launch campaign? Campaigns can't be edited after being launched.");
+        if(launch == true){
+            $.ajax({
+                type: "GET",
+                url: "/api/manager/campaigns/"+obj.id+"/start",
+                success: function (result) {
+
+                }
+            });
+        }
+
+        });
+    });
+
     </script>
-
-
 
 
 
@@ -117,6 +123,13 @@
             </div>
             <div class="col">
                 <button id="viewAssignment" class="btn btn-block btn-dark btn-secondary">View Assignments</button>
+            </div>
+            <div class="col">
+
+                {% if 'start' in campaign %}
+                <button id="launch" class="btn btn-block btn-dark btn-secondary">Launch Campaign</button>
+
+                {% endif %}
             </div>
         </div>
         <br>

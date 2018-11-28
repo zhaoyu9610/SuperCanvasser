@@ -1,28 +1,71 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>Assignment: {{assignment.id}}</p><br>
-    <p>Duration: {{assignment.duration}}</p><br>
-    <p>Date: {{assignment.date.date}}</p><br>
-    <p>Canvasser: {{assignment.canvassers.id}}</p><br>
-    <p>Locations: </p>
-    <ul>
-        {% for item in assignment.locations %}
-        <li>{{ item.street }}{{ item.city }}{{ item.state }}</li>
-        {% endfor %}
-    </ul>
+<script>
+    $(document).ready(function() {
+        $("#startAssignment").click(function () {
+            window.location.href="/assignments/canvass";
+        });
+    });
+</script>
 
-    <div id="map"></div>
+<div class="jumbotron">
+    <h1 id="currentCampaign" class="text-dark">Assignment {{assignment.id}}</h1>
+    <hr/>
+            <div class="row float-right">
+            <div class="col">
+                {% if 'campaign' in assignment %}
+                <button id="startAssignment" class="btn btn-block btn-dark btn-secondary">Start Assignment</button>
+                {% endif %}
 
-    <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-       }
-    </style>
+            </div>
+        </div>
+    <br>
 
-       <script>
+    <div class="form-group">
+        <div class="input-group col-5">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="assignDur">Assignment's Duration [hrs]:</span>
+            </div>
+            <input id="duration" type="text" class="form-control" disabled value="{{assignment.duration}}">
+        </div>
+        <br>
+        <div class="input-group col-5">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="assignCanvassers">Canvasser:</span>
+            </div>
+            <input id="canvassers" type="text" class="form-control" disabled value="{{assignment.canvassers.email}}">
+        </div>
+        <br>
+        <div class="input-group col-5">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="assignDate">Assignment Date:</span>
+            </div>
+            <input id="date" type="text" class="form-control" disabled value="{{assignment.date.date.1}}/{{assignment.date.date.2}}/{{assignment.date.date.0}}">
+        </div>
+        <br>
+
+        <div class = "form-group row">
+        <div class="input-group col-6">
+        <div id="map"></div>
+        </div>
+
+            <div class ="input-group col-4">
+
+        <ul class=class="list-group" id="locations">
+            {% for item in assignment.locations %}
+                <li class="list-group-item list-group-item-dark">{{ item.street }}{{ item.city }}{{ item.state }}</li>
+            {% endfor %}
+        </ul>
+            </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
 // Initialize and add the map
 function initMap() {
 
@@ -34,10 +77,12 @@ function initMap() {
       var marker = new google.maps.Marker({position: {lat: locations[i][0], lng: locations[i][1]}, map: map})
   }
 }
-    </script>
+
+
+</script>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2KRRab6Gis0ec2h5D5EFCdiiZMbbf-Pw&callback=initMap">
-    </script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2KRRab6Gis0ec2h5D5EFCdiiZMbbf-Pw&callback=initMap">
+</script>
 
 {% endblock %}

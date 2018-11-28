@@ -21,24 +21,22 @@
 <div class="jumbotron">
 
 
-        <!--<p>Assignment: {{assignment.id}}</p><br>-->
-        <!--<p>Duration: {{assignment.duration}}</p><br>-->
-        <!--<p>Date: {{assignment.date.date}}</p><br>-->
-        <!--<p>Canvasser: {{assignment.canvassers.id}}</p><br>-->
-        <!--<p>Number of locations: {{ assignment.locations|length }}</p><br>-->
-        <!--<a href="assignments/{{ assignment.id }}">Detail</a>-->
-        <!--<hr>-->
+
+        <hr>
     <br>
     <table class="table table-hover" id = "assignTable">
         <thead class="thead-dark">
         <tr>
             <th scope="col">Campaign's Assignments</th>
+            <th scope ="col">Number of Locations</th>
         </tr>
         </thead>
         <tbody id = "addToTable">
          {% for assignment in assignments %}
          <tr>
-            <td><a href="assignments/{{assignment.id}}" class='assignmentLink'>{{assignment.name}}</a></td>
+
+            <td><a href="assignments/{{assignment.id}}" class='assignmentLink'>Assignment</a></td>
+             <td>{{ assignment.locations|length }}</td>
         </tr>
          {% endfor %}
         </tbody>

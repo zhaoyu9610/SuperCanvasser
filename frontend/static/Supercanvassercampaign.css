@@ -32,17 +32,32 @@ h1 {
 .list-group{
 
     max-height: 200px;
-    width: 300px;
+    width: 400px;
     padding:10px !important;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
 }
+
+.space{
+padding-left:20px;
+
+}
+
 .flex-container {
   display: flex;
    justify-content: space-between;
    flex-direction: row;
 }
+
+#map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+
 .campaignLink{
+    color: #2E2E2E;
+}
+.assignmentLink{
     color: #2E2E2E;
 }
 .padding_adds {
@@ -81,6 +96,11 @@ color:green;
 display: none;
 
 }
+
+#set{
+max-height:38px;
+}
+
 .campaignLabel{
 font-size:20px;
 padding-top:5px;
@@ -89,9 +109,16 @@ color:#2E2E2E;
 
 }
 
+.disabled {
+    pointer-events:none;
+    opacity:0.5;
+}
+
+
 .list-group-item{
 border-color:#2E2E2E !important;
  background-color: transparent !important;
+
  }
 
 #managerTd{

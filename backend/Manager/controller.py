@@ -30,6 +30,10 @@ class ManagerHandler:
                 if 'start_date' in campaign_dict:
                     d = campaign_dict['start_date']
                     campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                if 'talking_points' in campaign_dict:
+                    campaign_dict['talking_points'] = json.dumps(campaign_dict['talking_points'])
+                if 'questions' in campaign_dict:
+                    campaign_dict['questions'] = json.dumps(campaign_dict['questions'])
                 campaign.update(**campaign_dict)
                 return utils.generate_response(request, {})
             else:
@@ -64,6 +68,10 @@ class ManagerHandler:
                 locations = campaign_dict.pop('locations', [])
                 managers = campaign_dict.pop('managers', [])
                 canvassers = campaign_dict.pop('canvassers', [])
+                if 'talking_points' in campaign_dict:
+                    campaign_dict['talking_points'] = json.dumps(campaign_dict['talking_points'])
+                if 'questions' in campaign_dict:
+                    campaign_dict['questions'] = json.dumps(campaign_dict['questions'])
                 campaign = models.Campaign.objects.create(**campaign_dict)
                 campaign.managers.set(utils.get_user(managers))
                 campaign.canvassers.set(utils.get_user(canvassers))

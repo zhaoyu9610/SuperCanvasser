@@ -110,6 +110,7 @@ def check_assignment(assignment):
 
 def generate_campaign_result(campaign, results):
     locations = [a['location'] for a in results]
+    locations = [models.Location.objects.filter(id=a).get().name() for a in locations]
     number_of_people = [a['total'] for a in results]
     total_people = sum(number_of_people)
     location_question_sum = [a['question_sum'] for a in results]

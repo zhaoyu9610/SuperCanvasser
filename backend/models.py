@@ -67,6 +67,9 @@ class Location(models.Model):
     lon = models.FloatField(verbose_name='longitude', default=None, null=True)
     lat = models.FloatField(verbose_name='latitude', default=None, null=True)
 
+    def name(self):
+        return ', '.join([self.number, self.street, self.unit, self.city, self.state, self.zipcode])
+
     def dict(self):
         if not self.lon or not self.lat:
             self.lon, self.lat = geoutils.generate_log_lat({'id': self.id, 'street': self.number + ' ' + self.street, 'state': self.state, 'city': self.city, 'zipcode': self.zipcode,})
@@ -96,8 +99,8 @@ class Campaign(models.Model):
     locations = models.ManyToManyField(to='Location', verbose_name='Locations', blank=True)
 
     def dict(self):
-        return {'id': self.id, 'name': self.name, 'talking_points': self.talking_points.split('\n'), 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
-                'average': self.average, 'sd': self.sd, 'questions': self.questions.split('\n'), 'manager': [a.dict() for a in self.managers.all()], 'canvassers': [a.dict() for a in self.canvassers.all()],
+        return {'id': self.id, 'name': self.name, 'talking_points': json.loads(self.talking_points), 'start': self.start, 'finish': self.finish, 'median': self.median, 'duration':self.duration,
+                'average': self.average, 'sd': self.sd, 'questions': json.loads(self.questions), 'manager': [a.dict() for a in self.managers.all()], 'canvassers': [a.dict() for a in self.canvassers.all()],
                 'locations': [a.dict() for a in self.locations.all()], 'start_date':  [self.start_date.year, self.start_date.month, self.start_date.day],
                 'end_date': [self.end_date.year, self.end_date.month, self.end_date.day]}
 

@@ -1,5 +1,6 @@
 from backend import models
 import datetime
+import json
 
 
 def generate_error_data(request, msg):
@@ -129,4 +130,12 @@ def get_canvasser_assignments(uid):
 
 
 def get_questions(aid):
-    return models.Assignment.objects.filter(id=aid).get().campaign.questions.split('\n')
+    return json.dumps(models.Assignment.objects.filter(id=aid).get().campaign.questions)
+
+
+def get_talking_points(aid):
+    return json.dumps(models.Assignment.objects.filter(id=aid).get().campaign.talking_points)
+
+
+def get_result(cid):
+    return models.CampaignResult.objects.filter(id=cid).get().result

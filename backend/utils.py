@@ -84,7 +84,7 @@ flatten = lambda l: [item for sublist in l for item in sublist]
 same = lambda a, v:  int(a is v)
 
 def get_result(answer, rating, location, note):
-    result = [[[same(c, True) for c in a], [same(c, False) for c in a], [same(c, None) for c in a]] for a in answer]
+    result = [[[same(c, 'True') for c in a], [same(c, 'False') for c in a], [same(c, 'Null') for c in a]] for a in answer]
     n = np.array(result)
     question_total = n.sum(axis=0).tolist()
     number = len(answer)

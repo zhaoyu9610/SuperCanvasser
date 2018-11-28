@@ -115,8 +115,8 @@ def campaign_result(request, cid):
         if roles[1]:
             data = {
                 'role': roles,
-                'result': json.dumps(utils.get_result(uid, cid)),
-                'campaign': utils.get_campaign(uid, cid)
+                'campaign': utils.get_campaign(uid, cid),
+                'result': utils.get_result(cid),
             }
             return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
@@ -135,6 +135,7 @@ def campaign_assignment(request, cid, aid):
                 'assignment': assignment,
                 'geo': utils.get_geo(assignment['locations']),
                 'questions': utils.get_questions(aid),
+                'talking_points': utils.get_talking_points(aid),
                 'canvass': False
             }
             return render(request, 'assignment.html', data)
@@ -168,6 +169,7 @@ def canvasser_assignment(request, aid):
                 'assignment': assignment,
                 'geo': utils.get_geo(assignment['locations']),
                 'questions': utils.get_questions(aid),
+                'talking_points': utils.get_talking_points(aid),
                 'canvass': False
             }
             print(data)
@@ -188,6 +190,7 @@ def current_assignment(request):
                                                            'assignment': assignment.dict(),
                                                            'geo': utils.get_geo(assignment.dict()['locations']),
                                                            'questions': questions,
+                                                           'talking_points': utils.get_talking_points(assignment.id),
                                                            'canvass': True})
             else:
                 return render(request, 'error.html', utils.generate_error_data(request, 'No current assignment'))
@@ -207,6 +210,7 @@ def canvass(request, aid):
                 'assignment': assignment,
                 'geo': utils.get_geo(assignment['locations']),
                 'questions': utils.get_questions(aid),
+                'talking_points': utils.get_talking_points(aid),
                 'canvass': False
             }
             return render(request, 'canvass.html', data)

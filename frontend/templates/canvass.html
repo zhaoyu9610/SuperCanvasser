@@ -50,6 +50,14 @@
 
     $(document).ready(function () {
         $("#set").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/api/canvasser/submit",
+                data: JSON.stringify({"id":$("#assignId").text(), "results":allResults}),
+                success: function (result) {
+                    alert(JSON.stringify(result));
+                }
+            });
 
            $("#current").val($("#next").val());
            var loc = $("#current").val().split(".");
@@ -207,8 +215,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="complete" class="btn btn-primary">Submit</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="complete" class="btn btn-primary" data-dismiss="modal">Submit</button>
+
 
                 </div>
             </div>

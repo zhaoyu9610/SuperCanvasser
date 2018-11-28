@@ -14,3 +14,9 @@ def submit(request):
     return handler.submit(request)
 
 
+
+@csrf_exempt
+def new_order(request):
+    return handler.new_order(request)
+
+

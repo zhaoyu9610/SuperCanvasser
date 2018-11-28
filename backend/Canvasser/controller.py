@@ -52,3 +52,19 @@ class CanvasserHandler:
                 return utils.generate_error(request, 'Not canvasser')
         else:
             return utils.generate_error(request, 'Not logged in')
+
+    def new_order(self, request):
+        try:
+            body = json.loads(request.body)
+
+        except Exception as e:
+            return utils.generate_error(request, 'Parameter error')
+        if 'cookie' in request.COOKIES:
+            uid = request.COOKIES['cookie']
+            if utils.check_canvasser(uid):
+
+                return utils.generate_response(request, {})
+            else:
+                return utils.generate_error(request, 'Not canvasser')
+        else:
+            return utils.generate_error(request, 'Not logged in')

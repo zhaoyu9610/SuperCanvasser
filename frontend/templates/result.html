@@ -70,5 +70,51 @@
         </tbody>
     </table>
 
+    <div id="map"></div>
+
+
+  <meta id="my-data" data-name="{{locations}}" data-other="{{locations}}">
+
 </div>
+
+
+        <script>
+// Initialize and add the map
+function initMap() {
+
+  var locations = {{ geo }};
+
+  var rating = {{ rating }};
+
+  var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 11, center: {lat: locations[0][0], lng: locations[0][1]}});
+
+
+  var content = $('#my-data').data().name.replace('[', '').split('\', ');
+
+
+  var infowindow = new google.maps.InfoWindow({
+      content: "asdf"
+  });
+
+  for (i=0; i <locations.length; i ++){
+      var marker = new google.maps.Marker({position: {lat: locations[i][0], lng: locations[i][1]},
+          map: map,
+          icon: "http://maps.google.com/mapfiles/kml/paddle/" + rating[i] + ".png"})
+      var infowindow = new google.maps.InfoWindow({
+          content: "asdf"
+        })
+      google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+          return function() {
+              infowindow.setContent(content);
+              infowindow.open(map,marker);
+          };
+      })(marker, content[i],infowindow));
+  }
+}
+    </script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2KRRab6Gis0ec2h5D5EFCdiiZMbbf-Pw&callback=initMap">
+    </script>
 {% endblock %}

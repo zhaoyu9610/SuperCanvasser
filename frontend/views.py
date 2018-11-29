@@ -114,13 +114,19 @@ def campaign_result(request, cid):
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
+        campaign = utils.get_campaign(uid, cid)
+        result = json.loads(utils.get_result(cid))
         if roles[1]:
             data = {
                 'role': roles,
-                'campaign': utils.get_campaign(uid, cid),
-                'result': json.loads(utils.get_result(cid)),
-                'questions': json.loads(models.Campaign.objects.filter(id=cid).get().questions)
+                'campaign': campaign,
+                'geo': utils.get_geo(campaign['locations']),
+                'result': result,
+                'questions': json.loads(models.Campaign.objects.filter(id=cid).get().questions),
+                'rating': result['rating'],
+                'locations': [json.dumps(a[0]) for a in result['locations']],
             }
+            print(data)
             return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:
@@ -206,6 +212,7 @@ def canvass(request, aid):
         if roles[2]:
             assignment = utils.canvasser_get_assignment(uid, aid)
             a = models.Assignment.objects.filter(id=aid).get()
+            ids = [b.id for b in a.locations.all()]
             data = {
                 'role': roles,
                 'assignment': assignment,
@@ -213,7 +220,8 @@ def canvass(request, aid):
                 'questions': utils.get_questions(aid),
                 'talking_points': utils.get_talking_points(aid),
                 'canvass': False,
-                'order': [a.name() for a in a.locations.all()]
+                'order': [a.name() for a in a.locations.all()],
+                'ids': ids,
             }
             return render(request, 'canvass.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))

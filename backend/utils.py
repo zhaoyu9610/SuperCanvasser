@@ -127,7 +127,8 @@ def generate_campaign_result(campaign, results):
                 'rating_median': np.median(np_rating),
                 'locations': location_result,
                 'total_number_of_people': total_people,
-              'total_question_sum': list(zip(*total_question_sum))}
+              'total_question_sum': list(zip(*total_question_sum)),
+              'rating': location_rating}
     campaign.average = result['rating_avg']
     campaign.sd = result['rating_sd']
     campaign.median = result['rating_median']

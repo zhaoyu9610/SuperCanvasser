@@ -114,13 +114,19 @@ def campaign_result(request, cid):
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
+        campaign = utils.get_campaign(uid, cid)
+        result = json.loads(utils.get_result(cid))
         if roles[1]:
             data = {
                 'role': roles,
-                'campaign': utils.get_campaign(uid, cid),
-                'result': json.loads(utils.get_result(cid)),
-                'questions': json.loads(models.Campaign.objects.filter(id=cid).get().questions)
+                'campaign': campaign,
+                'geo': utils.get_geo(campaign['locations']),
+                'result': result,
+                'questions': json.loads(models.Campaign.objects.filter(id=cid).get().questions),
+                'rating': result['rating'],
+                'locations': [json.dumps(a[0]) for a in result['locations']],
             }
+            print(data)
             return render(request, 'result.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:

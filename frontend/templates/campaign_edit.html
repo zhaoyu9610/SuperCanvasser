@@ -18,7 +18,6 @@
 
             allCanvassers.push($( this ).text());
         });
-
     });
 
     $(document).ready(function(){
@@ -30,8 +29,35 @@
     });
 
     $(document).ready(function(){
-        $(".camManagers").each(function() {
+        $(".points").each(function() {
+            var talk = ($(this).text().split("\n"));
+
+            talkingPoints.push(talk[0]);
+        });
+
+    });
+
+    $(document).ready(function(){
+        $(".quests").each(function() {
+        var q = ($(this).text().split("\n"));
+            questions.push(q[0]);
+
+        });
+
+    });
+
+    <!--$(document).ready(function(){-->
+        <!--$("talkingP").each(function() {-->
+            <!--talkingPoints.push($(this).text());-->
+
+        <!--});-->
+
+    <!--});-->
+
+    $(document).ready(function(){
+        $(".mymanagers").each(function() {
             var man = $(this).text().split("\n");
+            console.log(man[0]);
             managers.push(man[0]);
 
         });
@@ -48,12 +74,14 @@
     });
 
       $(document).on('click', '.delete-user-canvasser', function() {
-        var str = $(this).parent().text().split(" ");
-        var user = str[0];
+        var str = $(this).parent().text().split("\n ");
+        var str2 = str[0].split(" ");
+        var user = str2[0];
 
         for(var i = 0; i < canvassers.length;i++){
 
                 if(canvassers[i] == user){
+                alert("found");
                     canvassers.splice(i,1);
                     break;
                 }
@@ -63,10 +91,12 @@
     });
 
     $(document).on('click', '.add-user-canvasser', function() {
+    alert(managers);
             var found = 0;
             var exists = 0;
             var str = $(this).parent().text().split("\n");
             var user = str[0];
+
 
 
             for(var i = 0; i < canvassers.length;i++){
@@ -95,10 +125,11 @@
 
 
     $(document).on('click', '.delete-user-manager', function() {
-        var str = $(this).parent().text().split(" ");
-        var user = str[0];
+        var str = $(this).parent().text().split("\n");
+        var str2 = str[0].split(" ");
+        var user = str2[0];
         $(this).parent().remove();
-
+        alert(user);
 
         for(var i = 0; i < managers.length;i++){
 
@@ -261,16 +292,17 @@
     $(document).ready(function () {
         $("#saveCamp").click(function () {
             var duration = parseFloat($("#visitDuration").val());
-
+            alert(managers);
             $.ajax({
                 type: "POST",
-                url: "/api/manager/campaigns/"+obj.id+"/edit",
+                url: "/api/manager/campaigns/{{campaign.id}}/edit",
                 contentType: "application/json",
                 dataType: "json",
                 data:  JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
-                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
+                                      "location" : locations,"questions": questions, "canvasser" : canvassers,"manager": managers}}),
                 success: function (result) {
-                     window.location.href ="/campaigns/"+obj.id;
+                     window.location.href ="/campaigns/{{campaign.id}}";
+
                 }
             });
         });
@@ -414,7 +446,7 @@
 
                                 <li class="list-group-item">{{item.email}}
                                     <button type="button"
-                                            class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
+                                            class="btn btn-secondary btn-sm add-user-manager float-right"><i
                                             class="fa fa-arrow-right"></i></button>
                                 </li>
 
@@ -433,10 +465,10 @@
 
                                 {% for item in campaign.manager %}
 
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right">
-                                        <i
-                                                class="fa fa-arrow-right"></i></button>
+                                <li class="list-group-item mymanagers">{{item.email}}
+                            <button type="button" id="x"
+                                    class="btn btn-secondary btn-sm delete-user-manager float-right"> X
+                            </button>
                                 </li>
 
                                 {% endfor %}
@@ -465,7 +497,7 @@
                         <h5><label for="locations">Locations:</label></h5>
                         <ul class="list-group long-display" id="locations">
                             {% for item in campaign.locations %}
-                            <li class="list-group-item list-group-item-dark">{{item.street}}, {{item.city}},
+                            <li class="list-group-item list-group-item-dark">{{item.number}}, {{item.street}}, {{item.city}},
                                 {{item.state}} {{item.zipcode}}
                                 <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
                             </li>
@@ -496,7 +528,7 @@
                             <ul class="list-group list-group-flush long-display" id="talkingP">
 
                                 {% for item in campaign.talking_points %}
-                                <li class="list-group-item list-group-item-dark">{{item}}
+                                <li class="list-group-item list-group-item-dark points">{{item}}
                                     <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
                                 </li>
 
@@ -521,7 +553,7 @@
                             <h5><label for="questions">Questionnaire:</label></h5>
                             <ul class="list-group long-display" id="questions">
                                 {% for item in campaign.questions %}
-                                <li class="list-group-item list-group-item-dark">{{item}}
+                                <li class="list-group-item list-group-item-dark quests">{{item}}
                                     <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
                                 </li>
 

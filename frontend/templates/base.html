@@ -13,8 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'supercanvassercampaign.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/ajax.js"></script>
+    <script src="/static/ajax.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
@@ -61,7 +61,7 @@
                         {% endif %}
                         {% if role.2 %}
                         <li class="nav-item" id="showCanvasser"><a class="nav-link" href="/assignments">Canvasser</a></li>
-                        <li class="nav-item" id="showCurrentAssignment"><a class="nav-link" href="/assignments/current">Canvasser</a></li>
+                        <li class="nav-item" id="showCurrentAssignment"><a class="nav-link" href="/assignments">Canvasser</a></li>
                         {% endif %}
 
                     </ul>

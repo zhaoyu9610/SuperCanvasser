@@ -29,12 +29,15 @@ def campaigns(request):
     if 'cookie' in request.COOKIES:
         uid = request.COOKIES['cookie']
         roles = utils.get_roles(uid)
-        if roles[1]:
-            data = {
-                'role': roles,
-                'campaigns': utils.get_campaigns(uid)
-            }
-            return render(request, 'campaigns.html', data)
+        try:
+            if roles[1]:
+                data = {
+                    'role': roles,
+                    'campaigns': utils.get_campaigns(uid)
+                }
+                return render(request, 'campaigns.html', data)
+        except Exception as e:
+            return render(request, 'error.html', utils.generate_error_data(request, "Can't find {} in google api".format(str(e))))
         return render(request, 'error.html', utils.generate_error_data(request, 'You are not manager'))
     else:
         return redirect('login')

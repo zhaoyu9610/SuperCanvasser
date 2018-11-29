@@ -5,47 +5,17 @@
     <script>
 
 
-    var obj = {{campaign|safe}};
-
-    $(document).ready(function(){
-        var canArr = obj.canvassers;
-        var manArr = obj.manager;
-        var locationsArr = obj.locations;
-        var talkingPArr = obj.talking_points;
-        var questionsArr = obj.questions;
-
-
-    $(document).ready(function(){
-        var start = obj.start_date;
-        var end = obj.end_date;
-        var startDate = start[1] + "/" +start[2] +"/"+ start[0];
-        var endDate = end[1] + "/" +end[2] +"/"+ end[0];
-        var fullDate = startDate + " - " + endDate;
-        $("#currentCampaign").html(obj.name);
-        $("#name").val(obj.name);
-        $("#date").val(fullDate);
-        $("#startD").val(startDate);
-        $("#endD").val(endDate);
-        $("#visitDuration").val(obj.duration);
-
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-        $("#name").val(obj.name);
-    });
-
 
     $(document).ready(function() {
         $("#viewAssignment").click(function () {
-            window.location.href="/campaigns/"+obj.id +"/assignments";
+            window.location.href="/campaigns/{{campaign.id}}/assignments";
         });
     });
 
 
     $(document).ready(function() {
         $("#editCamp").click(function () {
-            window.location.href="/campaigns/"+obj.id +"/edit";
+            window.location.href="/campaigns/{{campaign.id}}/edit";
         });
     });
 
@@ -53,10 +23,10 @@
         $("#createAssignment").click(function () {
                 $.ajax({
                     type: "GET",
-                    url: "/api/manager/campaigns/"+obj.id+"/create_assignment",
+                    url: "/api/manager/campaigns/{{campaign.id}}/create_assignment",
                     success: function (result) {
                     alert(JSON.stringify(result));
-                    window.location.href="/campaigns/"+obj.id+"/assignments";
+                    window.location.href="/campaigns/{{campaign.id}}/assignments";
 
                     }
                 });
@@ -65,7 +35,7 @@
 
     $(document).ready(function() {
         $("#viewResults").click(function () {
-            window.location.href="/campaigns/"+obj.id+"/result";
+            window.location.href="/campaigns/{{campaign.id}}/result";
         });
     });
 
@@ -75,7 +45,7 @@
         if(launch == true){
             $.ajax({
                 type: "GET",
-                url: "/api/manager/campaigns/"+obj.id+"/start",
+                url: "/api/manager/campaigns/{{campaign.id}}/start",
                 success: function (result) {
                 alert(JSON.stringify(result));
 
@@ -91,9 +61,9 @@
 
 
 <div class="jumbotron">
-{{campaign}}
+
     <div class="container">
-        <h1 id="currentCampaign" class="text-dark"></h1><hr/>
+        <h1 id="currentCampaign" class="text-dark">{{campaign.name}}</h1><hr/>
         <div class="row float-right">
             <div class="col">
                 <button id="createAssignment" class="btn btn-block btn-dark btn-secondary"
@@ -130,7 +100,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="camName">Campaign Name</span>
                             </div>
-                            <input id="name" type="text" class="form-control" disabled>
+                            <input id="name" type="text" class="form-control" value = "{{campaign.name}}"disabled>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -151,13 +121,13 @@
                                         <span class="input-group-text" id="camCalendar"><i
                                                 class="fa fa-calendar"></i></span>
                             </div>
-                            <input type="text" id="date" class="form-control" disabled>
+                            <input type="text" id="date" class="form-control" value = "{{campaign.start_date.1}}/{{campaign.start_date.2}}/{{campaign.start_date.0}} - {{campaign.end_date.1}}/{{campaign.end_date.2}}/{{campaign.end_date.0}}" disabled>
                         </div>
                         <div class="input-group col-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="camDuration">Visit Duration [Hrs.]</span>
                             </div>
-                            <input type="text" id="visitDuration" class="form-control" disabled>
+                            <input type="text" id="visitDuration" class="form-control"  value = "{{campaign.duration}}"disabled>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -165,13 +135,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="startDate">From</span>
                             </div>
-                            <input type="text" id="startD" class="form-control" disabled>
+                            <input type="text" id="startD" class="form-control" value = "{{campaign.start_date.1}}/{{campaign.start_date.2}}/{{campaign.start_date.0}}" disabled>
                         </div>
                         <div class="input-group col-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="endDate">To</span>
                             </div>
-                            <input type="text" id="endD" class="form-control" disabled>
+                            <input type="text" id="endD" class="form-control" value = "{{campaign.end_date.1}}/{{campaign.end_date.2}}/{{campaign.end_date.0}}" disabled>
                         </div>
 
                     </div>
@@ -179,28 +149,42 @@
                     <div class="form-group">
                         <h5><label for="canvassers">Canvassers:</label></h5>
                         <ul class="list-group" id="canvassers">
+                            {% for item in campaign.canvassers %}
+                            <li class = "list-group-item">{{item.email}}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="form-group">
                         <h5><label for="managers">Managers:</label></h5>
                         <ul class="list-group" id="managers">
+                            {% for item in campaign.manager %}
+                            <li class = "list-group-item">{{item.email}}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="form-group">
                         <h5><label for="locations">Locations:</label></h5>
                         <ul class="list-group long-display" id="locations">
+                            {% for item in campaign.locations %}
+                            <li class = "list-group-item">{{item.number}}, {{item.street}}, {{item.unit}}, {{item.state}}, {{item.city}}, {{item.zipcode}}</li>
+                            {% endfor %}
                         </ul>
                         <div id="map"></div>
                     </div>
                     <div class="form-group">
                         <h5><label for="talkingP">Talking points:</label></h5>
                         <ul class="list-group long-display" id="talkingP">
+                            {% for item in campaign.talking_points %}
+                            <li class = "list-group-item">{{item}}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="form-group">
                         <h5><label for="questions">Questionnaire:</label></h5>
                         <ul class="list-group long-display" id="questions">
-
+                            {% for item in campaign.questions %}
+                            <li class = "list-group-item">{{item}}</li>
+                            {% endfor %}
                         </ul>
                     </div>
 

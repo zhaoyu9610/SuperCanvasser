@@ -3,6 +3,7 @@
 <script>
     var dict = {};
     var key;
+    var unvisited = new Array();
     var visited = new Array();
     var allResults = new Array();
 
@@ -12,6 +13,13 @@
         key = key[0];
     });
 
+     $(document).ready(function () {
+        $(".locationInfo").each(function() {
+            var id = $(this).text().split("\n");
+            unvisited.push(id);
+
+        });
+    });
 
 
     $(document).ready(function () {
@@ -25,7 +33,7 @@
 
     $(document).ready(function () {
         $("#questionsSave").click(function () {
-        alert(key);
+
         var values = {};
         var vals = new Array();
         $.each($('#questionnaire').serializeArray(), function(i, field) {
@@ -50,27 +58,50 @@
 
     $(document).ready(function () {
         $("#set").click(function () {
-            $.ajax({
-                type: "POST",
-                url: "/api/canvasser/new_order",
-                data: JSON.stringify({"id":$("#assignId").text(), "results":allResults}),
-                success: function (result) {
-                    alert(JSON.stringify(result));
-                }
-            });
 
            $("#current").val($("#next").val());
            var loc = $("#current").val().split(".");
            key = loc[0];
+           var found = 0;
 
            for(var i = 0;i <visited.length;i++){
                 if(visited[i] == key){
-                    $("#errorCanvasser").html("Already Visited!");
-                    $("current").val("");
+                    found =1;
+                    break;
                 }
            }
+
+           if(found == 1){
+
+           $("#errorCanvasser").html("Already Visited!");
+           $("current").val("");
+           }
+           else{
            visited.push(key);
 
+           for(var i = 0; i <unvisited.length;i++){
+                if(unvisited[i] == key){
+                    unvisited.splice(i,1);
+                    break;
+                }
+           }
+
+
+           $.ajax({
+                type: "POST",
+                url: "/api/canvasser/new_order",
+                data: JSON.stringify({"current": key, "others":unvisited}),
+                success: function (result) {
+                    $("#recOrder").empty();
+                    var order = result.order;
+                    for(var i =0;i <order.length;i++){
+                        $("#recOrder").append("<li>" + order[i] +"</li>");
+                    }
+
+                }
+            });
+
+            }
         });
     });
 
@@ -115,6 +146,8 @@
 
 
 <div class="jumbotron">
+
+    {{order}}
     <ul class="getInfo">
         {% for item in assignment.locations%}
         <li class="locationInfo">{{item.id}}</li>
@@ -136,7 +169,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {% for item in assignment.locations %}
 
-                <a class="dropdown-item">{{item.id}}. {{item.street}} {{item.city}} {{item.state}} {{item.zipcode}}</a>
+                <a class="dropdown-item">{{item.id}}. {{item.number}} {{item.street}} {{item.city}} {{item.state}} {{item.zipcode}}</a>
 
                 {% endfor %}
             </div>
@@ -168,6 +201,15 @@
         </div>
     </div>
 
+    <div class="input-group col-6">
+            <h4>Recommended Order:</h4>
+            <ul id ="recOrder">
+                {% for item in order%}
+                <li>{{item}}</li>
+                {% endfor %}
+            </ul>
+    </div>
+    <br>
     <button type = "button"  id = "completeAssignment" class = "btn btn-dark">Complete Assignment</button>
 
     <div class="modal fade" id="questions" tabindex="-1" role="dialog" aria-labelledby="Questionnaire"

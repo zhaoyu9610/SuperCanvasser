@@ -67,7 +67,7 @@
         $(".startInfo").each(function() {
             var date = $(this).text().split("\n");
 
-            startDate.push(date[0]);
+            startDate.push(parseInt(date[0]));
 
         });
 
@@ -76,9 +76,10 @@
         $(".endInfo").each(function() {
             var date = $(this).text().split("\n");
 
-            endDate.push(date[0]);
+            endDate.push(parseInt(date[0]));
 
         });
+
 
     });
 
@@ -267,38 +268,38 @@
     });
 
 
-    $( document ).ready(function() {
-        $(function() {
-            startDate = [];
-            endDate = [];
-            $('input[id="date"]').daterangepicker({
-                opens: 'left'
-            }, function(start, end, label) {
-                $("#startD").val(start.format('MM/DD/YYYY'));
-                startDate.push(start.format('YYYY'));
-                startDate.push(start.format('MM'));
-                startDate.push(start.format('DD'));
-                $("#endD").val(end.format('MM/DD/YYYY'));
-                endDate.push(start.format('YYYY'));
-                endDate.push(start.format('MM'));
-                endDate.push(start.format('DD'));
-            });
-        });
-     });
+    <!--$( document ).ready(function() {-->
+        <!--$(function() {-->
+            <!--startDate = [];-->
+            <!--endDate = [];-->
+            <!--$('input[id="date"]').daterangepicker({-->
+                <!--opens: 'left'-->
+            <!--}, function(start, end, label) {-->
+                <!--$("#startD").val(start.format('MM/DD/YYYY'));-->
+                <!--startDate.push(start.format('YYYY'));-->
+                <!--startDate.push(start.format('MM'));-->
+                <!--startDate.push(start.format('DD'));-->
+                <!--$("#endD").val(end.format('MM/DD/YYYY'));-->
+                <!--endDate.push(start.format('YYYY'));-->
+                <!--endDate.push(start.format('MM'));-->
+                <!--endDate.push(start.format('DD'));-->
+            <!--});-->
+        <!--});-->
+     <!--});-->
 
 
 
     $(document).ready(function () {
         $("#saveCamp").click(function () {
             var duration = parseFloat($("#visitDuration").val());
-            alert(managers);
+            alert(endDate);
             $.ajax({
                 type: "POST",
                 url: "/api/manager/campaigns/{{campaign.id}}/edit",
                 contentType: "application/json",
                 dataType: "json",
                 data:  JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
-                                      "location" : locations,"questions": questions, "canvasser" : canvassers,"manager": managers}}),
+                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
                      window.location.href ="/campaigns/{{campaign.id}}";
 

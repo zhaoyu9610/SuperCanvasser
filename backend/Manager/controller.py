@@ -8,33 +8,37 @@ class ManagerHandler:
         try:
             body = json.loads(request.body)
             campaign_dict = body['campaign']
+            print(campaign_dict)
         except Exception as e:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:
             uid = request.COOKIES['cookie']
             if utils.check_manager(uid):
-                campaign = models.Campaign.objects.filter(id=id, managers__id=uid)
-                if 'managers' in campaign_dict:
-                    managers = campaign_dict.pop('managers', [])
-                    campaign.managers.set(utils.get_user(managers))
-                if 'canvassers' in campaign_dict:
-                    canvassers = campaign_dict.pop('canvassers', [])
-                    campaign.canvassers.set(utils.get_user(canvassers))
-                if 'locations' in campaign_dict:
-                    locations = campaign_dict.pop('locations', [])
-                    location_id = utils.add_locations(locations)
-                    campaign.locations.set(location_id)
                 if 'end_date' in campaign_dict:
-                    d = campaign_dict['end_date']
-                    campaign_dict['end_date'] = datetime.date(d[0], d[1], d[2])
+                    if len(campaign_dict['end_date']) > 0:
+                        d = campaign_dict['end_date']
+                        campaign_dict['end_date'] = datetime.date(d[0], d[1], d[2])
+                    else:
+                        campaign_dict.pop('end_date')
                 if 'start_date' in campaign_dict:
-                    d = campaign_dict['start_date']
-                    campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                    if len(campaign_dict['start_date']) > 0:
+                        d = campaign_dict['start_date']
+                        campaign_dict['start_date'] = datetime.date(d[0], d[1], d[2])
+                    else:
+                        campaign_dict.pop('start_date')
+                if campaign_dict['duration'] is None:
+                    campaign_dict.pop('duration')
+                locations = campaign_dict.pop('locations', [])
+                managers = campaign_dict.pop('managers', [])
+                canvassers = campaign_dict.pop('canvassers', [])
                 if 'talking_points' in campaign_dict:
                     campaign_dict['talking_points'] = json.dumps(campaign_dict['talking_points'])
                 if 'questions' in campaign_dict:
                     campaign_dict['questions'] = json.dumps(campaign_dict['questions'])
-                campaign.update(**campaign_dict)
+                campaign = models.Campaign.objects.create(**campaign_dict)
+                campaign.managers.set(utils.get_user(managers))
+                campaign.canvassers.set(utils.get_user(canvassers))
+                campaign.locations.set(utils.add_locations(locations))
                 return utils.generate_response(request, {})
             else:
                 return utils.generate_error(request, 'Not manager')

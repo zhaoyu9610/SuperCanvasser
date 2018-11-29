@@ -68,9 +68,7 @@ def find_closet(result):
         return None, None
     for a in result:
         if is_smallest(a, result):
-            if a.date.date == datetime.date.today():
-                return a, a.campaign.questions
-            return None, None
+            return a, a.campaign.questions
 
 
 def is_smallest(a, result):

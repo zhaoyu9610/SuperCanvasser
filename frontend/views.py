@@ -211,7 +211,8 @@ def canvass(request, aid):
                 'geo': utils.get_geo(assignment['locations']),
                 'questions': utils.get_questions(aid),
                 'talking_points': utils.get_talking_points(aid),
-                'canvass': False
+                'canvass': False,
+                'order': [a.name() for a in assignment.locations.all()]
             }
             return render(request, 'canvass.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))

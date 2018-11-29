@@ -22,14 +22,13 @@ def generate_log_lat(location):
     return loc['lng'], loc['lat']
 
 
-def alternative_assignment(current_location, locations, duration, average_speed):
-    total_time = 0
+def alternative_assignment(current, locations):
+    current = models.Location.objects.filter(id=current).get().dict()
+    locations = [models.Location.objects.filter(id=a).get().dict() for a in locations]
     ordered_location = []
     while locations:
-        next_location, distance = select_next_location(locations, current_location)
-        ordered_location.append(next_location)
-        total_time = total_time + distance / average_speed + duration
-        current_location = next_location
+        next_location, _ = select_next_location(locations, current)
+        ordered_location.append(next_location['name'])
         locations.remove(next_location)
     return ordered_location
 

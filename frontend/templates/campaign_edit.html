@@ -18,7 +18,6 @@
 
             allCanvassers.push($( this ).text());
         });
-
     });
 
     $(document).ready(function(){
@@ -30,11 +29,57 @@
     });
 
     $(document).ready(function(){
-        $(".camManagers").each(function() {
+        $(".points").each(function() {
+            var talk = ($(this).text().split("\n"));
+
+            talkingPoints.push(talk[0]);
+        });
+
+    });
+
+    $(document).ready(function(){
+        $(".quests").each(function() {
+        var q = ($(this).text().split("\n"));
+            questions.push(q[0]);
+
+        });
+
+    });
+
+    <!--$(document).ready(function(){-->
+        <!--$("talkingP").each(function() {-->
+            <!--talkingPoints.push($(this).text());-->
+
+        <!--});-->
+
+    <!--});-->
+
+    $(document).ready(function(){
+        $(".mymanagers").each(function() {
             var man = $(this).text().split("\n");
+            console.log(man[0]);
             managers.push(man[0]);
 
         });
+    });
+
+    $(document).ready(function(){
+        $(".startInfo").each(function() {
+            var date = $(this).text().split("\n");
+
+            startDate.push(date[0]);
+
+        });
+
+    });
+    $(document).ready(function(){
+        $(".endInfo").each(function() {
+            var date = $(this).text().split("\n");
+
+            endDate.push(date[0]);
+
+        });
+
     });
 
     $(document).ready(function(){
@@ -47,15 +92,15 @@
 
     });
 
-     $(document).on('click', '.delete-user-canvasser', function() {
-        var str = $(this).parent().text().split(" ");
-        var user = str[0];
-        alert("1"+user+"1");
-        alert("!"+canvassers[0]+"!");
+      $(document).on('click', '.delete-user-canvasser', function() {
+        var str = $(this).parent().text().split("\n ");
+        var str2 = str[0].split(" ");
+        var user = str2[0];
 
         for(var i = 0; i < canvassers.length;i++){
 
                 if(canvassers[i] == user){
+                alert("found");
                     canvassers.splice(i,1);
                     break;
                 }
@@ -65,10 +110,12 @@
     });
 
     $(document).on('click', '.add-user-canvasser', function() {
+    alert(managers);
             var found = 0;
             var exists = 0;
             var str = $(this).parent().text().split("\n");
             var user = str[0];
+
 
 
             for(var i = 0; i < canvassers.length;i++){
@@ -79,7 +126,6 @@
             }
 
             if(exists == 0){
-                alert(canvassers);
                 canvassers.push(user);
                 $("#canvassers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>'+"</li>");
                 $("#successCanvasser").html("User added!");
@@ -98,10 +144,11 @@
 
 
     $(document).on('click', '.delete-user-manager', function() {
-        var str = $(this).parent().text().split(" ");
-        var user = str[0];
+        var str = $(this).parent().text().split("\n");
+        var str2 = str[0].split(" ");
+        var user = str2[0];
         $(this).parent().remove();
-
+        alert(user);
 
         for(var i = 0; i < managers.length;i++){
 
@@ -147,17 +194,23 @@
 
     $(document).ready(function(){
         $("#addTalk").click(function () {
-            talkingPoints.push($("#talkPoints").val());
-            alert(talkingPoints);
-            $("#talkingP").append('<li class ="list-group-item">'+$("#talkPoints").val() +'<button type="button" class="btn btn-secondary btn-sm delete-talk float-right">X</button>'+"</li>");
+            talkingPoints.push($("#insertTalk").val());
+            $("#talkPoints").append('<li class ="list-group-item">'+$("#insertTalk").val() +'<button type="button" class="btn btn-secondary float-right delete-talk"> X</button>'+"</li>");
             })
     });
 
+
+
     $(document).ready(function(){
         $("#addLocation").click(function () {
-            locations = ($('#listofLocations').val().split('\n'));
+            var temp = new Array();
+
+            temp = ($('#listofLocations').val().split('\n'));
+            for (var i = 0;i <temp.length;i++){
+                locations.push(temp[i]);
+            }
             for(var i = 0; i <locations.length;i++){
-                $("#listLocations").append('<li class ="list-group-item">'+ locations[i] +'<button type="button" class="btn btn-secondary btn-sm delete-location float-right">X</button>'+"</li>");
+                $("#listLocations").append('<li class ="list-group-item">'+ locations[i] +'<button type="button" class="btn btn-secondary float-right delete-location"> X</button>'+"</li>");
             }
             })
     });
@@ -165,7 +218,7 @@
     $(document).ready(function(){
         $("#addQuestion").click(function () {
             questions.push($("#insertQ").val());
-            $("#questions").append('<li class = "list-group-item">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary btn-sm delete-question float-right">X</button>'+"</li>");
+            $("#questions").append('<li class = "list-group-item">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary float-right delete-question"> X</button>'+"</li>");
             })
     });
 
@@ -173,14 +226,11 @@
         var str = $(this).parent().text().split(" ");
         var point = str[0];
         $(this).parent().remove();
-        alert(talkingPoints);
 
         for(var i = 0; i < talkingPoints.length;i++){
 
-                if(talkingPoints[i] = point){
+                if(talkingPoints[i] == point){
                     talkingPoints.splice(i,1);
-                    alert(talkingPoints);
-
                     break;
                 }
         }
@@ -204,40 +254,18 @@
 
     $(document).on('click', '.delete-question', function() {
         var str = $(this).parent().text().split(" ");
-        var q = str[0];
+        var temp = str[0];
         $(this).parent().remove();
 
         for(var i = 0; i < questions.length;i++){
-
-                if(questions[i] = q){
+                if(questions[i] == temp){
                     questions.splice(i,1);
-
                     break;
                 }
         }
 
     });
 
-    <!--$(document).ready(function(){-->
-        <!--var start = obj.start_date;-->
-        <!--var end = obj.end_date;-->
-        <!--var startDate = start[1] + "/" +start[2] +"/"+ start[0];-->
-        <!--var endDate = end[1] + "/" +end[2] +"/"+ end[0];-->
-        <!--var fullDate = startDate + " - " + endDate;-->
-        <!--$("#currentCampaign").html(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#date").val(fullDate);-->
-        <!--alert(startDate);-->
-        <!--$("#startD").val(startDate);-->
-        <!--$("#endD").val(endDate);-->
-        <!--$("#visitDuration").val(obj.duration);-->
-
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-    <!--});-->
 
     $( document ).ready(function() {
         $(function() {
@@ -263,16 +291,17 @@
     $(document).ready(function () {
         $("#saveCamp").click(function () {
             var duration = parseFloat($("#visitDuration").val());
-
+            alert(managers);
             $.ajax({
                 type: "POST",
-                url: "/api/manager/campaigns/"+obj.id+"/edit",
+                url: "/api/manager/campaigns/{{campaign.id}}/edit",
                 contentType: "application/json",
                 dataType: "json",
                 data:  JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
-                                      "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
+                                      "location" : locations,"questions": questions, "canvasser" : canvassers,"manager": managers}}),
                 success: function (result) {
-                     window.location.href ="/campaigns/"+obj.id;
+                     window.location.href ="/campaigns/{{campaign.id}}";
+
                 }
             });
         });
@@ -298,6 +327,18 @@
     <ul class="getInfo">
         {% for item in canvassers%}
         <li class="canvassersInfo">{{item.email}}</li>
+        {%endfor%}
+    </ul>
+
+    <ul class ="getInfo">
+        {%for item in campaign.start_date%}
+        <li class="startInfo">{{item}}</li>
+        {%endfor%}
+    </ul>
+
+    <ul class ="getInfo">
+        {%for item in campaign.end_date%}
+        <li class="endInfo">{{item}}</li>
         {%endfor%}
     </ul>
 
@@ -336,7 +377,7 @@
                                         <span class="input-group-text" id="camCalendar"><i
                                                 class="fa fa-calendar"></i></span>
                             </div>
-                            <input type="text" id="date" class="form-control">
+                            <input type="text" id="date" class="form-control" value = "{{campaign.start_date.1}}/{{campaign.start_date.2}}/{{campaign.start_date.0}} - {{campaign.end_date.1}}/{{campaign.end_date.2}}/{{campaign.end_date.0}}">
                         </div>
                         <div class="input-group col-3">
                             <div class="input-group-prepend">
@@ -352,13 +393,13 @@
                                 <span class="input-group-text" id="startDate">From</span>
                             </div>
 
-                            <input type="text" id="startD" class="form-control">
+                            <input type="text" id="startD" class="form-control" value = "{{campaign.start_date.1}}/{{campaign.start_date.2}}/{{campaign.start_date.0}}">
                         </div>
                         <div class="input-group col-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="endDate">To</span>
                             </div>
-                            <input type="text" id="endD" class="form-control">
+                            <input type="text" id="endD" class="form-control" value = "{{campaign.end_date.1}}/{{campaign.end_date.2}}/{{campaign.end_date.0}}">
                         </div>
 
                     </div>
@@ -416,7 +457,7 @@
 
                                 <li class="list-group-item">{{item.email}}
                                     <button type="button"
-                                            class="btn btn-secondary btn-sm add-user-canvasser float-right"><i
+                                            class="btn btn-secondary btn-sm add-user-manager float-right"><i
                                             class="fa fa-arrow-right"></i></button>
                                 </li>
 
@@ -435,10 +476,10 @@
 
                                 {% for item in campaign.manager %}
 
-                                <li class="list-group-item">{{item.email}}
-                                    <button type="button" class="btn btn-secondary btn-sm add-user-manager float-right">
-                                        <i
-                                                class="fa fa-arrow-right"></i></button>
+                                <li class="list-group-item mymanagers">{{item.email}}
+                            <button type="button" id="x"
+                                    class="btn btn-secondary btn-sm delete-user-manager float-right"> X
+                            </button>
                                 </li>
 
                                 {% endfor %}
@@ -467,7 +508,7 @@
                         <h5><label for="locations">Locations:</label></h5>
                         <ul class="list-group long-display" id="locations">
                             {% for item in campaign.locations %}
-                            <li class="list-group-item list-group-item-dark">{{item.street}}, {{item.city}},
+                            <li class="list-group-item list-group-item-dark">{{item.number}}, {{item.street}}, {{item.city}},
                                 {{item.state}} {{item.zipcode}}
                                 <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
                             </li>
@@ -498,7 +539,7 @@
                             <ul class="list-group list-group-flush long-display" id="talkingP">
 
                                 {% for item in campaign.talking_points %}
-                                <li class="list-group-item list-group-item-dark">{{item}}
+                                <li class="list-group-item list-group-item-dark points">{{item}}
                                     <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
                                 </li>
 
@@ -523,7 +564,7 @@
                             <h5><label for="questions">Questionnaire:</label></h5>
                             <ul class="list-group long-display" id="questions">
                                 {% for item in campaign.questions %}
-                                <li class="list-group-item list-group-item-dark">{{item}}
+                                <li class="list-group-item list-group-item-dark quests">{{item}}
                                     <button type="button" class="btn btn-secondary btn-sm float-right">X</button>
                                 </li>
 

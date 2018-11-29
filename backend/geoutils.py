@@ -23,6 +23,7 @@ def generate_log_lat(location):
 
 
 def alternative_assignment(current, locations):
+    print(current, locations)
     current = models.Location.objects.filter(id=current).get().dict()
     locations = [models.Location.objects.filter(id=a).get().dict() for a in locations]
     ordered_location = []

@@ -59,6 +59,7 @@ class CanvasserHandler:
             body = json.loads(request.body)
             current = body['current']
             others = body['others']
+            others = [int(a[0]) for a in others]
         except Exception as e:
             return utils.generate_error(request, 'Parameter error')
         if 'cookie' in request.COOKIES:

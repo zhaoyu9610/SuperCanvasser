@@ -59,8 +59,6 @@
     $(document).ready(function () {
         $("#set").click(function () {
            var tmp = $("#current").val($("#next").val());
-           alert(JSON.stringify(tmp));
-           alert(JSON.stringify($("#current").val));
            var loc = $("#current").val().split(".");
            key = loc[0];
            var found = 0;
@@ -100,7 +98,6 @@
            if(first){
                first = false;
            } else {
-               alert("asdf");
            }
         });
     });
@@ -126,13 +123,12 @@
 
     $(document).ready(function () {
         $("#completeAssignment").click(function (e) {
-            alert(JSON.stringify({"id":$("#assignId").text(), "results":allResults}));
             $.ajax({
                 type: "POST",
                 url: "/api/canvasser/submit",
                 data: JSON.stringify({"id":$("#assignId").text(), "results":allResults}),
                 success: function (result) {
-                    alert(JSON.stringify(result));
+                    window.location.href ="/assignments";
                 }
             });
         });

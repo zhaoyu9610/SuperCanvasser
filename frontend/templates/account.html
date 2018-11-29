@@ -15,8 +15,7 @@
                 dataType: "json",
                 data: JSON.stringify({"dates": dates}),
                 success: function (result) {
-                    alert(JSON.stringify(result));
-
+                    location.reload();
                 }
             });
         });
@@ -88,8 +87,6 @@
         var str = $(this).parent().text().split(" - ");
         var str1 = str[0].split("/");
         var str2 = str[1].split("/");
-        alert(str1);
-        alert(str2);
         var month = str1[0];
         var day = str1[1];
         var year = str1[2];

@@ -37,6 +37,8 @@ class CanvasserHandler:
             uid = request.COOKIES['cookie']
             if utils.check_canvasser(uid):
                 assignment = models.Assignment.objects.filter(id=id).get()
+                assignment.finished = True
+                assignment.save()
                 for r in results:
                     models.LocationResult.objects.create(
                         **{'number_of_people': len(r['answer']),

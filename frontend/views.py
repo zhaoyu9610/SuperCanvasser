@@ -48,7 +48,7 @@ def campaign(request, cid):
             campaign = utils.get_campaign(uid, cid)
             data = {
                 'role': roles,
-                'campaign': json.dumps(campaign),
+                'campaign': campaign,
                 'geo': utils.get_geo(campaign['locations']),
                 'rules': utils.get_rules(cid)
             }

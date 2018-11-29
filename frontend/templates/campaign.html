@@ -14,26 +14,6 @@
         var talkingPArr = obj.talking_points;
         var questionsArr = obj.questions;
 
-        for(var i = 0; i < canArr.length;i++){
-            $("#canvassers").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+canArr[i].email+"</li>" + '</div>');
-        }
-
-        for(var i = 0; i < manArr.length;i++){
-            $("#managers").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+manArr[i].email+"</li>" + '</div>');
-        }
-
-        for(var i = 0; i < locationsArr.length;i++){
-            $("#locations").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+locationsArr[i].street +", " + locationsArr[i].city + ", " + locationsArr[i].state + locationsArr[i].zipcode+"</li>" + '</div>');
-        }
-
-        for(var i = 0; i < talkingPArr.length;i++){
-            $("#talkingP").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+talkingPArr[i]+"</li>" + '</div>');
-        }
-        for(var i = 0; i < questionsArr.length;i++){
-            $("#questions").append('<div class = "container">'+"<li class='list-group-item list-group-item-dark'>"+questionsArr[i]+"</li>" + '</div>');
-        }
-
-    });
 
     $(document).ready(function(){
         var start = obj.start_date;
@@ -111,7 +91,7 @@
 
 
 <div class="jumbotron">
-
+{{campaign}}
     <div class="container">
         <h1 id="currentCampaign" class="text-dark"></h1><hr/>
         <div class="row float-right">
@@ -220,6 +200,7 @@
                     <div class="form-group">
                         <h5><label for="questions">Questionnaire:</label></h5>
                         <ul class="list-group long-display" id="questions">
+
                         </ul>
                     </div>
 

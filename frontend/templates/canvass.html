@@ -52,7 +52,7 @@
         $("#set").click(function () {
             $.ajax({
                 type: "POST",
-                url: "/api/canvasser/submit",
+                url: "/api/canvasser/new_order",
                 data: JSON.stringify({"id":$("#assignId").text(), "results":allResults}),
                 success: function (result) {
                     alert(JSON.stringify(result));

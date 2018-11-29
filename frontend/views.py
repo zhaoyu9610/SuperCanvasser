@@ -52,7 +52,7 @@ def campaign(request, cid):
                 'geo': utils.get_geo(campaign['locations']),
                 'rules': utils.get_rules(cid)
             }
-            print(data['rules'])
+            print(data['campaign'])
             return render(request, 'campaign.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note manager'))
     else:

@@ -58,19 +58,18 @@
 
     $(document).ready(function () {
         $("#set").click(function () {
-
-           $("#current").val($("#next").val());
+           var tmp = $("#current").val($("#next").val());
+           alert(JSON.stringify(tmp));
+           alert(JSON.stringify($("#current").val));
            var loc = $("#current").val().split(".");
            key = loc[0];
            var found = 0;
-
            for(var i = 0;i <visited.length;i++){
                 if(visited[i] == key){
                     found =1;
                     break;
                 }
            }
-
            if(found == 1){
 
            $("#errorCanvasser").html("Already Visited!");
@@ -78,15 +77,12 @@
            }
            else{
            visited.push(key);
-
            for(var i = 0; i <unvisited.length;i++){
                 if(unvisited[i] == key){
                     unvisited.splice(i,1);
                     break;
                 }
            }
-
-
            $.ajax({
                 type: "POST",
                 url: "/api/canvasser/new_order",
@@ -100,8 +96,12 @@
 
                 }
             });
-
-            }
+            };
+           if(first){
+               first = false;
+           } else {
+               alert("asdf");
+           }
         });
     });
 
@@ -147,7 +147,6 @@
 
 <div class="jumbotron">
 
-    {{order}}
     <ul class="getInfo">
         {% for item in assignment.locations%}
         <li class="locationInfo">{{item.id}}</li>
@@ -266,21 +265,28 @@
     </div>
 
 </div>
-
-
 </div>
 
 
 <script>
 // Initialize and add the map
+var map;
+var markers;
+var first = true;
+
 function initMap() {
 
   var locations = {{ geo }};
 
-  var map = new google.maps.Map(
+  markers = {};
+
+  var names = {{ ids }};
+
+  map = new google.maps.Map(
       document.getElementById('map'), {zoom: 11, center: {lat: locations[0][0], lng: locations[0][1]}});
   for (i=0; i <locations.length; i ++){
-      var marker = new google.maps.Marker({position: {lat: locations[i][0], lng: locations[i][1]}, map: map})
+      var marker = new google.maps.Marker({position: {lat: locations[i][0], lng: locations[i][1]}, map: map});
+      markers[names[i]] = marker;
   }
 }
 

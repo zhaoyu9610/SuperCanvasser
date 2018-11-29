@@ -212,6 +212,7 @@ def canvass(request, aid):
         if roles[2]:
             assignment = utils.canvasser_get_assignment(uid, aid)
             a = models.Assignment.objects.filter(id=aid).get()
+            ids = [b.id for b in a.locations.all()]
             data = {
                 'role': roles,
                 'assignment': assignment,
@@ -219,7 +220,8 @@ def canvass(request, aid):
                 'questions': utils.get_questions(aid),
                 'talking_points': utils.get_talking_points(aid),
                 'canvass': False,
-                'order': [a.name() for a in a.locations.all()]
+                'order': [a.name() for a in a.locations.all()],
+                'ids': ids,
             }
             return render(request, 'canvass.html', data)
         return render(request, 'error.html', utils.generate_error_data(request, 'You are note canvasser'))

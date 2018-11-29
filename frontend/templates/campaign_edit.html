@@ -64,6 +64,25 @@
     });
 
     $(document).ready(function(){
+        $(".startInfo").each(function() {
+            var date = $(this).text().split("\n");
+
+            startDate.push(date[0]);
+
+        });
+
+    });
+    $(document).ready(function(){
+        $(".endInfo").each(function() {
+            var date = $(this).text().split("\n");
+
+            endDate.push(date[0]);
+
+        });
+
+    });
+
+    $(document).ready(function(){
         $(".camCanvassers").each(function() {
             var can = $(this).text().split("\n");
             canvassers.push(can[0]);
@@ -247,26 +266,6 @@
 
     });
 
-    <!--$(document).ready(function(){-->
-        <!--var start = obj.start_date;-->
-        <!--var end = obj.end_date;-->
-        <!--var startDate = start[1] + "/" +start[2] +"/"+ start[0];-->
-        <!--var endDate = end[1] + "/" +end[2] +"/"+ end[0];-->
-        <!--var fullDate = startDate + " - " + endDate;-->
-        <!--$("#currentCampaign").html(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#date").val(fullDate);-->
-        <!--alert(startDate);-->
-        <!--$("#startD").val(startDate);-->
-        <!--$("#endD").val(endDate);-->
-        <!--$("#visitDuration").val(obj.duration);-->
-
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-        <!--$("#name").val(obj.name);-->
-    <!--});-->
 
     $( document ).ready(function() {
         $(function() {
@@ -331,6 +330,18 @@
         {%endfor%}
     </ul>
 
+    <ul class ="getInfo">
+        {%for item in campaign.start_date%}
+        <li class="startInfo">{{item}}</li>
+        {%endfor%}
+    </ul>
+
+    <ul class ="getInfo">
+        {%for item in campaign.end_date%}
+        <li class="endInfo">{{item}}</li>
+        {%endfor%}
+    </ul>
+
     <ul class="getInfo">
         {% for item in managers%}
         <li class="managersInfo">{{item.email}}</li>
@@ -366,7 +377,7 @@
                                         <span class="input-group-text" id="camCalendar"><i
                                                 class="fa fa-calendar"></i></span>
                             </div>
-                            <input type="text" id="date" class="form-control">
+                            <input type="text" id="date" class="form-control" value = "{{campaign.start_date.1}}/{{campaign.start_date.2}}/{{campaign.start_date.0}} - {{campaign.end_date.1}}/{{campaign.end_date.2}}/{{campaign.end_date.0}}">
                         </div>
                         <div class="input-group col-3">
                             <div class="input-group-prepend">
@@ -382,13 +393,13 @@
                                 <span class="input-group-text" id="startDate">From</span>
                             </div>
 
-                            <input type="text" id="startD" class="form-control">
+                            <input type="text" id="startD" class="form-control" value = "{{campaign.start_date.1}}/{{campaign.start_date.2}}/{{campaign.start_date.0}}">
                         </div>
                         <div class="input-group col-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="endDate">To</span>
                             </div>
-                            <input type="text" id="endD" class="form-control">
+                            <input type="text" id="endD" class="form-control" value = "{{campaign.end_date.1}}/{{campaign.end_date.2}}/{{campaign.end_date.0}}">
                         </div>
 
                     </div>

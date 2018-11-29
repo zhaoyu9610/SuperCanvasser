@@ -47,11 +47,9 @@
 
     });
 
-     $(document).on('click', '.delete-user-canvasser', function() {
+      $(document).on('click', '.delete-user-canvasser', function() {
         var str = $(this).parent().text().split(" ");
         var user = str[0];
-        alert("1"+user+"1");
-        alert("!"+canvassers[0]+"!");
 
         for(var i = 0; i < canvassers.length;i++){
 
@@ -79,7 +77,6 @@
             }
 
             if(exists == 0){
-                alert(canvassers);
                 canvassers.push(user);
                 $("#canvassers").append('<li class ="list-group-item">'+user+'<button type="button" class="btn btn-secondary btn-sm delete-user-canvasser float-right"> X</button>'+"</li>");
                 $("#successCanvasser").html("User added!");
@@ -147,17 +144,23 @@
 
     $(document).ready(function(){
         $("#addTalk").click(function () {
-            talkingPoints.push($("#talkPoints").val());
-            alert(talkingPoints);
-            $("#talkingP").append('<li class ="list-group-item">'+$("#talkPoints").val() +'<button type="button" class="btn btn-secondary btn-sm delete-talk float-right">X</button>'+"</li>");
+            talkingPoints.push($("#insertTalk").val());
+            $("#talkPoints").append('<li class ="list-group-item">'+$("#insertTalk").val() +'<button type="button" class="btn btn-secondary float-right delete-talk"> X</button>'+"</li>");
             })
     });
 
+
+
     $(document).ready(function(){
         $("#addLocation").click(function () {
-            locations = ($('#listofLocations').val().split('\n'));
+            var temp = new Array();
+
+            temp = ($('#listofLocations').val().split('\n'));
+            for (var i = 0;i <temp.length;i++){
+                locations.push(temp[i]);
+            }
             for(var i = 0; i <locations.length;i++){
-                $("#listLocations").append('<li class ="list-group-item">'+ locations[i] +'<button type="button" class="btn btn-secondary btn-sm delete-location float-right">X</button>'+"</li>");
+                $("#listLocations").append('<li class ="list-group-item">'+ locations[i] +'<button type="button" class="btn btn-secondary float-right delete-location"> X</button>'+"</li>");
             }
             })
     });
@@ -165,7 +168,7 @@
     $(document).ready(function(){
         $("#addQuestion").click(function () {
             questions.push($("#insertQ").val());
-            $("#questions").append('<li class = "list-group-item">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary btn-sm delete-question float-right">X</button>'+"</li>");
+            $("#questions").append('<li class = "list-group-item">'+$("#insertQ").val() +'<button type="button" class="btn btn-secondary float-right delete-question"> X</button>'+"</li>");
             })
     });
 
@@ -173,14 +176,11 @@
         var str = $(this).parent().text().split(" ");
         var point = str[0];
         $(this).parent().remove();
-        alert(talkingPoints);
 
         for(var i = 0; i < talkingPoints.length;i++){
 
-                if(talkingPoints[i] = point){
+                if(talkingPoints[i] == point){
                     talkingPoints.splice(i,1);
-                    alert(talkingPoints);
-
                     break;
                 }
         }
@@ -204,14 +204,12 @@
 
     $(document).on('click', '.delete-question', function() {
         var str = $(this).parent().text().split(" ");
-        var q = str[0];
+        var temp = str[0];
         $(this).parent().remove();
 
         for(var i = 0; i < questions.length;i++){
-
-                if(questions[i] = q){
+                if(questions[i] == temp){
                     questions.splice(i,1);
-
                     break;
                 }
         }

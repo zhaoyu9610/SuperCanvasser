@@ -15,11 +15,16 @@ search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
 
 def generate_log_lat(location):
-    search_payload = {"key": key, "query": location['street'] + ' '+ location['state'] + ' ' + location['zipcode']}
-    search_req = requests.get(search_url, params=search_payload)
-    search_json = search_req.json()  # json representation of the data
-    loc = search_json["results"][0]["geometry"]["location"]
-    return loc['lng'], loc['lat']
+    try:
+        search_payload = {"key": key, "query": location['street'] + ' '+ location['state'] + ' ' + location['zipcode']}
+        search_req = requests.get(search_url, params=search_payload)
+        search_json = search_req.json()  # json representation of the data
+        loc = search_json["results"][0]["geometry"]["location"]
+        return loc['lng'], loc['lat']
+    except Exception:
+        print(location['street'] + ' '+ location['state'] + ' ' + location['zipcode'])
+        raise Exception(location['street'] + ' '+ location['state'] + ' ' + location['zipcode'])
+
 
 
 def alternative_assignment(current, locations):

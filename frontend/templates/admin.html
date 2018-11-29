@@ -61,7 +61,6 @@
 
              });
         });
-            alert(temp);
             $.ajax({
                 type: "POST",
                 url: "/api/administrator/update_users",
@@ -69,7 +68,7 @@
                 dataType: "json",
                 data: JSON.stringify({"users": temp}),
                 success: function (result) {
-                    alert(JSON.stringify(result));
+                    location.reload();
 
                 }
             });
@@ -81,8 +80,6 @@
         $("#updateParameters").click(function () {
 
             var value = document.getElementsByClassName("paraVal");
-            alert(value[0].value);
-            alert(value[1].value);
             $.ajax({
                 type: "POST",
                 url: "/api/administrator/update_parameters",
@@ -90,8 +87,7 @@
                 dataType: "json",
                 data: JSON.stringify({parameters: [{"name":"hours", "value":value[0].value}, {"name":"speed", "value":value[1].value}]}),
                 success: function (result) {
-                    alert(JSON.stringify(result));
-
+                    location.reload();
                 }
             });
         });

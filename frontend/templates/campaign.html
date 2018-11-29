@@ -25,7 +25,6 @@
                     type: "GET",
                     url: "/api/manager/campaigns/{{campaign.id}}/create_assignment",
                     success: function (result) {
-                    alert(JSON.stringify(result));
                     window.location.href="/campaigns/{{campaign.id}}/assignments";
 
                     }
@@ -47,8 +46,7 @@
                 type: "GET",
                 url: "/api/manager/campaigns/{{campaign.id}}/start",
                 success: function (result) {
-                alert(JSON.stringify(result));
-
+                    location.reload();
                 }
             });
             location.reload();

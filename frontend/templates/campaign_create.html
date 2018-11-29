@@ -244,9 +244,7 @@
                 data: JSON.stringify({"campaign": {"name": $("#camName").val(), "start_date": startDate, "end_date": endDate,"duration":duration, "talking_points" : talkingPoints,
                                       "locations" : locations,"questions": questions, "canvassers" : canvassers,"managers": managers}}),
                 success: function (result) {
-                   alert(JSON.stringify(result));
                    window.location.href ="/campaigns";
-
                 }
             });
             }
